@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Levensona pašnovērtējuma psihopātijas skala (LSRP)</title>
+<meta name="description" content="Levensona pašnovērtējuma psihopātijas skalas (LSRP) latviskota, mūsdienīga versija. Izglītojošs instruments personības psiholoģijas lekcijai.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EDF0F3;
+    --surface:#FFFFFF;
+    --ink:#16202B;
+    --muted:#586170;
+    --faint:#889;
+    --line:#DBE0E6;
+    --accent:#1F6E8C;
+    --accent-soft:#E3EEF2;
+    --c-primary:#34456B;
+    --c-secondary:#B57F2A;
+    --radius:14px;
+    --maxw:660px;
+    --sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+    --serif:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:17px;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:40px 22px 72px}
+  .card{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:34px 30px;
+  }
+  h1{
+    font-family:var(--serif);
+    font-weight:700;
+    font-size:31px;
+    line-height:1.15;
+    letter-spacing:-.022em;
+    margin:0 0 6px;
+  }
+  h2{
+    font-family:var(--serif);
+    font-weight:600;
+    font-size:22px;
+    line-height:1.2;
+    letter-spacing:-.015em;
+    margin:0 0 14px;
+  }
+  .lead{color:var(--muted);margin:0 0 22px;font-size:17px}
+  p{margin:0 0 14px}
+  .small{font-size:14.5px;color:var(--muted);line-height:1.5}
+  .screen{display:none;animation:fade .35s ease both}
+  .screen.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.screen{animation:none}}
+
+  /* Intro */
+  .kicker{
+    font-size:14px;color:var(--accent);font-weight:600;margin:0 0 14px;
+  }
+  .note{
+    background:var(--accent-soft);
+    border-radius:12px;
+    padding:16px 18px;
+    margin:22px 0;
+    font-size:15px;
+    color:#274b57;
+    line-height:1.5;
+  }
+  .note strong{color:#173540}
+  .legend{
+    margin:22px 0 26px;
+    border-top:1px solid var(--line);
+    padding-top:18px;
+  }
+  .legend-title{font-size:14px;color:var(--faint);margin:0 0 10px}
+  .legend ol{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+  .legend li{display:flex;align-items:baseline;gap:10px;font-size:15px;color:var(--muted)}
+  .legend .n{
+    flex:none;width:24px;height:24px;border-radius:7px;background:var(--bg);
+    color:var(--ink);font-weight:600;font-size:13px;
+    display:grid;place-items:center;border:1px solid var(--line);
+  }
+  .cite{font-size:13.5px;color:var(--faint);margin-top:24px;line-height:1.55}
+
+  button{font-family:inherit}
+  .btn{
+    display:inline-block;border:none;cursor:pointer;
+    background:var(--accent);color:#fff;
+    font-size:16px;font-weight:600;
+    padding:14px 26px;border-radius:11px;
+    transition:filter .15s ease;
+  }
+  .btn:hover{filter:brightness(1.07)}
+  .btn:focus-visible{outline:3px solid #9ec6d6;outline-offset:2px}
+  .btn.ghost{background:transparent;color:var(--accent);padding:12px 0;font-weight:600}
+  .btn.wide{width:100%}
+
+  /* Quiz */
+  .progress-head{
+    display:flex;justify-content:space-between;align-items:baseline;
+    margin-bottom:10px;
+  }
+  .progress-head .count{font-size:14px;color:var(--faint);font-variant-numeric:tabular-nums}
+  .bar{height:5px;background:var(--line);border-radius:999px;overflow:hidden;margin-bottom:30px}
+  .bar span{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .3s ease;width:0}
+  .qcard{min-height:230px;display:flex;flex-direction:column;justify-content:center}
+  .qnum{font-size:14px;color:var(--faint);margin-bottom:8px}
+  .qtext{
+    font-family:var(--serif);font-weight:600;
+    font-size:24px;line-height:1.3;margin:0 0 26px;letter-spacing:-.015em;
+  }
+  .opts{display:grid;gap:9px}
+  .opt{
+    display:flex;align-items:center;gap:13px;width:100%;text-align:left;
+    background:var(--surface);border:1.5px solid var(--line);
+    border-radius:11px;padding:13px 15px;cursor:pointer;
+    font-size:16px;color:var(--ink);transition:border-color .12s,background .12s;
+  }
+  .opt:hover{border-color:#b9c4cd}
+  .opt:focus-visible{outline:3px solid #9ec6d6;outline-offset:2px}
+  .opt .dot{
+    flex:none;width:26px;height:26px;border-radius:50%;
+    border:1.5px solid var(--line);display:grid;place-items:center;
+    font-size:13px;font-weight:600;color:var(--muted);
+  }
+  .opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+  .opt.sel .dot{background:var(--accent);border-color:var(--accent);color:#fff}
+  .navrow{display:flex;justify-content:space-between;align-items:center;margin-top:26px}
+  .khint{font-size:13px;color:var(--faint);margin-top:20px;text-align:center}
+
+  /* Results */
+  .gauge{margin:0 0 30px}
+  .gauge-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+  .gauge-name{font-weight:600;font-size:17px}
+  .gauge-num{font-family:var(--serif);font-weight:700;font-size:30px;line-height:1;letter-spacing:-.02em}
+  .gauge-num small{font-family:var(--sans);font-size:14px;font-weight:500;color:var(--faint)}
+  .track{
+    position:relative;height:12px;border-radius:999px;background:var(--bg);
+    border:1px solid var(--line);margin:12px 0 8px;overflow:visible;
+  }
+  .fill{position:absolute;top:0;left:0;height:100%;border-radius:999px;transition:width .5s ease}
+  .mid{position:absolute;top:-4px;bottom:-4px;left:50%;width:2px;background:#c3ccd4;transform:translateX(-50%)}
+  .gauge-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--faint)}
+  .gauge-desc{font-size:14.5px;color:var(--muted);margin-top:9px;line-height:1.5}
+  .band{font-weight:600;color:var(--ink)}
+  details{border-top:1px solid var(--line);margin-top:8px;padding-top:6px}
+  summary{cursor:pointer;font-weight:600;font-size:15px;padding:12px 0;list-style:none;color:var(--accent)}
+  summary::-webkit-details-marker{display:none}
+  summary:focus-visible{outline:3px solid #9ec6d6;outline-offset:2px;border-radius:4px}
+  details .body{font-size:14.5px;color:var(--muted);line-height:1.55;padding-bottom:8px}
+  details .body p{margin:0 0 12px}
+  details .body strong{color:var(--ink)}
+  .resfoot{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+
+  /* Density plot */
+  .density-wrap{margin:32px 0 6px;border-top:1px solid var(--line);padding-top:24px}
+  .density-title{font-weight:600;font-size:17px;margin:0 0 4px}
+  .density-sub{font-size:14px;color:var(--faint);margin:0 0 16px}
+  .plot{width:100%;max-width:390px;margin:0 auto;display:block}
+  .plot canvas{width:100%;height:auto;display:block}
+  .legend-scale{max-width:390px;margin:16px auto 0}
+  .legend-bar{height:12px;border-radius:6px;border:1px solid var(--line);
+    background:linear-gradient(90deg,#ffffff,#d3edd3,#74c48a,#1f8f6b)}
+  .legend-ends{display:flex;justify-content:space-between;font-size:12.5px;color:var(--faint);margin-top:5px}
+  .density-cap{font-size:14.5px;color:var(--muted);line-height:1.55;margin:18px 0 0}
+
+  @media (max-width:560px){
+    .wrap{padding:26px 14px 56px}
+    .card{padding:26px 20px}
+    h1{font-size:26px}
+    .qtext{font-size:21px}
+    .btn.wide{width:100%}
+  }
+  @media print{
+    body{background:#fff}
+    .resfoot,.khint{display:none}
+    .card{border:none;padding:0}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- INTRO -->
+  <section id="intro" class="screen active">
+    <div class="card">
+      <p class="kicker">Personības psiholoģija</p>
+      <h1>Levensona pašnovērtējuma psihopātijas skala</h1>
+      <p class="lead">Latviskota Levensona testa versija. Tā mēra psihopātijas iezīmes divās dimensijās: primārā (emocionālās un starppersonu iezīmes) un sekundārā (impulsīvs dzīvesveids un uzvedība). 26 apgalvojumi, aizpildīšanas laiks aptuveni piecas minūtes. Atbildi godīgi, domājot par to, kāds parasti esi.</p>
+
+      <div class="note">
+        <strong>Tikai izglītojošiem nolūkiem.</strong> Šis nav diagnostisks instruments. Atbildes paliek tikai tavā pārlūkā un netiek nekur nosūtītas.
+      </div>
+
+      <div class="legend">
+        <p class="legend-title">Atbilžu skala</p>
+        <ol>
+          <li><span class="n">1</span> Pilnīgi nepiekrītu</li>
+          <li><span class="n">2</span> Nepiekrītu</li>
+          <li><span class="n">3</span> Ne piekrītu, ne nepiekrītu</li>
+          <li><span class="n">4</span> Piekrītu</li>
+          <li><span class="n">5</span> Pilnīgi piekrītu</li>
+        </ol>
+      </div>
+
+      <button class="btn" id="start">Sākt testu</button>
+
+      <p class="cite">Avots: Levenson, M. R., Kiehl, K. A., &amp; Fitzpatrick, C. M. (1995). Assessing psychopathic attributes in a noninstitutionalized population. <em>Journal of Personality and Social Psychology, 68</em>(1), 151-158.</p>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz" class="screen">
+    <div class="progress-head">
+      <span class="count"><span id="cur">1</span> no 26</span>
+      <button class="btn ghost" id="back" style="padding:0;font-size:14px">Atpakaļ</button>
+    </div>
+    <div class="bar"><span id="fill"></span></div>
+
+    <div class="card qcard">
+      <p class="qnum" id="qnum">1. apgalvojums</p>
+      <p class="qtext" id="qtext"></p>
+      <div class="opts" id="opts" role="radiogroup" aria-label="Atbilžu iespējas"></div>
+    </div>
+
+    <p class="khint">Vari atbildēt arī ar tastatūras taustiņiem 1 līdz 5</p>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="results" class="screen">
+    <div class="card">
+      <h2>Tavs rezultāts</h2>
+      <p class="small" style="margin-bottom:26px">Zemāk redzams tavu atbilžu vidējais rādītājs katrā no divām dimensijām piecu ballu skalā. Augstāks rādītājs nozīmē attiecīgās iezīmes lielāku izteiktību. Iekavās norādīta arī summa.</p>
+
+      <div class="gauge" id="g-primary"></div>
+      <div class="gauge" id="g-secondary"></div>
+
+      <div class="density-wrap">
+        <p class="density-title">Kur tu atrodies references sadalījumā</p>
+        <p class="density-sub">Primārā psihopātija pret sekundāro. Melnais punkts rāda tavu rezultātu.</p>
+        <div class="plot"><canvas id="dens" width="390" height="380" aria-label="Blīvuma karte: primārā psihopātija pret sekundāro"></canvas></div>
+        <div class="legend-scale">
+          <div class="legend-bar"></div>
+          <div class="legend-ends"><span>gandrīz neviens</span><span>ļoti daudz</span></div>
+        </div>
+        <p class="density-cap">Šis ir ilustratīvs references sadalījums, kas veidots no publicētajiem LSRP faktoru vidējiem rādītājiem un to savstarpējās korelācijas, nevis no empīriskiem Latvijas datiem. Tas parāda vispārējo tendenci, ka abas dimensijas ir saistītas un lielākā daļa rezultātu koncentrējas skalas apakšējā kreisajā daļā. Punktētās līnijas iezīmē skalas viduspunktu.</p>
+      </div>
+
+      <div class="note" style="margin-top:26px">
+        Šie apzīmējumi attiecas tikai uz skalas viduspunktu, nevis uz kādu klīnisku robežvērtību. Latviskajai versijai nav validētu normu, un LSRP nav apstiprinātu diagnostisku robežvērtību. Rezultātu izmanto tikai kā mācību piemēru.
+      </div>
+
+      <details>
+        <summary>Par testu un vērtēšanu</summary>
+        <div class="body">
+          <p><strong>Divu faktoru modelis.</strong> LSRP izstrādāta 1995. gadā, balstoties uz psihopātijas divu faktoru modeli. <strong>Primārā psihopātija</strong> (16 apgalvojumi) atspoguļo emocionālās un starppersonu iezīmes, piemēram, samazinātu empātiju, manipulativitāti, savtīgumu un vāju vainas izjūtu. <strong>Sekundārā psihopātija</strong> (10 apgalvojumi) atspoguļo dzīvesveida un uzvedības iezīmes, piemēram, impulsivitāti, vāju paškontroli, garlaicību un tieksmi atkārtoti nonākt nepatikšanās.</p>
+          <p><strong>Apgrieztā vērtēšana.</strong> Septiņi apgalvojumi (pieci primārajā un divi sekundārajā dimensijā) ir formulēti pretējā virzienā, un to vērtējums pirms summēšanas tiek apgriezts. Tas palīdz mazināt automātisku piekrišanu.</p>
+          <p><strong>Ierobežojumi.</strong> Šī ir mācību vajadzībām sagatavota latviskota versija, nevis validēta, ar atgriezenisko tulkojumu pārbaudīta adaptācija. Literatūrā piedāvāti arī alternatīvi trīs un četru faktoru modeļi. Rezultāts nav diagnoze.</p>
+          <p style="color:var(--faint)">Avots: Levenson, M. R., Kiehl, K. A., &amp; Fitzpatrick, C. M. (1995). Assessing psychopathic attributes in a noninstitutionalized population. Journal of Personality and Social Psychology, 68(1), 151-158.</p>
+        </div>
+      </details>
+
+      <div class="resfoot">
+        <button class="btn" id="restart">Sākt no jauna</button>
+        <button class="btn ghost" id="printbtn">Saglabāt vai izdrukāt</button>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // factor: 'p' primary, 's' secondary. rev: reverse keyed.
+  var ITEMS = [
+    {t:"Panākumu pamatā ir princips, ka izdzīvo stiprākie; mani neuztrauc, kas notiek ar zaudētājiem.", f:"p"},
+    {t:"Manuprāt, pareizi ir viss, ko varu izdarīt, par to nesaņemot sodu.", f:"p"},
+    {t:"Mūsdienu pasaulē es uzskatu, ka panākumu dēļ drīkstu darīt jebko, ja vien par to varu izvairīties no soda.", f:"p"},
+    {t:"Mans galvenais dzīves mērķis ir iegūt sev pēc iespējas vairāk labumu.", f:"p"},
+    {t:"Nopelnīt daudz naudas ir mans svarīgākais mērķis.", f:"p"},
+    {t:"Lai par augstākām vērtībām raizējas citi; mani galvenokārt interesē mans personīgais ieguvums.", f:"p"},
+    {t:"Cilvēki, kuri ir pietiekami muļķīgi, lai ļautu sevi apkrāpt, parasti to arī ir pelnījuši.", f:"p"},
+    {t:"Rūpes par savām interesēm ir mana galvenā prioritāte.", f:"p"},
+    {t:"Es citiem saku to, ko viņi vēlas dzirdēt, lai panāktu, ka viņi dara to, ko gribu es.", f:"p"},
+    {t:"Mani sarūgtinātu, ja es gūtu panākumus uz kāda cita rēķina.", f:"p", rev:true},
+    {t:"Es bieži apbrīnoju patiešām veiklu krāpšanas shēmu.", f:"p"},
+    {t:"Tiecoties pēc saviem mērķiem, es apzināti cenšos nenodarīt citiem pāri.", f:"p", rev:true},
+    {t:"Man patīk manipulēt ar citu cilvēku jūtām.", f:"p"},
+    {t:"Es jūtos slikti, ja mani vārdi vai rīcība kādam rada emocionālas ciešanas.", f:"p", rev:true},
+    {t:"Pat ja es ļoti censtos kaut ko pārdot, es par to nemelotu.", f:"p", rev:true},
+    {t:"Krāpšanās nav attaisnojama, jo tā ir netaisnīga pret citiem.", f:"p", rev:true},
+    {t:"Es atkal un atkal nonāku vienās un tajās pašās nepatikšanās.", f:"s"},
+    {t:"Man bieži ir garlaicīgi.", f:"s"},
+    {t:"Es spēju ilgstoši tiekties pēc viena mērķa.", f:"s", rev:true},
+    {t:"Es neko īpaši tālu uz priekšu neplānoju.", f:"s"},
+    {t:"Es ātri zaudēju interesi par iesāktajiem uzdevumiem.", f:"s"},
+    {t:"Lielākā daļa manu problēmu rodas tāpēc, ka citi cilvēki mani vienkārši nesaprot.", f:"s"},
+    {t:"Pirms kaut ko daru, es rūpīgi apsveru iespējamās sekas.", f:"s", rev:true},
+    {t:"Man ir bijis daudz strīdu, kuros kliedzām viens uz otru.", f:"s"},
+    {t:"Kad izjūtu neapmierinātību, es bieži izlādējos, zaudējot savaldību.", f:"s"},
+    {t:"Mīlestībai tiek piešķirta pārāk liela nozīme.", f:"s"}
+  ];
+
+  var LABELS = ["Pilnīgi nepiekrītu","Nepiekrītu","Ne piekrītu, ne nepiekrītu","Piekrītu","Pilnīgi piekrītu"];
+  var N = ITEMS.length;
+  var answers = new Array(N).fill(null);
+  var idx = 0;
+  var advanceTimer = null;
+  var lastMeans = null;
+
+  var $ = function(id){return document.getElementById(id);};
+  var screens = {intro:$("intro"), quiz:$("quiz"), results:$("results")};
+
+  function show(name){
+    Object.keys(screens).forEach(function(k){
+      screens[k].classList.toggle("active", k===name);
+    });
+    window.scrollTo({top:0, behavior:"instant" in window ? "instant" : "auto"});
+  }
+
+  function renderQuestion(){
+    var it = ITEMS[idx];
+    $("cur").textContent = idx+1;
+    $("qnum").textContent = (idx+1) + ". apgalvojums";
+    $("qtext").textContent = it.t;
+    $("fill").style.width = ((idx)/N*100) + "%";
+    $("back").style.visibility = idx===0 ? "hidden" : "visible";
+
+    var opts = $("opts");
+    opts.innerHTML = "";
+    for(var v=1; v<=5; v++){
+      (function(val){
+        var b = document.createElement("button");
+        b.className = "opt" + (answers[idx]===val ? " sel" : "");
+        b.type = "button";
+        b.setAttribute("role","radio");
+        b.setAttribute("aria-checked", answers[idx]===val ? "true":"false");
+        b.innerHTML = '<span class="dot">'+val+'</span><span>'+LABELS[val-1]+'</span>';
+        b.addEventListener("click", function(){ choose(val); });
+        opts.appendChild(b);
+      })(v);
+    }
+  }
+
+  function choose(val){
+    answers[idx] = val;
+    var kids = $("opts").children;
+    for(var i=0;i<kids.length;i++){
+      var on = (i+1)===val;
+      kids[i].classList.toggle("sel", on);
+      kids[i].setAttribute("aria-checked", on?"true":"false");
+    }
+    if(advanceTimer) clearTimeout(advanceTimer);
+    advanceTimer = setTimeout(next, 240);
+  }
+
+  function next(){
+    if(idx < N-1){ idx++; renderQuestion(); }
+    else { finish(); }
+  }
+  function prev(){
+    if(advanceTimer) clearTimeout(advanceTimer);
+    if(idx>0){ idx--; renderQuestion(); }
+  }
+
+  function scored(i){
+    var v = answers[i];
+    return ITEMS[i].rev ? (6 - v) : v;
+  }
+
+  function band(mean){
+    if(mean < 2.34) return {label:"salīdzinoši zema izteiktība", pct:mean};
+    if(mean <= 3.66) return {label:"vidēja izteiktība", pct:mean};
+    return {label:"salīdzinoši augsta izteiktība", pct:mean};
+  }
+
+  function buildGauge(el, name, color, sum, count, desc){
+    var mean = sum / count;
+    var b = band(mean);
+    var pct = (mean - 1) / 4 * 100; // 1..5 -> 0..100
+    el.innerHTML =
+      '<div class="gauge-head">'+
+        '<span class="gauge-name">'+name+'</span>'+
+        '<span class="gauge-num">'+mean.toFixed(2)+' <small>no 5</small></span>'+
+      '</div>'+
+      '<div class="track">'+
+        '<div class="fill" style="background:'+color+';width:0"></div>'+
+        '<div class="mid"></div>'+
+      '</div>'+
+      '<div class="gauge-meta"><span>1</span><span>skalas vidus</span><span>5</span></div>'+
+      '<p class="gauge-desc"><span class="band">'+cap(b.label)+'.</span> '+desc+' Summa: '+sum+' no '+(count*5)+'.</p>';
+    // animate fill after paint
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        el.querySelector(".fill").style.width = pct + "%";
+      });
+    });
+  }
+  function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+
+  function finish(){
+    var pSum=0, sSum=0, pN=0, sN=0;
+    for(var i=0;i<N;i++){
+      if(ITEMS[i].f==="p"){ pSum+=scored(i); pN++; }
+      else { sSum+=scored(i); sN++; }
+    }
+    buildGauge($("g-primary"), "Primārā psihopātija", "var(--c-primary)", pSum, pN,
+      "Emocionālās un starppersonu iezīmes, piemēram, samazināta empātija un manipulativitāte.");
+    buildGauge($("g-secondary"), "Sekundārā psihopātija", "var(--c-secondary)", sSum, sN,
+      "Impulsīvā dzīvesveida un uzvedības iezīmes, piemēram, vāja paškontrole un impulsivitāte.");
+    lastMeans = {p: pSum/pN, s: sSum/sN};
+    show("results");
+    requestAnimationFrame(drawDensity);
+  }
+
+  // Illustrative reference density (bivariate model, not empirical norms)
+  function densAt(p,s){
+    var muP=1.95, muS=2.42, sP=0.62, sS=0.66, rho=0.45;
+    var zp=(p-muP)/sP, zs=(s-muS)/sS;
+    return Math.exp(-1/(2*(1-rho*rho))*(zp*zp - 2*rho*zp*zs + zs*zs));
+  }
+  function ramp(t){
+    var st=[[0,255,255,255],[0.12,237,247,238],[0.30,211,237,211],
+            [0.48,168,220,174],[0.66,116,196,138],[0.82,69,171,119],[1,31,143,107]];
+    for(var i=1;i<st.length;i++){
+      if(t<=st[i][0]){
+        var a=st[i-1], b=st[i], f=(t-a[0])/(b[0]-a[0]);
+        return [Math.round(a[1]+(b[1]-a[1])*f),Math.round(a[2]+(b[2]-a[2])*f),Math.round(a[3]+(b[3]-a[3])*f)];
+      }
+    }
+    return [31,143,107];
+  }
+  function roundRect(ctx,x,y,w,h,r){
+    ctx.beginPath();ctx.moveTo(x+r,y);
+    ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);
+    ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();
+  }
+  function drawDensity(){
+    if(!lastMeans) return;
+    var cv=$("dens"); if(!cv) return;
+    var cssW=cv.clientWidth||360;
+    var dpr=window.devicePixelRatio||1;
+    var W=cssW, H=Math.round(cssW*0.97);
+    cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr); cv.style.height=H+"px";
+    var ctx=cv.getContext("2d"); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+    var mL=W*0.11, mR=W*0.05, mT=W*0.05, mB=W*0.13;
+    var pw=W-mL-mR, ph=H-mT-mB;
+    function X(p){return mL+(p-1)/4*pw;}
+    function Y(s){return mT+(1-(s-1)/4)*ph;}
+
+    var G=80, off=document.createElement("canvas"); off.width=G; off.height=G;
+    var octx=off.getContext("2d"), img=octx.createImageData(G,G);
+    var vals=new Array(G*G), maxv=0;
+    for(var yi=0;yi<G;yi++){for(var xi=0;xi<G;xi++){
+      var p=1+(xi+0.5)/G*4, s=1+(1-(yi+0.5)/G)*4, v=densAt(p,s);
+      vals[yi*G+xi]=v; if(v>maxv)maxv=v;
+    }}
+    for(var k=0;k<G*G;k++){
+      var c=ramp(Math.pow(vals[k]/maxv,0.85));
+      img.data[k*4]=c[0];img.data[k*4+1]=c[1];img.data[k*4+2]=c[2];img.data[k*4+3]=255;
+    }
+    octx.putImageData(img,0,0);
+    ctx.save();ctx.beginPath();ctx.rect(mL,mT,pw,ph);ctx.clip();
+    ctx.imageSmoothingEnabled=true;ctx.drawImage(off,mL,mT,pw,ph);ctx.restore();
+
+    ctx.strokeStyle="#DBE0E6";ctx.lineWidth=1;ctx.strokeRect(mL+0.5,mT+0.5,pw,ph);
+    ctx.strokeStyle="rgba(120,132,145,0.35)";ctx.setLineDash([3,4]);
+    ctx.beginPath();ctx.moveTo(X(3),mT);ctx.lineTo(X(3),mT+ph);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(mL,Y(3));ctx.lineTo(mL+pw,Y(3));ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.fillStyle="#8892a0";ctx.font="12px Inter, sans-serif";
+    ctx.textAlign="center";ctx.textBaseline="top";
+    ctx.fillText("1",X(1),mT+ph+6);ctx.fillText("5",X(5),mT+ph+6);
+    ctx.textAlign="right";ctx.textBaseline="middle";
+    ctx.fillText("1",mL-6,Y(1));ctx.fillText("5",mL-6,Y(5));
+    ctx.fillStyle="#586170";ctx.font="600 12.5px Inter, sans-serif";
+    ctx.textAlign="center";ctx.textBaseline="alphabetic";
+    ctx.fillText("Primārā psihopātija",mL+pw/2,H-5);
+    ctx.save();ctx.translate(13,mT+ph/2);ctx.rotate(-Math.PI/2);
+    ctx.textAlign="center";ctx.textBaseline="top";
+    ctx.fillText("Sekundārā psihopātija",0,0);ctx.restore();
+
+    var px=X(lastMeans.p), py=Y(lastMeans.s);
+    ctx.beginPath();ctx.arc(px,py,6,0,Math.PI*2);
+    ctx.fillStyle="#16202B";ctx.fill();ctx.lineWidth=3;ctx.strokeStyle="#fff";ctx.stroke();
+    var lab="Tu";ctx.font="600 12px Inter, sans-serif";
+    var tw=ctx.measureText(lab).width, padx=6, bh=18, below=(py-12-bh<mT);
+    var by=below?py+12:py-12-bh, bx=px-tw/2-padx;
+    if(bx<2)bx=2; if(bx+tw+padx*2>W-2)bx=W-2-(tw+padx*2);
+    ctx.fillStyle="#16202B";roundRect(ctx,bx,by,tw+padx*2,bh,5);ctx.fill();
+    ctx.fillStyle="#fff";ctx.textAlign="left";ctx.textBaseline="middle";
+    ctx.fillText(lab,bx+padx,by+bh/2+0.5);
+  }
+
+  // keyboard
+  document.addEventListener("keydown", function(e){
+    if(!screens.quiz.classList.contains("active")) return;
+    if(e.key>="1" && e.key<="5"){ choose(parseInt(e.key,10)); }
+    else if(e.key==="ArrowLeft"){ prev(); }
+    else if(e.key==="ArrowRight"){ if(answers[idx]) next(); }
+  });
+
+  $("start").addEventListener("click", function(){ idx=0; renderQuestion(); show("quiz"); });
+  $("back").addEventListener("click", prev);
+  $("restart").addEventListener("click", function(){
+    answers = new Array(N).fill(null); idx=0; show("intro");
+  });
+  $("printbtn").addEventListener("click", function(){ window.print(); });
+  window.addEventListener("resize", function(){
+    if(screens.results.classList.contains("active")) drawDensity();
+  });
+
+})();
+</script>
+</body>
+</html>
