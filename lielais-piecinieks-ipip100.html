@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lielā piecinieka aptauja (IPIP-100)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E0F12;--ink-muted:#5B6068;
+    --paper:#FFFFFF;--paper-2:#F3F4F6;--rule:#D9DCE1;
+    --accent:#183B6B;--accent-soft:#E3E9F2;--series-b:#c45c26;
+    --warn:#0E0F12;--warn-bg:transparent;--ok:#2d5a3d;
+    --disp:"Archivo",system-ui,sans-serif;
+    --body:"Hanken Grotesk",system-ui,sans-serif;
+    --mono:"Spline Sans Mono","IBM Plex Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:40rem;margin:0 auto;padding:0 22px}
+  @media (max-width:520px){.wrap{padding:0 16px}}
+  a{color:var(--accent)}
+  h1,h2,h3{font-family:var(--disp);font-weight:600;letter-spacing:-.01em}
+  .num{font-family:var(--mono)}
+
+  /* header */
+  header.top{border-bottom:1px solid var(--rule)}
+  header.top .wrap{padding:44px 22px 28px}
+  .kick{font-family:var(--mono);font-size:.75rem;color:var(--ink-muted);margin:0 0 14px;letter-spacing:.02em}
+  header.top h1{font-size:2.35rem;line-height:1.14;margin:0 0 12px}
+  @media (max-width:520px){header.top h1{font-size:1.85rem}}
+  header.top .tag{color:var(--ink-muted);margin:0;font-size:1.05rem}
+
+  /* intro */
+  #intro .wrap{padding-top:28px;padding-bottom:56px}
+  .prose{max-width:38rem}
+  .prose p{margin:0 0 15px}
+  details.about{border-top:1px solid var(--rule);margin:24px 0 4px}
+  details.about>summary{list-style:none;cursor:pointer;padding:15px 0 15px 24px;position:relative;font-weight:600;color:var(--ink);font-size:1rem}
+  details.about>summary::-webkit-details-marker{display:none}
+  details.about>summary::before{content:"+";position:absolute;left:0;top:13px;color:var(--accent);font-size:1.15rem}
+  details.about[open]>summary::before{content:"\2212"}
+  details.about>summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+  details.about .inner{background:var(--paper-2);border:1px solid var(--rule);padding:18px 20px;margin:0 0 6px;font-size:1rem;line-height:1.62;color:var(--ink-muted)}
+  details.about .inner p{margin:0 0 12px}
+  details.about .inner p:last-child{margin:0}
+
+  .warnbox{background:transparent;color:var(--ink);border-left:2px solid var(--ink);padding:12px 16px;font-size:.92rem;line-height:1.5;margin:26px 0}
+
+  .scaleblock{margin:30px 0 28px}
+  .scaleq{font-weight:600;margin:0 0 20px}
+  .ruler{position:relative}
+  .ruler .rail{position:absolute;left:10%;right:10%;top:9px;height:2px;background:var(--rule)}
+  .ruler .stops{position:relative;display:grid;grid-template-columns:repeat(5,1fr)}
+  .ruler .st{display:flex;flex-direction:column;align-items:center;gap:12px}
+  .ruler .st .d{width:12px;height:12px;border-radius:50%;background:var(--paper);border:2px solid var(--ink-muted);z-index:1}
+  .ruler .st .lab{text-align:center;line-height:1.3;font-size:.72rem;color:var(--ink-muted);max-width:12ch}
+  .ruler .st .lab b{display:block;font-family:var(--mono);font-weight:500;font-size:.85rem;color:var(--ink);margin-bottom:3px}
+
+  .btn{cursor:pointer;border:none;background:var(--accent);color:#fff;font-family:var(--body);font-size:1rem;font-weight:600;padding:14px 28px;border-radius:8px;transition:opacity .15s ease}
+  .btn:hover{opacity:.9}
+  .btn:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+  .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--rule)}
+  .btn.ghost:hover{border-color:var(--ink-muted);opacity:1}
+  .src{font-size:.8125rem;color:var(--ink-muted);line-height:1.55;margin-top:26px;max-width:38rem}
+  .src a{color:var(--ink-muted)}
+
+  /* sticky progress */
+  #bar{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule);display:none}
+  #bar .row{max-width:40rem;margin:0 auto;padding:10px 22px;display:flex;align-items:center;gap:14px}
+  #bar .nm{font-family:var(--disp);font-weight:600;font-size:.9rem;white-space:nowrap}
+  #bar .ct{margin-left:auto;font-family:var(--mono);font-size:.8rem;color:var(--ink-muted);white-space:nowrap}
+  #bar .meter{position:relative;flex:1;min-width:60px;height:2px;background:var(--rule)}
+  #bar .meter i{position:absolute;left:0;top:0;height:100%;background:var(--accent);width:0;transition:width .2s ease}
+  @media (max-width:520px){#bar .nm{display:none}}
+
+  /* survey */
+  #survey{display:none}
+  #survey .wrap{padding-top:22px;padding-bottom:40px}
+  .hint{font-size:.9rem;color:var(--ink-muted);margin:0 0 6px}
+  .item{padding:22px 0 16px;border-bottom:1px solid var(--rule)}
+  .item.miss{background:#EEF2F8;border-radius:4px;padding:20px 14px 16px;border-bottom-color:transparent}
+  .item .q{display:flex;gap:12px;align-items:baseline;margin-bottom:20px}
+  .item .n{font-family:var(--mono);font-size:.8rem;color:var(--ink-muted);min-width:24px;flex:none;padding-top:2px}
+  .item .stmt{font-size:1.15rem;line-height:1.4}
+  .gauge{position:relative;max-width:420px;margin-left:36px}
+  @media (max-width:520px){.gauge{margin-left:0}}
+  .gauge .rail{position:absolute;left:10%;right:10%;top:calc(50% - 8px);height:2px;background:var(--rule);z-index:0}
+  .gauge .stops{position:relative;display:grid;grid-template-columns:repeat(5,1fr);z-index:1}
+  .gauge .stop{position:relative;display:flex;flex-direction:column;align-items:center;gap:9px;padding:6px 0 4px;cursor:pointer;min-height:44px;justify-content:center}
+  .gauge .stop input{position:absolute;inset:0;opacity:0;cursor:pointer;margin:0}
+  .gauge .stop .num{font-size:.85rem;color:var(--ink-muted)}
+  .gauge .stop .dot{width:15px;height:15px;border-radius:50%;background:var(--paper);border:2px solid var(--ink-muted);transition:all .12s ease}
+  .gauge .stop:hover .dot{border-color:var(--ink)}
+  .gauge .stop input:checked ~ .dot{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+  .gauge .stop input:checked ~ .num{color:var(--accent);font-weight:500}
+  .gauge .stop input:focus-visible ~ .dot{outline:3px solid var(--accent);outline-offset:2px}
+  .gauge .ends{display:flex;justify-content:space-between;margin-top:6px;color:var(--ink-muted);font-size:.72rem}
+  .submit{padding:36px 0 6px;text-align:center}
+  .warn{color:var(--series-b);font-size:.9rem;margin:14px 0 0;min-height:1.2em;font-weight:600}
+
+  /* results */
+  #results{display:none}
+  #results .wrap{padding-top:40px;padding-bottom:66px}
+  .r-title{font-size:1.9rem;margin:0 0 8px}
+  .r-lead{color:var(--ink-muted);margin:0 0 8px;max-width:38rem}
+  .cont{padding:24px 0 20px;border-top:1px solid var(--rule)}
+  /* general factor desc */
+  .cont .fdesc{color:var(--ink-muted);font-size:.92rem;line-height:1.5;margin:6px 0 0;max-width:38rem}
+  .cont .hd{display:flex;align-items:baseline;gap:10px}
+  .cont .fname{font-family:var(--disp);font-weight:600;font-size:1.22rem}
+  .cont .fen{font-size:.82rem;color:var(--ink-muted)}
+  .cont .read{margin-left:auto;font-family:var(--mono);font-size:.85rem;color:var(--ink-muted);white-space:nowrap}
+  .cont .read b{color:var(--ink);font-weight:500}
+  .poles{display:flex;justify-content:space-between;font-size:.8rem;color:var(--ink-muted);margin:14px 0 8px}
+  .axis{position:relative;height:30px;margin:0 2px 6px}
+  .axis .track{position:absolute;left:0;right:0;top:15px;height:2px;background:var(--rule)}
+  .axis .tick{position:absolute;top:10px;width:1px;height:11px;background:var(--rule)}
+  .axis .tick.mid{height:16px;top:8px;background:var(--ink-muted)}
+  .axis .mk{position:absolute;top:16px;left:50%;transform:translate(-50%,-50%);width:16px;height:16px;border-radius:50%;background:var(--accent);border:3px solid var(--paper);box-shadow:0 0 0 1px var(--accent);transition:left .7s cubic-bezier(.2,.8,.2,1);z-index:2}
+  .band{font-family:var(--mono);font-size:.78rem;color:var(--accent);margin:0 0 8px}
+  .interp{margin:0;line-height:1.55}
+  details.more{margin:12px 0 0}
+  details.more>summary{list-style:none;cursor:pointer;font-size:.9rem;color:var(--accent);font-weight:600;padding:4px 0}
+  details.more>summary::-webkit-details-marker{display:none}
+  details.more>summary::before{content:"+ "}
+  details.more[open]>summary::before{content:"\2212 "}
+  details.more>summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+  details.more .sci{color:var(--ink-muted);font-size:.98rem;line-height:1.6;padding:8px 0 4px;max-width:38rem}
+
+  .note{border-top:1px solid var(--rule);margin-top:28px;padding-top:18px;font-size:.9rem;color:var(--ink-muted);line-height:1.6;max-width:38rem}
+  .note b{color:var(--ink)}
+  details.refs{margin-top:10px}
+  details.refs>summary{list-style:none;cursor:pointer;font-size:.9rem;color:var(--accent);font-weight:600;padding:8px 0}
+  details.refs>summary::-webkit-details-marker{display:none}
+  details.refs>summary::before{content:"+ "}
+  details.refs[open]>summary::before{content:"\2212 "}
+  details.refs ol{margin:6px 0 0;padding:0;list-style:none}
+  details.refs li{font-size:.8125rem;color:var(--ink-muted);line-height:1.55;margin:0 0 10px;padding-left:1.5em;text-indent:-1.5em}
+  details.refs a{color:var(--ink-muted);word-break:break-word}
+  .r-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+
+  @media print{#bar,.r-actions,.hero{display:none}body{background:#fff}.cont{break-inside:avoid}details.more .sci{display:block}}
+  @media (prefers-reduced-motion: reduce){*{transition:none !important}}
+  .surveyhelp{margin-top:2px}
+  .scalemini{display:flex;flex-wrap:wrap;gap:6px 18px;margin:12px 0 2px}
+  .scalemini span{font-size:.92rem;color:var(--ink-muted)}
+  .scalemini b{font-family:var(--mono);color:var(--ink);font-weight:500;margin-right:5px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+  .vintro{color:var(--ink-muted);margin:0 0 18px;max-width:40rem;font-size:.98rem}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+  @media print{.views{display:none}.vpanel[hidden]{display:block}.vpanel{margin-bottom:28px;break-inside:avoid}details.about{display:none}}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><p class="kick">Personības psiholoģijas seminārs</p><h1>"Lielā piecinieka" aptauja</h1><p class="tag">Pieci personības faktori, 100 apgalvojumu</p></div></header>
+<section id="intro"><div class="wrap"><div class="prose"><p>Apraksti sevi tādu, kāds/a patiešām esi pašlaik, nevis tādu, kāds/a vēlies būt. Vērtē sevi salīdzinājumā ar sava vecuma un dzimuma cilvēkiem.</p><p>Atbildi godīgi. Atbildes paliek tikai tavā ierīcē un netiek nekur nosūtītas vai saglabātas.</p></div><details class="about"><summary>Par "Lielo piecinieku" un mērījumu</summary><div class="inner" id="intro-sci"></div></details><div class="warnbox">Tikai izglītojošiem un pašrefleksijas nolūkiem. Šis nav diagnostisks instruments. Atbildes paliek tikai tavā pārlūkā un netiek nekur nosūtītas vai saglabātas.</div><div class="scaleblock"><p class="scaleq">Cik precīzi katrs apgalvojums Tevi raksturo?</p><div class="ruler"><div class="rail"></div><div class="stops"><div class="st"><span class="d"></span><span class="lab"><b>1</b>Ļoti neprecīzi</span></div><div class="st"><span class="d"></span><span class="lab"><b>2</b>Diezgan neprecīzi</span></div><div class="st"><span class="d"></span><span class="lab"><b>3</b>Ne precīzi, ne neprecīzi</span></div><div class="st"><span class="d"></span><span class="lab"><b>4</b>Diezgan precīzi</span></div><div class="st"><span class="d"></span><span class="lab"><b>5</b>Ļoti precīzi</span></div></div></div></div><button class="btn" id="start">Sākt aptauju</button><p class="src">Instruments paredzēts mācībām un pašrefleksijai, nevis klīniskai diagnostikai. Panti jeb apgalvojumi ir publiski pieejami <a href="https://ipip.ori.org/" target="_blank" rel="noopener">Starptautiskajā personības pantu krātuvē (IPIP)</a>. Šī latviskotā 100 pantu versija nav normēta Latvijas populācijā. Aizpildīšana aizņem aptuveni 12 līdz 15 minūtes.</p></div></section>
+<div id="bar"><div class="row"><span class="nm">"Lielā piecinieka" aptauja</span><div class="meter"><i id="mi"></i></div><span class="ct" id="ct">0 / 100 atbildēts</span></div></div>
+<section id="survey"><div class="wrap"><details class="about surveyhelp"><summary>Instrukcija un vērtēšanas skala</summary><div class="inner"><p>Apraksti sevi tādu, kāds/a patiešām esi pašlaik, nevis tādu, kāds/a vēlies būt. Vērtē sevi salīdzinājumā ar sava vecuma un dzimuma cilvēkiem.</p><div class="scalemini"><span><b>1</b> Ļoti neprecīzi</span><span><b>2</b> Diezgan neprecīzi</span><span><b>3</b> Ne precīzi, ne neprecīzi</span><span><b>4</b> Diezgan precīzi</span><span><b>5</b> Ļoti precīzi</span></div></div></details><p class="hint">Atbildi uz visiem 100 apgalvojumiem. 1 nozīmē, ka apgalvojums tevi raksturo ļoti neprecīzi, 5, ka ļoti precīzi.</p><div id="items"></div><div class="submit"><button class="btn" id="submit">Rādīt rezultātus</button><p class="warn" id="warnmsg"></p></div></div></section>
+<section id="results"><div class="wrap"><div class="warnbox">Tikai izglītojošiem un pašrefleksijas nolūkiem. Šis nav diagnostisks instruments. Rezultāti nav klīnisks vērtējums.</div><h2 class="r-title">Tavs personības profils</h2><p class="r-lead">Anketas rezultātus var attēlot vairākos veidos. Katrs no tiem izceļ atšķirīgu informāciju par personības iezīmēm. Radara grafikā vienkopus redzamas visas piecas personības dimensijas. Faktoru aplis parāda divu dimensiju kombinācijas un ar tām saistītos personību raksturojošos īpašības vārdus. Savukārt naratīvais apraksts papildina skaitliskos rezultātus ar tekstu un parāda apgalvojumus, kuriem Tu piekriti visvairāk. Rezultātu attēlošana gan grafiski, gan tekstā var palīdzēt tos labāk izprast un interpretēt (Goodman &amp; Hambleton, 2004; Zenisky &amp; Hambleton, 2015).</p><div class="views" role="tablist" aria-label="Rezultātu skati"><button role="tab" aria-selected="true" aria-controls="view-radar" data-view="radar">Radars</button><button role="tab" aria-selected="false" aria-controls="view-circle" data-view="circle">Faktoru aplis</button><button role="tab" aria-selected="false" aria-controls="view-narr" data-view="narr">Naratīvs</button></div><div id="view-radar" class="vpanel" role="tabpanel"></div><div id="view-circle" class="vpanel" role="tabpanel" hidden></div><div id="view-narr" class="vpanel" role="tabpanel" hidden></div><details class="about"><summary>Par "Lielo piecinieku" un mērījumu</summary><div class="inner" id="res-sci"></div></details><div class="note"><b>Kā lasīt rezultātus.</b> Katrs faktors tiek mērīts ar 20 apgalvojumiem. Pretēji formulētie apgalvojumi tiek automātiski pārkodēti. Rādītāji ir attiecināti pret skalas viduspunktu, nevis pret Latvijas populācijas normām. Tāpēc apzīmējumi zems, vidējs un augsts raksturo pozīciju šīs aptaujas skalā, nevis salīdzinājumu ar Latvijas iedzīvotājiem. Šeit nav labu vai sliktu rezultātu.<details class="refs"><summary>Atsauces</summary><ol id="reflist"></ol></details></div><div class="r-actions"><button class="btn ghost" id="restart">Aizpildīt vēlreiz</button><button class="btn" id="print">Saglabāt vai drukāt</button></div></div></section>
+<script>
+(function(){
+"use strict";
+var INTRO_SCI="<p>Lielais piecinieks (angļu: Big Five) ir personības iezīmju taksonomija, kuras vēsturiskās saknes ir leksiskajā pieejā, proti personības aprakstīšanai nozīmīgas individuālās atšķirības atspoguļojas valodā (Allport &amp; Odbert, 1936; Goldberg, 1993). Faktoranalītiskos pētījumos atkārtoti iegūta piecu plašu dimensiju struktūra (Tupes &amp; Christal, 1961/1992; Norman, 1963; Goldberg, 1990).</p><p>Šajā aptaujā izmantota Goldberga Big-Five Factor Markers pieeja un Starptautiskās personības pantu krātuves (IPIP) publiskajā domēnā pieejamie panti (Goldberg, 1992, 1999; Goldberg et al., 2006). Aptauja dod piecus plašus faktoru rādītājus: ekstraversiju, labvēlību, apzinīgumu, emocionālo stabilitāti un intelektu/iztēli. Šo marķieru pieeju nevajadzētu pielīdzināt Costa un McCrae NEO instrumentiem. Pirmie četri plašie faktori saturiski lielā mērā pārklājas ar Piecu faktoru modeļa (Five-Factor Model, FFM) dimensijām, bet emocionālā stabilitāte ir neirotisma pretējais pols. Būtiskākā atšķirība ir piektajā faktorā: Goldberga marķieros Intelekts vairāk uzsver intelektuālo zinātkāri, idejas un iztēli, savukārt NEO tradīcijas Atvērtība pieredzei (Openness to Experience) aptver plašāku pieredzes, estētikas, jūtu, ideju un vērtību saturu (McCrae &amp; Costa, 1987; McCrae &amp; John, 1992).</p><p>Turklāt šī 100 pantu marķieru aptauja sniedz tikai piecu plašo faktoru rādītājus un neaprēķina NEO pieejā izmantotos šaurāko šķautņu jeb facetu rādītājus. Tāpēc rezultāti interpretējami kā plašu personības dimensiju raksturojums, nevis kā NEO-PI-R profils. Iezīmes ir dimensionālas, nevis personības tipi, un tās ir samērā stabilas, vienlaikus saglabājot iespēju mainīties dzīves gaitā; tās ir saistītas arī ar nozīmīgiem dzīves iznākumiem (Roberts et al., 2007).</p>";
+var FACTORS=[{"k": "E", "lv": "Ekstraversija", "en": "Extraversion", "desc": "Sabiedriskums, aktivitāte un tieksme iesaistīties sociālajā vidē.", "lo": "Atturīgs, noslēgts", "hi": "Sabiedrisks, enerģisks", "b": {"zems": "Atturīgāks, mazāk meklē sociālu stimulāciju un biežāk dod priekšroku klusākai videi vai mazākam cilvēku lokam.", "videjs": "Atkarībā no situācijas novērtē gan sociālu aktivitāti un kompāniju, gan mieru un laiku sev.", "augsts": "Sabiedrisks un aktīvs, viegli iesaistās sarunās, uzņemas iniciatīvu un ērti jūtas cilvēku vidū."}, "sci": "Ekstraversija raksturo sabiedriskumu, sociālo aktivitāti, asertivitāti un tieksmi meklēt mijiedarbību ar citiem. Augstāki rādītāji parasti saistās ar lielāku sociālo aktivitāti, iniciatīvu un komfortu cilvēku vidū, savukārt zemāki rādītāji ar lielāku atturību un mazāku vajadzību pēc sociālas stimulācijas. Zemāks ekstraversijas rādītājs pats par sevi nenozīmē kautrību, sociālu trauksmi vai nedraudzīgumu (John &amp; Srivastava, 1999; McCrae &amp; John, 1992)."}, {"k": "A", "lv": "Labvēlība", "en": "Agreeableness", "desc": "Līdzjūtība, rūpes par citiem un gatavība sadarboties.", "lo": "Tiešs, kritisks", "hi": "Līdzjūtīgs, sadarbīgs", "b": {"zems": "Tiešāks un kritiskāks, vairāk aizstāv savas intereses un mazāk orientējas uz citu vajadzībām.", "videjs": "Atkarībā no situācijas līdzsvaro savas intereses ar rūpēm par citiem un sadarbību.", "augsts": "Līdzjūtīgs un izpalīdzīgs, pievērš uzmanību citu vajadzībām un cenšas uzturēt labas attiecības."}, "sci": "Labvēlība raksturo starppersonu orientāciju uz līdzjūtību, izpalīdzību, sadarbību un rūpēm par citiem pretstatā antagonismam un izteiktākai orientācijai uz savām interesēm. Augstāki rādītāji parasti saistās ar lielāku atsaucību un vēlmi palīdzēt, savukārt zemāki rādītāji ar lielāku kritiskumu, skepsi un gatavību aizstāvēt savas intereses. Neviens no poliem pats par sevi nav vērtējams kā viennozīmīgi labs vai slikts (Graziano &amp; Eisenberg, 1997; McCrae &amp; John, 1992)."}, {"k": "C", "lv": "Apzinīgums", "en": "Conscientiousness", "desc": "Organizētība, kārtīgums, pašdisciplīna un mērķtiecība.", "lo": "Spontāns, elastīgs", "hi": "Organizēts, disciplinēts", "b": {"zems": "Spontānāks un mazāk strukturēts, retāk plāno vai stingri ievēro noteiktu kārtību.", "videjs": "Spēj plānot un uzturēt kārtību, bet vajadzības gadījumā rīkojas elastīgi un spontāni.", "augsts": "Organizēts un disciplinēts, plāno, ievēro kārtību un cenšas pabeigt iesākto."}, "sci": "Apzinīgums raksturo organizētību, kārtīgumu, pašdisciplīnu, pienākumu izpildi un mērķtiecīgu uzvedību. Augstāki rādītāji parasti saistās ar lielāku plānošanu, neatlaidību un uzticamību pienākumu izpildē, savukārt zemāki rādītāji ar spontānāku un mazāk strukturētu pieeju. Apzinīgums ir saistīts ar vairākiem nozīmīgiem akadēmiskiem, profesionāliem un veselības iznākumiem (Roberts et al., 2007)."}, {"k": "S", "lv": "Emocionālā stabilitāte", "en": "Emotional Stability", "desc": "Emocionāls līdzsvarotums un mazāka tendence uz negatīvām emocijām un stresa reakcijām.", "lo": "Jutīgs pret stresu", "hi": "Mierīgs, noturīgs", "b": {"zems": "Jutīgāks pret stresu, biežāk izjūt raizes, aizkaitinājumu vai garastāvokļa svārstības.", "videjs": "Parasti emocionāli līdzsvarots, taču noteiktās situācijās var izjust izteiktāku spriedzi vai satraukumu.", "augsts": "Mierīgs un emocionāli noturīgs, retāk satraucas vai kļūst aizkaitināts un parasti vieglāk saglabā līdzsvaru spriedzes situācijās."}, "sci": "Emocionālā stabilitāte Goldberga Big Five marķieros ir neirotisma pretējais pols. Zemāka emocionālā stabilitāte jeb augstāks neirotisms saistās ar lielāku tendenci piedzīvot negatīvas emocijas, piemēram, trauksmi, aizkaitināmību un skumjas, kā arī ar lielāku jutību pret stresu. Augstāka emocionālā stabilitāte raksturo lielāku emocionālu līdzsvarotību un mazāku emocionālo reaktivitāti (McCrae &amp; John, 1992; Lahey, 2009). Šīs aptaujas rezultāts raksturo personības iezīmi un nav garīgās veselības vai psihisku traucējumu novērtējums."}, {"k": "O", "lv": "Intelekts / iztēle", "en": "Intellect/Imagination", "desc": "Intelektuāla zinātkāre, ideju bagātība, iztēle un interese par sarežģītu un abstraktu saturu.", "lo": "Praktisks, mazāk orientēts uz abstraktām idejām", "hi": "Intelektuāli zinātkārs, iztēles bagāts", "b": {"zems": "Vairāk orientēts uz konkrētu un pazīstamu saturu, mazāk saista abstraktas vai intelektuāli sarežģītas idejas.", "videjs": "Atkarībā no situācijas novērtē gan praktisku un konkrētu, gan abstraktu un intelektuāli sarežģītu saturu.", "augsts": "Intelektuāli zinātkārs un iztēles bagāts, patīk domāt, iedziļināties un darboties ar sarežģītām idejām."}, "sci": "Goldberga Big-Five Factor Markers piektais faktors ir Intelekts jeb Intelekts/iztēle (Intellect/Imagination). Tas raksturo intelektuālu zinātkāri, ideju bagātību, iztēli un interesi par sarežģītu vai abstraktu saturu (Goldberg, 1992). Augstāki rādītāji saistās ar lielāku interesi par idejām, abstraktu domāšanu un intelektuāli sarežģītu saturu, savukārt zemāki rādītāji ar lielāku orientāciju uz konkrētu un pazīstamu saturu. Šo faktoru nevajadzētu automātiski interpretēt kā vispārējo intelektu vai kognitīvo spēju testu."}];
+var BAND={zems:'Zems',videjs:'Vidējs',augsts:'Augsts'};
+var REFS=["Allport, G. W., &amp; Odbert, H. S. (1936). Trait-names: A psycho-lexical study. Psychological Monographs, 47(1), i–171. https://doi.org/10.1037/h0093360", "Goldberg, L. R. (1990). An alternative “description of personality”: The Big-Five factor structure. Journal of Personality and Social Psychology, 59(6), 1216–1229. https://doi.org/10.1037/0022-3514.59.6.1216", "Goldberg, L. R. (1992). The development of markers for the Big-Five factor structure. Psychological Assessment, 4(1), 26–42. https://doi.org/10.1037/1040-3590.4.1.26", "Goldberg, L. R. (1993). The structure of phenotypic personality traits. American Psychologist, 48(1), 26–34. https://doi.org/10.1037/0003-066X.48.1.26", "Goldberg, L. R. (1999). A broad-bandwidth, public domain, personality inventory measuring the lower-level facets of several five-factor models. In I. Mervielde, I. Deary, F. De Fruyt, &amp; F. Ostendorf (Eds.), Personality psychology in Europe (Vol. 7, pp. 7–28). Tilburg University Press.", "Goldberg, L. R., Johnson, J. A., Eber, H. W., Hogan, R., Ashton, M. C., Cloninger, C. R., &amp; Gough, H. G. (2006). The international personality item pool and the future of public-domain personality measures. Journal of Research in Personality, 40(1), 84–96. https://doi.org/10.1016/j.jrp.2005.08.007", "Goodman, D. P., &amp; Hambleton, R. K. (2004). Student test score reports and interpretive guides: Review of current practices and suggestions for future research. Applied Measurement in Education, 17(2), 145–220. https://doi.org/10.1207/s15324818ame1702_3", "Graziano, W. G., &amp; Eisenberg, N. (1997). Agreeableness: A dimension of personality. In R. Hogan, J. A. Johnson, &amp; S. R. Briggs (Eds.), Handbook of personality psychology (pp. 795–824). Academic Press. https://doi.org/10.1016/B978-012134645-4/50031-7", "John, O. P., &amp; Srivastava, S. (1999). The Big Five trait taxonomy: History, measurement, and theoretical perspectives. In L. A. Pervin &amp; O. P. John (Eds.), Handbook of personality: Theory and research (2nd ed., pp. 102–138). Guilford Press.", "Lahey, B. B. (2009). Public health significance of neuroticism. American Psychologist, 64(4), 241–256. https://doi.org/10.1037/a0015309", "McCrae, R. R., &amp; Costa, P. T., Jr. (1987). Validation of the five-factor model of personality across instruments and observers. Journal of Personality and Social Psychology, 52(1), 81–90. https://doi.org/10.1037/0022-3514.52.1.81", "McCrae, R. R., &amp; John, O. P. (1992). An introduction to the five-factor model and its applications. Journal of Personality, 60(2), 175–215. https://doi.org/10.1111/j.1467-6494.1992.tb00970.x", "Norman, W. T. (1963). Toward an adequate taxonomy of personality attributes: Replicated factor structure in peer nomination personality ratings. The Journal of Abnormal and Social Psychology, 66(6), 574–583. https://doi.org/10.1037/h0040291", "Roberts, B. W., Kuncel, N. R., Shiner, R., Caspi, A., &amp; Goldberg, L. R. (2007). The power of personality: The comparative validity of personality traits, socioeconomic status, and cognitive ability for predicting important life outcomes. Perspectives on Psychological Science, 2(4), 313–345. https://doi.org/10.1111/j.1745-6916.2007.00047.x", "Tupes, E. C., &amp; Christal, R. E. (1992). Recurrent personality factors based on trait ratings. Journal of Personality, 60(2), 225–251. https://doi.org/10.1111/j.1467-6494.1992.tb00973.x (Original work published 1961)", "Zenisky, A. L., &amp; Hambleton, R. K. (2015). Good practices for score reporting. In S. Lane, M. R. Raymond, &amp; T. M. Haladyna (Eds.), Handbook of test development (2nd ed., pp. 585–602). Routledge."];
+var RAW={"E": {"p": ["Esmu \"ballītes dvēsele\".", "Jūtos ērti cilvēku vidū.", "Uzsāku sarunas.", "Ballītēs sarunājos ar daudziem dažādiem cilvēkiem.", "Man netraucē būt uzmanības centrā.", "Viegli sadraudzējos ar citiem.", "Uzņemos vadību.", "Protu aizraut cilvēkus.", "Jūtos nepiespiesti kopā ar citiem.", "Protu labi rīkoties sociālās situācijās."], "n": ["Nerunāju daudz.", "Turos otrajā plānā.", "Man ir maz ko teikt.", "Nevēlos pievērst sev uzmanību.", "Svešinieku vidū daudz nerunāju.", "Man ir grūti uzrunāt citus.", "Bieži jūtos neomulīgi citu cilvēku vidū.", "Paturu savas jūtas sevī.", "Esmu ļoti noslēgts cilvēks.", "Gaidu, lai citi uzņemas vadību."]}, "A": {"p": ["Mani interesē cilvēki.", "Jūtu līdzi citu jūtām.", "Man ir mīksta sirds.", "Atvēlu laiku citiem.", "Izjūtu citu emocijas.", "Protu panākt, lai citi manā klātbūtnē jūtas nepiespiesti.", "Apjautājos, kā citiem klājas.", "Protu mierināt citus.", "Mīlu bērnus.", "Esmu labās attiecībās gandrīz ar visiem.", "Par katru varu pateikt ko labu.", "Izrādu savu pateicību.", "Vispirms domāju par citiem.", "Man patīk palīdzēt citiem."], "n": ["Apvainoju cilvēkus.", "Mani neinteresē citu cilvēku problēmas.", "Man maz rūp citi cilvēki.", "Citi mani īsti neinteresē.", "Citiem ir grūti mani iepazīt.", "Esmu vienaldzīgs/vienaldzīga pret citu jūtām."]}, "C": {"p": ["Vienmēr esmu sagatavojies/sagatavojusies.", "Pievēršu uzmanību detaļām.", "Mājas pienākumus izdaru uzreiz.", "Man patīk kārtība.", "Ievēroju grafiku.", "Savā darbā tiecos pēc precizitātes.", "Rīkojos saskaņā ar plānu.", "Turpinu darbu, līdz viss ir izdarīts nevainojami.", "Sastādu plānus un tos ievēroju.", "Man patīk kārtība un regularitāte.", "Man patīk ieviest kārtību."], "n": ["Atstāju savas mantas mētājamies.", "Radu ap sevi nekārtību.", "Bieži aizmirstu nolikt lietas atpakaļ pareizajā vietā.", "Cenšos izvairīties no saviem pienākumiem.", "Nolaidīgi izturos pret pienākumiem.", "Izšķiežu savu laiku.", "Darbus izdaru tikai pa pusei.", "Man ir grūti ķerties pie darba.", "Atstāju savā istabā nekārtību."]}, "S": {"p": ["Lielāko daļu laika jūtos mierīgi un atslābināti.", "Reti jūtos nomākts/nomākta.", "Mani nav viegli izsist no līdzsvara.", "Reti kļūstu aizkaitināts/aizkaitināta.", "Reti dusmojos."], "n": ["Viegli nonāku stresā.", "Raizējos par dažādām lietām.", "Mani viegli izsist no līdzsvara.", "Viegli kļūstu satraukts/satraukta.", "Man bieži mainās garastāvoklis.", "Man ir biežas garastāvokļa svārstības.", "Viegli kļūstu aizkaitināts/aizkaitināta.", "Bieži jūtos nomākts/nomākta.", "Viegli sadusmojos.", "Mani viegli pārņem panika.", "Es ātri sajūtu apdraudējumu.", "Emocijas mani pārņem.", "Viegli apvainojos.", "Mēdzu pārāk iegrimt savās problēmās.", "Bieži kurnu."]}, "O": {"p": ["Man ir bagāts vārdu krājums.", "Man ir spilgta iztēle.", "Man bieži rodas ļoti labas idejas.", "Ātri saprotu lietas.", "Lietoju sarežģītus vārdus.", "Veltu laiku pārdomām.", "Esmu ideju pilns/pilna.", "Protu sarunu ievirzīt dziļākā līmenī.", "Ātri uztveru jaunas lietas.", "Spēju tikt galā ar lielu informācijas apjomu.", "Man patīk izdomāt jaunus veidus, kā darīt lietas.", "Man patīk lasīt intelektuāli izaicinošus tekstus.", "Man labi padodas daudzas lietas."], "n": ["Man ir grūti saprast abstraktas idejas.", "Mani neinteresē abstraktas idejas.", "Man nav labas iztēles.", "Cenšos izvairīties no cilvēkiem, kurus ir grūti saprast.", "Man ir grūti kaut ko iztēloties.", "Izvairos no sarežģītas lasāmvielas.", "Parasti pārāk neiedziļinos jautājumos."]}};
+var WORDS={"E": ["izteikti atturīgs", "drīzāk atturīgs", "līdzsvarots", "drīzāk sabiedrisks", "izteikti sabiedrisks"], "A": ["izteikti tiešs", "drīzāk tiešs", "līdzsvarots", "drīzāk līdzjūtīgs", "izteikti līdzjūtīgs"], "C": ["izteikti spontāns", "drīzāk spontāns", "līdzsvarots", "drīzāk organizēts", "izteikti organizēts"], "S": ["izteikti jutīgs pret stresu", "drīzāk jutīgs", "līdzsvarots", "drīzāk mierīgs", "izteikti mierīgs"], "O": ["izteikti praktisks", "drīzāk praktisks", "līdzsvarots", "drīzāk zinātkārs", "izteikti zinātkārs"]};
+var POSW={"E": ["atturīgs", "sabiedrisks"], "A": ["tiešs", "līdzjūtīgs"], "C": ["spontāns", "organizēts"], "S": ["jutīgs pret stresu", "mierīgs"], "O": ["praktisks", "zinātkārs"]};
+var CIRCLES=[["E", "A", "Ekstraversija", "Labvēlība", [[0, "sabiedrisks, runīgs"], [45, "sirsnīgs, draudzīgs"], [90, "laipns, iejūtīgs"], [135, "pieticīgs, pazemīgs"], [180, "kluss, atturīgs"], [225, "noslēgts, vēss"], [270, "kritisks, skarbs"], [315, "dominējošs, uzstājīgs"]], "Ekstraversija un labvēlība", ["Ekstraversija augsta", "Ekstraversija zema"], ["Labvēlība augsta", "Labvēlība zema"]], ["C", "S", "Apzinīgums", "Emocionālā stabilitāte", [[0, "organizēts, disciplinēts"], [45, "nosvērts, uzticams"], [90, "mierīgs, līdzsvarots"], [135, "bezrūpīgs, nepiespiests"], [180, "spontāns, nekārtīgs"], [225, "impulsīvs, izklaidīgs"], [270, "trauksmains, jūtīgs"], [315, "saspringts, perfekcionistisks"]], "Apzinīgums un emocionālā stabilitāte", ["Apzinīgums augsts", "Apzinīgums zems"], ["Emocionālā stabilitāte augsta", "Emocionālā stabilitāte zema"]]];
+var ITEMS=[];
+['E','A','C','S','O'].forEach(function(f){RAW[f].p.forEach(function(t){ITEMS.push({t:t,f:f,k:1});});RAW[f].n.forEach(function(t){ITEMS.push({t:t,f:f,k:-1});});});
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;var t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+var rnd=mulberry32(20260915);
+for(var i=ITEMS.length-1;i>0;i--){var j=Math.floor(rnd()*(i+1));var tmp=ITEMS[i];ITEMS[i]=ITEMS[j];ITEMS[j]=tmp;}
+var answers=new Array(ITEMS.length).fill(0);
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+function acc(w){var p=w.split(" ");p[0]=p[0].replace(/s$/,"u");return p.join(" ");}
+function posPhrase(k,st){var lo=POSW[k][0],hi=POSW[k][1];
+  return st<=1?"izteikti "+lo:(st===2?"drīzāk "+lo:(st===3?"starp "+acc(lo)+" un "+acc(hi):(st===4?"drīzāk "+hi:"izteikti "+hi)));}
+var LV={};FACTORS.forEach(function(F){LV[F.k]=F.lv;});
+
+document.getElementById('intro-sci').innerHTML=INTRO_SCI;
+document.getElementById('res-sci').innerHTML=INTRO_SCI;
+document.getElementById('reflist').innerHTML=REFS.map(function(r){return '<li>'+r+'</li>';}).join('');
+
+var itemsEl=document.getElementById('items');var frag=document.createDocumentFragment();
+ITEMS.forEach(function(it,idx){
+  var d=document.createElement('div');d.className='item';d.id='it-'+idx;
+  var q=document.createElement('div');q.className='q';
+  q.innerHTML='<span class="n">'+(idx+1<10?'0':'')+(idx+1)+'</span><span class="stmt"></span>';
+  q.querySelector('.stmt').textContent=it.t;d.appendChild(q);
+  var g=document.createElement('div');g.className='gauge';
+  var rail=document.createElement('div');rail.className='rail';g.appendChild(rail);
+  var stops=document.createElement('div');stops.className='stops';stops.setAttribute('role','radiogroup');stops.setAttribute('aria-label',it.t);
+  for(var v=1;v<=5;v++){var lab=document.createElement('label');lab.className='stop';
+    var inp=document.createElement('input');inp.type='radio';inp.name='q'+idx;inp.value=v;inp.setAttribute('aria-label',v+'');
+    var num=document.createElement('span');num.className='num';num.textContent=v;
+    var dot=document.createElement('span');dot.className='dot';
+    lab.appendChild(inp);lab.appendChild(num);lab.appendChild(dot);stops.appendChild(lab);}
+  g.appendChild(stops);
+  var ends=document.createElement('div');ends.className='ends';
+  ends.innerHTML='<span>Ļoti neprecīzi</span><span>Ļoti precīzi</span>';g.appendChild(ends);
+  d.appendChild(g);frag.appendChild(d);});
+itemsEl.appendChild(frag);
+
+var mi=document.getElementById('mi'),ct=document.getElementById('ct');
+itemsEl.addEventListener('change',function(e){if(e.target&&e.target.type==='radio'){var idx=parseInt(e.target.name.slice(1),10);answers[idx]=parseInt(e.target.value,10);var el=document.getElementById('it-'+idx);if(el)el.classList.remove('miss');document.getElementById('warnmsg').textContent='';prog();}});
+function ans(){return answers.filter(function(a){return a>0;}).length;}
+function prog(){var n=ans();ct.textContent=n+' / '+ITEMS.length+' atbildēts';mi.style.width=(100*n/ITEMS.length)+'%';}
+var intro=document.getElementById('intro'),survey=document.getElementById('survey'),results=document.getElementById('results'),bar=document.getElementById('bar'),top=document.querySelector('header.top');
+document.getElementById('start').addEventListener('click',function(){intro.style.display='none';top.style.display='none';bar.style.display='block';survey.style.display='block';window.scrollTo(0,0);});
+document.getElementById('submit').addEventListener('click',function(){var first=-1;for(var i=0;i<answers.length;i++){if(answers[i]===0){document.getElementById('it-'+i).classList.add('miss');if(first<0)first=i;}}if(first>=0){document.getElementById('warnmsg').textContent='Lūdzu, atbildi uz visiem apgalvojumiem. Trūkst atbilžu: '+(ITEMS.length-ans())+'.';document.getElementById('it-'+first).scrollIntoView({behavior:'smooth',block:'center'});return;}show();});
+document.getElementById('restart').addEventListener('click',function(){answers=new Array(ITEMS.length).fill(0);document.querySelectorAll('#items input[type=radio]').forEach(function(r){r.checked=false;});prog();results.style.display='none';top.style.display='block';intro.style.display='block';bar.style.display='none';window.scrollTo(0,0);});
+document.getElementById('print').addEventListener('click',function(){window.print();});
+
+var tabs=document.querySelectorAll('.views button');
+tabs.forEach(function(b){b.addEventListener('click',function(){tabs.forEach(function(x){x.setAttribute('aria-selected',x===b?'true':'false');});document.querySelectorAll('.vpanel').forEach(function(p){p.hidden=(p.id!=='view-'+b.dataset.view);});});});
+
+function score(){var o={};FACTORS.forEach(function(F){o[F.k]={s:0,n:0,raw:[]};});
+  ITEMS.forEach(function(it,idx){var r=answers[idx];o[it.f].s+=(it.k===1?r:6-r);o[it.f].n++;o[it.f].raw.push({t:it.t,raw:r});});
+  FACTORS.forEach(function(F){var x=o[F.k];x.mean=x.s/x.n;x.pct=(x.mean-1)/4*100;x.band=x.mean<2.5?"zems":(x.mean>=3.5?"augsts":"videjs");x.st=Math.min(5,Math.max(1,Math.round(x.mean)));});
+  return o;}
+
+/* ---- Radars ---- */
+function radar(sc){var cx=300,cy=175,R=118,ks=["E","A","C","S","O"];
+  function ang(i){return(-90+i*72)*Math.PI/180;}
+  function pt(p,i){var a=ang(i),r=R*p/100;return[cx+r*Math.cos(a),cy+r*Math.sin(a)];}
+  var s='<svg viewBox="0 0 600 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Radars">';
+  [20,40,60,80,100].forEach(function(L){s+='<polygon points="'+ks.map(function(k,i){var p=pt(L,i);return p[0].toFixed(0)+","+p[1].toFixed(0);}).join(" ")+'" fill="none" stroke="var(--rule)"/>';});
+  ks.forEach(function(k,i){var p=pt(100,i);s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+p[0].toFixed(0)+'" y2="'+p[1].toFixed(0)+'" stroke="var(--rule)"/>';});
+  s+='<polygon points="'+ks.map(function(k,i){var p=pt(sc[k].pct,i);return p[0].toFixed(0)+","+p[1].toFixed(0);}).join(" ")+'" fill="var(--accent)" fill-opacity="0.12" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/>';
+  ks.forEach(function(k,i){var p=pt(sc[k].pct,i);s+='<circle cx="'+p[0].toFixed(0)+'" cy="'+p[1].toFixed(0)+'" r="4.5" fill="var(--accent)"/>';});
+  ks.forEach(function(k,i){var a=ang(i),lx=cx+(R+20)*Math.cos(a),ly=cy+(R+20)*Math.sin(a),anc=Math.cos(a)>0.3?"start":(Math.cos(a)<-0.3?"end":"middle"),dy=Math.sin(a)>0.5?12:(Math.sin(a)<-0.5?-4:4);
+    s+='<text class="lbl" x="'+lx.toFixed(0)+'" y="'+(ly+dy).toFixed(0)+'" text-anchor="'+anc+'" font-size="12.5" fill="var(--ink)">'+LV[k]+'</text>';});
+  s+='</svg>';
+  var list='<ul class="rad-list">'+FACTORS.map(function(F){var x=sc[F.k];
+    return '<li><span>'+F.lv+' <span class="num">'+x.mean.toFixed(1)+'</span></span><span class="w">'+BAND[x.band]+', '+posPhrase(F.k,x.st)+'</span></li>';}).join("")+'</ul>';
+  var note='<p class="cnote"><em>Intelekts / iztēle šeit nozīmē pašnovērtētu zinātkāri, iztēli un interesi par idejām, nevis intelekta jeb spēju mērījumu.</em></p>';
+  return '<div class="svgwrap">'+s+'</div>'+note+list;}
+
+/* ---- Faktoru aplis (AB5C) ---- */
+function circle(sc,c){var xk=c[0],yk=c[1],xn=c[2],yn=c[3],words=c[4],title=c[5],cx=350,cy=270,R=170;
+  var px=(sc[xk].pct-50)/50*R,py=-(sc[yk].pct-50)/50*R;var ang=(Math.atan2(-py,px)*180/Math.PI+360)%360;
+  var near=words.reduce(function(b,w){var d=Math.min(Math.abs(w[0]-ang),360-Math.abs(w[0]-ang));return(!b||d<b.d)?{d:d,w:w[1]}:b;},null).w;
+  var s='<svg viewBox="0 0 700 540" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+title+'">';
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="'+R+'" fill="none" stroke="var(--rule)"/><circle cx="'+cx+'" cy="'+cy+'" r="'+(R/2)+'" fill="none" stroke="var(--rule)" stroke-dasharray="3 3"/>';
+  s+='<line x1="'+(cx-R)+'" y1="'+cy+'" x2="'+(cx+R)+'" y2="'+cy+'" stroke="var(--rule)"/><line x1="'+cx+'" y1="'+(cy-R)+'" x2="'+cx+'" y2="'+(cy+R)+'" stroke="var(--rule)"/>';
+  words.forEach(function(w){var r=w[0]*Math.PI/180,lx=cx+(R+26)*Math.cos(r),ly=cy-(R+26)*Math.sin(r);
+    var anc=Math.abs(Math.cos(r))<0.3?"middle":(Math.cos(r)>0?"start":"end"),on=w[1]===near,parts=w[1].split(", ");
+    var y1=Math.sin(r)>0.3?ly-16:(Math.sin(r)<-0.3?ly+12:ly-4),y2=y1+19;
+    s+='<text class="lbl" text-anchor="'+anc+'" font-size="17" font-weight="'+(on?"600":"400")+'" fill="'+(on?"var(--accent)":"var(--ink-muted)")+'">'+
+       '<tspan x="'+lx.toFixed(0)+'" y="'+y1.toFixed(0)+'">'+parts[0]+(parts[1]?",":"")+'</tspan>'+
+       (parts[1]?'<tspan x="'+lx.toFixed(0)+'" y="'+y2.toFixed(0)+'">'+parts[1]+'</tspan>':'')+'</text>';});
+  var xl=c[6],yl=c[7],halo='paint-order="stroke" stroke="var(--paper)" stroke-width="6" stroke-linejoin="round"';
+  s+='<text class="lbl" '+halo+' x="'+(cx+R-8)+'" y="'+(cy-10)+'" text-anchor="end" font-size="12" fill="var(--ink-muted)">'+xl[0]+'</text>';
+  s+='<text class="lbl" '+halo+' x="'+(cx-R+8)+'" y="'+(cy-10)+'" font-size="12" fill="var(--ink-muted)">'+xl[1]+'</text>';
+  s+='<text class="lbl" '+halo+' x="'+cx+'" y="'+(cy-R+20)+'" text-anchor="middle" font-size="12" fill="var(--ink-muted)">'+yl[0]+'</text>';
+  s+='<text class="lbl" '+halo+' x="'+cx+'" y="'+(cy+R-10)+'" text-anchor="middle" font-size="12" fill="var(--ink-muted)">'+yl[1]+'</text>';
+  s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+(cx+px).toFixed(0)+'" y2="'+(cy+py).toFixed(0)+'" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3"/>';
+  s+='<circle cx="'+(cx+px).toFixed(0)+'" cy="'+(cy+py).toFixed(0)+'" r="9" fill="var(--accent)" stroke="var(--paper)" stroke-width="3"/></svg>';
+  return '<div class="circ"><p class="ctitle">'+title+'</p><div class="svgwrap">'+s+'</div>'+
+         '<p class="cnote">'+xn+' <span class="num">'+sc[xk].mean.toFixed(1)+'</span>, '+yn.toLowerCase()+' <span class="num">'+sc[yk].mean.toFixed(1)+'</span>. Tuvākie vārdi: <b>'+near+'</b>.</p></div>';}
+function circles(sc){
+  return '<p class="vintro">Šeit iezīmes ir attēlotas divu dimensiju plaknē. Katrā aplī divi faktori veido asis, apļa centrs ir abu skalu viduspunkts, un tu esi punkts. Jo tālāk punkts no centra, jo izteiktāka ir abu faktoru kombinācija, bet virziens rāda, kuri īpašības vārdi šo kombināciju raksturo. Pieeja balstās uz Goldberga tradīcijas AB5C modeli, kurā katrs faktoru pāris veido apli.</p>'+
+         '<div class="circ-grid">'+CIRCLES.map(function(c){return circle(sc,c);}).join("")+'</div>'+
+         '<p class="cnote">Vārdu izvietojums ir latviskots tuvinājums Hofstee, de Raad un Goldberg (1992) leksiskajai kartei un nav validēts latviešu valodā.</p>';}
+
+/* ---- Naratīvs ---- */
+function narrative(sc){return FACTORS.map(function(F){var x=sc[F.k],lo=POSW[F.k][0],hi=POSW[F.k][1];
+  var first=x.st>=4?(F.lv+": drīzāk "+hi+" nekā "+lo):(x.st<=2?(F.lv+": drīzāk "+lo+" nekā "+hi):(F.lv+": "+posPhrase(F.k,3)));
+  var top=x.raw.filter(function(r){return r.raw>=4;}).sort(function(a,b){return b.raw-a.raw;}).slice(0,2);
+  var low=x.raw.filter(function(r){return r.raw<=2;}).sort(function(a,b){return a.raw-b.raw;}).slice(0,2);
+  function q(rs){return rs.length?rs.map(function(r){return "„"+esc(r.t.replace(/\.$/,""))+"”";}).join(", "):"nav izteiktu";}
+  var dots="";for(var v=1;v<=5;v++){dots+='<i class="'+(v===x.st?"on":"")+'"></i>';}
+  return '<div class="nar"><div class="nar-hd"><span class="nar-first">'+first+'</span><span class="glyph" title="'+posPhrase(F.k,x.st)+'">'+dots+'</span></div>'+
+    '<p class="fdesc">'+F.desc+'</p>'+
+    '<p class="nar-p">Vidējais <span class="num">'+x.mean.toFixed(1)+'</span> no 5, kas atbilst pozīcijai „'+posPhrase(F.k,x.st)+'”. '+F.b[x.band]+' Visvairāk piekriti: '+q(top)+'. Visvairāk nepiekriti: '+q(low)+'.</p>'+
+    '<details class="more"><summary>Vairāk par šo faktoru</summary><div class="sci">'+F.sci+'</div></details></div>';}).join("");}
+
+function show(){var sc=score();
+  document.getElementById("view-radar").innerHTML=radar(sc);
+  document.getElementById("view-circle").innerHTML=circles(sc);
+  document.getElementById("view-narr").innerHTML=narrative(sc);
+  tabs[0].click();
+  survey.style.display="none";bar.style.display="none";results.style.display="block";window.scrollTo(0,0);}
+prog();
+
+})();
+</script>
+</body>
+</html>
