@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Personības šķautnes (IPIP-NEO-120)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E0F12;--ink-muted:#5B6068;
+    --paper:#FFFFFF;--paper-2:#F3F4F6;--rule:#D9DCE1;
+    --accent:#183B6B;--accent-soft:#E3E9F2;--series-b:#c45c26;
+    --warn:#0E0F12;--warn-bg:transparent;--ok:#2d5a3d;
+    --disp:"Archivo",system-ui,sans-serif;
+    --body:"Hanken Grotesk",system-ui,sans-serif;
+    --mono:"Spline Sans Mono","IBM Plex Mono",ui-monospace,monospace;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:1.0625rem;line-height:1.65;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:40rem;margin:0 auto;padding:0 22px}
+  @media (max-width:520px){.wrap{padding:0 16px}}
+  a{color:var(--accent)}
+  h1,h2,h3{font-family:var(--disp);font-weight:600;letter-spacing:-.01em}
+  .num{font-family:var(--mono)}
+
+  /* header */
+  header.top{border-bottom:1px solid var(--rule)}
+  header.top .wrap{padding:44px 22px 28px}
+  .kick{font-family:var(--mono);font-size:.75rem;color:var(--ink-muted);margin:0 0 14px;letter-spacing:.02em}
+  header.top h1{font-size:2.35rem;line-height:1.14;margin:0 0 12px}
+  @media (max-width:520px){header.top h1{font-size:1.85rem}}
+  header.top .tag{color:var(--ink-muted);margin:0;font-size:1.05rem}
+
+  /* intro */
+  #intro .wrap{padding-top:28px;padding-bottom:56px}
+  .prose{max-width:38rem}
+  .prose p{margin:0 0 15px}
+  details.about{border-top:1px solid var(--rule);margin:24px 0 4px}
+  details.about>summary{list-style:none;cursor:pointer;padding:15px 0 15px 24px;position:relative;font-weight:600;color:var(--ink);font-size:1rem}
+  details.about>summary::-webkit-details-marker{display:none}
+  details.about>summary::before{content:"+";position:absolute;left:0;top:13px;color:var(--accent);font-size:1.15rem}
+  details.about[open]>summary::before{content:"\2212"}
+  details.about>summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:3px}
+  details.about .inner{background:var(--paper-2);border:1px solid var(--rule);padding:18px 20px;margin:0 0 6px;font-size:1rem;line-height:1.62;color:var(--ink-muted)}
+  details.about .inner p{margin:0 0 12px}
+  details.about .inner p:last-child{margin:0}
+
+  .warnbox{background:transparent;color:var(--ink);border-left:2px solid var(--ink);padding:12px 16px;font-size:.92rem;line-height:1.5;margin:26px 0}
+
+  .scaleblock{margin:30px 0 28px}
+  .scaleq{font-weight:600;margin:0 0 20px}
+  .ruler{position:relative}
+  .ruler .rail{position:absolute;left:10%;right:10%;top:9px;height:2px;background:var(--rule)}
+  .ruler .stops{position:relative;display:grid;grid-template-columns:repeat(5,1fr)}
+  .ruler .st{display:flex;flex-direction:column;align-items:center;gap:12px}
+  .ruler .st .d{width:12px;height:12px;border-radius:50%;background:var(--paper);border:2px solid var(--ink-muted);z-index:1}
+  .ruler .st .lab{text-align:center;line-height:1.3;font-size:.72rem;color:var(--ink-muted);max-width:12ch}
+  .ruler .st .lab b{display:block;font-family:var(--mono);font-weight:500;font-size:.85rem;color:var(--ink);margin-bottom:3px}
+
+  .btn{cursor:pointer;border:none;background:var(--accent);color:#fff;font-family:var(--body);font-size:1rem;font-weight:600;padding:14px 28px;border-radius:8px;transition:opacity .15s ease}
+  .btn:hover{opacity:.9}
+  .btn:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+  .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--rule)}
+  .btn.ghost:hover{border-color:var(--ink-muted);opacity:1}
+  .src{font-size:.8125rem;color:var(--ink-muted);line-height:1.55;margin-top:26px;max-width:38rem}
+  .src a{color:var(--ink-muted)}
+
+  /* sticky progress */
+  #bar{position:sticky;top:0;z-index:30;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule);display:none}
+  #bar .row{max-width:40rem;margin:0 auto;padding:10px 22px;display:flex;align-items:center;gap:14px}
+  #bar .nm{font-family:var(--disp);font-weight:600;font-size:.9rem;white-space:nowrap}
+  #bar .ct{margin-left:auto;font-family:var(--mono);font-size:.8rem;color:var(--ink-muted);white-space:nowrap}
+  #bar .meter{position:relative;flex:1;min-width:60px;height:2px;background:var(--rule)}
+  #bar .meter i{position:absolute;left:0;top:0;height:100%;background:var(--accent);width:0;transition:width .2s ease}
+  @media (max-width:520px){#bar .nm{display:none}}
+
+  /* survey */
+  #survey{display:none}
+  #survey .wrap{padding-top:22px;padding-bottom:40px}
+  .hint{font-size:.9rem;color:var(--ink-muted);margin:0 0 6px}
+  .item{padding:22px 0 16px;border-bottom:1px solid var(--rule)}
+  .item.miss{background:#EEF2F8;border-radius:4px;padding:20px 14px 16px;border-bottom-color:transparent}
+  .item .q{display:flex;gap:12px;align-items:baseline;margin-bottom:20px}
+  .item .n{font-family:var(--mono);font-size:.8rem;color:var(--ink-muted);min-width:24px;flex:none;padding-top:2px}
+  .item .stmt{font-size:1.15rem;line-height:1.4}
+  .gauge{position:relative;max-width:420px;margin-left:36px}
+  @media (max-width:520px){.gauge{margin-left:0}}
+  .gauge .rail{position:absolute;left:10%;right:10%;top:calc(50% - 8px);height:2px;background:var(--rule);z-index:0}
+  .gauge .stops{position:relative;display:grid;grid-template-columns:repeat(5,1fr);z-index:1}
+  .gauge .stop{position:relative;display:flex;flex-direction:column;align-items:center;gap:9px;padding:6px 0 4px;cursor:pointer;min-height:44px;justify-content:center}
+  .gauge .stop input{position:absolute;inset:0;opacity:0;cursor:pointer;margin:0}
+  .gauge .stop .num{font-size:.85rem;color:var(--ink-muted)}
+  .gauge .stop .dot{width:15px;height:15px;border-radius:50%;background:var(--paper);border:2px solid var(--ink-muted);transition:all .12s ease}
+  .gauge .stop:hover .dot{border-color:var(--ink)}
+  .gauge .stop input:checked ~ .dot{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+  .gauge .stop input:checked ~ .num{color:var(--accent);font-weight:500}
+  .gauge .stop input:focus-visible ~ .dot{outline:3px solid var(--accent);outline-offset:2px}
+  .gauge .ends{display:flex;justify-content:space-between;margin-top:6px;color:var(--ink-muted);font-size:.72rem}
+  .submit{padding:36px 0 6px;text-align:center}
+  .warn{color:var(--series-b);font-size:.9rem;margin:14px 0 0;min-height:1.2em;font-weight:600}
+
+  /* results */
+  #results{display:none}
+  #results .wrap{padding-top:40px;padding-bottom:66px}
+  .r-title{font-size:1.9rem;margin:0 0 8px}
+  .r-lead{color:var(--ink-muted);margin:0 0 8px;max-width:38rem}
+  .cont{padding:24px 0 20px;border-top:1px solid var(--rule)}
+  /* general factor desc */
+  .cont .fdesc{color:var(--ink-muted);font-size:.92rem;line-height:1.5;margin:6px 0 0;max-width:38rem}
+  .cont .hd{display:flex;align-items:baseline;gap:10px}
+  .cont .fname{font-family:var(--disp);font-weight:600;font-size:1.22rem}
+  .cont .fen{font-size:.82rem;color:var(--ink-muted)}
+  .cont .read{margin-left:auto;font-family:var(--mono);font-size:.85rem;color:var(--ink-muted);white-space:nowrap}
+  .cont .read b{color:var(--ink);font-weight:500}
+  .poles{display:flex;justify-content:space-between;font-size:.8rem;color:var(--ink-muted);margin:14px 0 8px}
+  .axis{position:relative;height:30px;margin:0 2px 6px}
+  .axis .track{position:absolute;left:0;right:0;top:15px;height:2px;background:var(--rule)}
+  .axis .tick{position:absolute;top:10px;width:1px;height:11px;background:var(--rule)}
+  .axis .tick.mid{height:16px;top:8px;background:var(--ink-muted)}
+  .axis .mk{position:absolute;top:16px;left:50%;transform:translate(-50%,-50%);width:16px;height:16px;border-radius:50%;background:var(--accent);border:3px solid var(--paper);box-shadow:0 0 0 1px var(--accent);transition:left .7s cubic-bezier(.2,.8,.2,1);z-index:2}
+  .band{font-family:var(--mono);font-size:.78rem;color:var(--accent);margin:0 0 8px}
+  .interp{margin:0;line-height:1.55}
+  details.more{margin:12px 0 0}
+  details.more>summary{list-style:none;cursor:pointer;font-size:.9rem;color:var(--accent);font-weight:600;padding:4px 0}
+  details.more>summary::-webkit-details-marker{display:none}
+  details.more>summary::before{content:"+ "}
+  details.more[open]>summary::before{content:"\2212 "}
+  details.more>summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px}
+  details.more .sci{color:var(--ink-muted);font-size:.98rem;line-height:1.6;padding:8px 0 4px;max-width:38rem}
+
+  .note{border-top:1px solid var(--rule);margin-top:28px;padding-top:18px;font-size:.9rem;color:var(--ink-muted);line-height:1.6;max-width:38rem}
+  .note b{color:var(--ink)}
+  details.refs{margin-top:10px}
+  details.refs>summary{list-style:none;cursor:pointer;font-size:.9rem;color:var(--accent);font-weight:600;padding:8px 0}
+  details.refs>summary::-webkit-details-marker{display:none}
+  details.refs>summary::before{content:"+ "}
+  details.refs[open]>summary::before{content:"\2212 "}
+  details.refs ol{margin:6px 0 0;padding:0;list-style:none}
+  details.refs li{font-size:.8125rem;color:var(--ink-muted);line-height:1.55;margin:0 0 10px;padding-left:1.5em;text-indent:-1.5em}
+  details.refs a{color:var(--ink-muted);word-break:break-word}
+  .r-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+
+  @media print{#bar,.r-actions,.hero{display:none}body{background:#fff}.cont{break-inside:avoid}details.more .sci{display:block}}
+  @media (prefers-reduced-motion: reduce){*{transition:none !important}}
+  .surveyhelp{margin-top:2px}
+  .scalemini{display:flex;flex-wrap:wrap;gap:6px 18px;margin:12px 0 2px}
+  .scalemini span{font-size:.92rem;color:var(--ink-muted)}
+  .scalemini b{font-family:var(--mono);color:var(--ink);font-weight:500;margin-right:5px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+  .vintro{color:var(--ink-muted);margin:0 0 18px;max-width:40rem;font-size:.98rem}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+  @media print{.views{display:none}.vpanel[hidden]{display:block}.vpanel{margin-bottom:28px;break-inside:avoid}details.about{display:none}}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+ .views{display:flex;border:1px solid var(--rule);margin:14px 0 22px}
+  .views button{flex:1;background:transparent;border:none;border-right:1px solid var(--rule);padding:11px 8px;font-family:var(--body);font-size:.92rem;font-weight:600;color:var(--ink-muted);cursor:pointer}
+  .views button:last-child{border-right:none}
+  .views button[aria-selected="true"]{background:var(--accent);color:#fff}
+  .views button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+  .vpanel[hidden]{display:none}
+  .svgwrap svg{width:100%;height:auto;display:block} svg text.lbl{font-family:var(--body)} svg text.num{font-family:var(--mono)}
+  .rad-list{margin:14px 0 0;padding:0;list-style:none}
+  .rad-list li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid var(--rule);font-size:.98rem}
+  .rad-list li:first-child{border-top:none} .rad-list .w{color:var(--ink-muted);text-align:right}
+  .circ-grid{display:grid;grid-template-columns:1fr;gap:34px}
+  .circ .ctitle{font-family:var(--disp);font-weight:600;font-size:1.02rem;margin:0 0 8px}
+  .cnote{font-size:.9rem;color:var(--ink-muted);margin:12px 0 0;max-width:40rem} .cnote b{color:var(--accent)}
+  .nar{padding:18px 0;border-top:1px solid var(--rule)} .nar:first-child{border-top:none;padding-top:4px}
+  .nar-hd{display:flex;align-items:center;justify-content:space-between;gap:14px}
+  .nar-first{font-family:var(--disp);font-weight:600;font-size:1.1rem}
+  .glyph{display:inline-flex;gap:5px;flex:none} .glyph i{width:9px;height:9px;border-radius:50%;border:1.5px solid var(--ink-muted)} .glyph i.on{background:var(--accent);border-color:var(--accent)}
+  .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
+  .nar details.more{margin-top:10px}
+
+  /* šķautnes */
+  .dom{margin:0 0 30px;padding-top:18px;border-top:1px solid var(--rule)}
+  .dom-hd{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:4px}
+  .dom-hd h3{margin:0;font-size:1.2rem}
+  .dom-hd .v{font-family:var(--mono);font-size:.9rem;color:var(--ink-muted)}
+  .dom .fdesc{margin:0 0 12px;color:var(--ink-muted);font-size:.95rem}
+  .fb{margin:0 0 12px}
+  .fb-top{display:flex;justify-content:space-between;gap:10px;font-size:.95rem}
+  .fb-top .v{font-family:var(--mono);white-space:nowrap}
+  .fb-desc{font-size:.84rem;color:var(--ink-muted);margin:0 0 4px}
+  .track{position:relative;height:10px;background:var(--paper-2);border-radius:5px}
+  .track .fill{position:absolute;left:0;top:0;bottom:0;background:var(--accent);border-radius:5px}
+  .track .mid{position:absolute;left:50%;top:-3px;bottom:-3px;width:1px;background:var(--ink-muted)}
+  .track .dm{position:absolute;top:-4px;bottom:-4px;width:3px;background:var(--series-b);border-radius:1px}
+  .legend{font-size:.84rem;color:var(--ink-muted);margin:0 0 20px}
+  .legend i{display:inline-block;width:10px;height:10px;vertical-align:middle;margin:0 4px 0 0;border-radius:2px}
+  .libnote{font-size:.84rem;margin:6px 0 0;padding:8px 10px;border-left:3px solid var(--series-b);background:var(--paper-2)}
+  .spread{font-size:.92rem;margin:4px 0 0}
+  .dhead{margin:0 0 6px;font-size:1.02rem}
+  .dhead b{font-family:var(--disp);font-weight:600}
+  .fsum{font-size:.95rem;margin:4px 0 0}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap"><p class="kick">Personības psiholoģijas seminārs</p><h1>Personības šķautnes</h1><p class="tag">Piecas dimensijas un 30 šķautnes jeb apakšskalas, 120 apgalvojumu (IPIP‑NEO‑120)</p></div></header>
+<section id="intro"><div class="wrap"><div class="prose"><p>Apraksti sevi tādu, kāds/a patiešām esi pašlaik, nevis tādu, kāds/a vēlies būt. Vērtē sevi salīdzinājumā ar sava vecuma un dzimuma cilvēkiem.</p><p>Atbildi godīgi. Atbildes paliek tikai tavā ierīcē un netiek nekur nosūtītas vai saglabātas.</p></div><details class="about"><summary>Par šķautnēm un mērījumu</summary><div class="inner" id="intro-sci"></div></details><div class="warnbox">Tikai izglītojošiem un pašrefleksijas nolūkiem. Šis nav diagnostisks instruments. Atbildes paliek tikai tavā pārlūkā un netiek nekur nosūtītas vai saglabātas.</div><div class="scaleblock"><p class="scaleq">Cik precīzi katrs apgalvojums Tevi raksturo?</p><div class="ruler"><div class="rail"></div><div class="stops"><div class="st"><span class="d"></span><span class="lab"><b>1</b>Ļoti neprecīzi</span></div><div class="st"><span class="d"></span><span class="lab"><b>2</b>Diezgan neprecīzi</span></div><div class="st"><span class="d"></span><span class="lab"><b>3</b>Ne precīzi, ne neprecīzi</span></div><div class="st"><span class="d"></span><span class="lab"><b>4</b>Diezgan precīzi</span></div><div class="st"><span class="d"></span><span class="lab"><b>5</b>Ļoti precīzi</span></div></div></div></div><button class="btn" id="start">Sākt aptauju</button><p class="src">Instruments paredzēts mācībām un pašrefleksijai, nevis klīniskai diagnostikai. Aptaujas panti ir publiski pieejami <a href="https://ipip.ori.org/" target="_blank" rel="noopener">Starptautiskās personības pantu krātuves (IPIP)</a> krājumā un brīvi izmantojami (Johnson, 2014). Latviešu tulkojums ir paredzēts mācībām un pašrefleksijai, tam nav latviešu normu. Aizpildīšana aizņem aptuveni 15 līdz 20 minūtes.</p></div></section>
+<div id="bar"><div class="row"><span class="nm">Personības šķautnes</span><div class="meter"><i id="mi"></i></div><span class="ct" id="ct">0 / 120 atbildēts</span></div></div>
+<section id="survey"><div class="wrap"><details class="about surveyhelp"><summary>Instrukcija un vērtēšanas skala</summary><div class="inner"><p>Apraksti sevi tādu, kāds/a patiešām esi pašlaik, nevis tādu, kāds/a vēlies būt. Vērtē sevi salīdzinājumā ar sava vecuma un dzimuma cilvēkiem.</p><div class="scalemini"><span><b>1</b> Ļoti neprecīzi</span><span><b>2</b> Diezgan neprecīzi</span><span><b>3</b> Ne precīzi, ne neprecīzi</span><span><b>4</b> Diezgan precīzi</span><span><b>5</b> Ļoti precīzi</span></div></div></details><p class="hint">Atbildi uz visiem 120 apgalvojumiem. 1 nozīmē, ka apgalvojums tevi raksturo ļoti neprecīzi, 5, ka ļoti precīzi.</p><div id="items"></div><div class="submit"><button class="btn" id="submit">Rādīt rezultātus</button><p class="warn" id="warnmsg"></p></div></div></section>
+<section id="results"><div class="wrap"><div class="warnbox">Tikai izglītojošiem un pašrefleksijas nolūkiem. Šis nav diagnostisks instruments. Rezultāti nav klīnisks vērtējums.</div><h2 class="r-title">Tavs personības profils</h2><p class="r-lead">Rezultāti ir parādīti trīs skatos. Dimensiju skatā redzamas piecas plašās dimensijas. Šķautņu skatā redzams, kas slēpjas aiz katras dimensijas: sešas šaurākas šķautnes. Naratīvs apraksta katru dimensiju tekstā un parāda, kur tavas šķautnes atšķiras visvairāk (Goodman &amp; Hambleton, 2004; Zenisky &amp; Hambleton, 2015).</p><div class="views" role="tablist" aria-label="Rezultātu skati"><button role="tab" aria-selected="true" aria-controls="view-radar" data-view="radar">Dimensijas</button><button role="tab" aria-selected="false" aria-controls="view-fac" data-view="fac">Šķautnes</button><button role="tab" aria-selected="false" aria-controls="view-narr" data-view="narr">Naratīvs</button></div><div id="view-radar" class="vpanel" role="tabpanel"></div><div id="view-fac" class="vpanel" role="tabpanel" hidden></div><div id="view-narr" class="vpanel" role="tabpanel" hidden></div><details class="about"><summary>Par šķautnēm un mērījumu</summary><div class="inner" id="res-sci"></div></details><div class="note"><b>Kā lasīt rezultātus.</b> Katru dimensiju mēra 24 apgalvojumi, katru šķautni četri. Pretēji formulētie apgalvojumi tiek automātiski pārkodēti. Rādītāji ir attiecināti pret skalas viduspunktu, nevis pret Latvijas populācijas normām. Tāpēc apzīmējumi zems, vidējs un augsts raksturo pozīciju šīs aptaujas skalā, nevis salīdzinājumu ar Latvijas iedzīvotājiem. Šeit nav labu vai sliktu rezultātu.<details class="refs"><summary>Atsauces</summary><ol id="reflist"></ol></details></div><div class="r-actions"><button class="btn ghost" id="restart">Aizpildīt vēlreiz</button><button class="btn" id="print">Saglabāt vai drukāt</button></div></div></section>
+<script>
+(function(){
+var INTRO_SCI="<p>IPIP‑NEO‑120 mēra piecas plašas personības dimensijas, un katra no tām ietver sešas šaurākas šķautnes, kopā 30 apakšiezīmes. Mērinstrumenta struktūra balstīta Kostas un Makreja (Costa &amp; McCrae) izstrādātajā NEO PI‑R modelī, taču šajā aptaujā izmantoti brīvpieejas apgalvojumi no Starptautiskās personības pantu krātuves (IPIP) (Costa &amp; McCrae, 1992; Goldberg et al., 2006; Johnson, 2014).</p><p>Katru šķautni mēra četri apgalvojumi, bet katru pamatdimensiju 24 panti. Tāpēc kopējie dimensiju rezultāti ir precīzāki nekā atsevišķu šķautņu rādītāji, un nelielas atšķirības starp tiem interpretējamas piesardzīgi. Tomēr šīs šķautnes ir noderīgas: pat ja diviem cilvēkiem ir vienāds visas dimensijas rezultāts, aiz tā var slēpties atšķirīgi iezīmju profili. Turklāt šaurākas personības iezīmes bieži vien ļauj precīzāk prognozēt konkrētu cilvēka uzvedību (Mõttus et al., 2020).</p><p>Šīs iezīmes parāda personības dimensijas, nevis iedala cilvēkus noteiktos personības tipos. Lai gan dzīves laikā tās var nedaudz mainīties, kopumā tās ir samērā stabilas un mēreni saistītas ar nozīmīgiem dzīves iznākumiem, piemēram, veselību, attiecībām un darba gaitām (Roberts et al., 2007).</p>";
+var DOMS=[{"k": "N", "gen": "Neirotisma", "lv": "Neirotisms", "en": "Neuroticism", "desc": "Tieksme piedzīvot negatīvas emocijas un jutība pret stresu.", "lo": "mierīgs", "hi": "jutīgs pret stresu", "b": {"zems": "Parasti mierīgs un emocionāli noturīgs, retāk satraucas un vieglāk saglabā līdzsvaru.", "videjs": "Parasti līdzsvarots, bet dažās situācijās var izjust izteiktāku spriedzi vai satraukumu.", "augsts": "Jutīgāks pret stresu, biežāk izjūt raizes, aizkaitinājumu vai skumjas."}, "sci": "Neirotisms raksturo tieksmi piedzīvot negatīvas emocijas, piemēram, trauksmi, dusmas un skumjas, kā arī jutību pret stresu. Tā pretējais pols ir emocionālā stabilitāte. Šis rezultāts raksturo personības iezīmi un nav garīgās veselības vai traucējumu novērtējums (McCrae &amp; John, 1992; Lahey, 2009)."}, {"k": "E", "gen": "Ekstraversijas", "lv": "Ekstraversija", "en": "Extraversion", "desc": "Sabiedriskums, enerģija un tieksme meklēt mijiedarbību ar citiem.", "lo": "atturīgs", "hi": "sabiedrisks", "b": {"zems": "Atturīgāks, mazāk meklē sociālu stimulāciju un biežāk izvēlas klusāku vidi.", "videjs": "Atkarībā no situācijas novērtē gan kompāniju un aktivitāti, gan mieru un laiku sev.", "augsts": "Sabiedrisks un aktīvs, viegli iesaistās sarunās un ērti jūtas cilvēku vidū."}, "sci": "Ekstraversija raksturo sabiedriskumu, uzstājību, aktivitāti un pozitīvas emocijas. Zems ekstraversijas rādītājs pats par sevi nenozīmē kautrību vai nedraudzīgumu, jo kautrīgums šajā modelī pieder neirotismam (Costa &amp; McCrae, 1992; McCrae &amp; John, 1992)."}, {"k": "O", "gen": "Atvērtības pieredzei", "lv": "Atvērtība pieredzei", "en": "Openness to Experience", "desc": "Iztēle, estētika, jūtas, jaunas pieredzes, idejas un vērtības.", "lo": "praktisks", "hi": "atvērts jaunajam", "b": {"zems": "Vairāk novērtē pazīstamo, praktisko un konkrēto.", "videjs": "Novērtē gan ierasto un praktisko, gan jaunas idejas un pieredzi.", "augsts": "Zinātkārs un iztēles bagāts, meklē jaunas idejas, pieredzi un estētiskus pārdzīvojumus."}, "sci": "NEO tradīcijā Atvērtība pieredzei ir plašāka nekā Goldberga marķieru Intelekts/iztēle, ko mēra IPIP‑100. Tā ietver ne tikai idejas un iztēli, bet arī mākslu, jūtas, piedzīvojumus un vērtības. Tāpēc šis rezultāts var atšķirties no tava IPIP‑100 piektā faktora rezultāta (Costa &amp; McCrae, 1992; McCrae &amp; John, 1992)."}, {"k": "A", "gen": "Labvēlības", "lv": "Labvēlība", "en": "Agreeableness", "desc": "Uzticēšanās, godīgums, rūpes par citiem un gatavība sadarboties.", "lo": "tiešs", "hi": "līdzjūtīgs", "b": {"zems": "Tiešāks un kritiskāks, vairāk aizstāv savas intereses.", "videjs": "Līdzsvaro savas intereses ar rūpēm par citiem un sadarbību.", "augsts": "Līdzjūtīgs un izpalīdzīgs, uzticas citiem un cenšas uzturēt labas attiecības."}, "sci": "Labvēlība raksturo starppersonu orientāciju uz uzticēšanos, sadarbību un rūpēm par citiem. Tās šķautnes Morāle un Pieticība saturiski daļēji pārklājas ar HEXACO modeļa faktoru Godīgums/pazemība (Ashton &amp; Lee, 2007). Neviens pols nav viennozīmīgi labs vai slikts (Graziano &amp; Eisenberg, 1997)."}, {"k": "C", "gen": "Apzinīguma", "lv": "Apzinīgums", "en": "Conscientiousness", "desc": "Organizētība, pienākuma apziņa, centība un pašdisciplīna.", "lo": "spontāns", "hi": "organizēts", "b": {"zems": "Spontānāks un elastīgāks, retāk plāno un stingri ievēro kārtību.", "videjs": "Spēj plānot un uzturēt kārtību, bet vajadzības gadījumā rīkojas elastīgi.", "augsts": "Organizēts un disciplinēts, plāno, tur solījumus un pabeidz iesākto."}, "sci": "Apzinīgums raksturo organizētību, pienākuma apziņu, centību un pašdisciplīnu. Tas ir saistīts ar vairākiem akadēmiskiem, profesionāliem un veselības iznākumiem (Roberts et al., 2007)."}];
+var FAC={"N1": ["Trauksmīgums", "Raizes, bažas un gaidas, ka notiks kas slikts."], "N2": ["Dusmīgums", "Cik viegli rodas aizkaitinājums un dusmas."], "N3": ["Nomāktība", "Tieksme justies skumjam, nomāktam un bez enerģijas."], "N4": ["Kautrīgums", "Neērtības sajūta un bažas par to, kā tevi redz citi."], "N5": ["Nesavaldība", "Grūtības atturēties no kārdinājumiem un pārmērībām."], "N6": ["Ievainojamība", "Cik viegli stress un spiediens izsit no līdzsvara."], "E1": ["Draudzīgums", "Sirsnība un vieglums, veidojot kontaktus ar cilvēkiem."], "E2": ["Sabiedriskums", "Vēlme būt kompānijā un pūļa vidū."], "E3": ["Uzstājība", "Gatavība uzņemties vadību un paust savu viedokli."], "E4": ["Aktivitāte", "Dzīves temps, enerģija un aizņemtība."], "E5": ["Saviļņojuma meklēšana", "Tieksme pēc asām izjūtām, riska un piedzīvojumiem."], "E6": ["Jautrība", "Prieks, entuziasms un pozitīvas emocijas."], "O1": ["Iztēle", "Fantāzijas, sapņošana un iekšējā pasaule."], "O2": ["Mākslinieciskās intereses", "Interese par mākslu, dzeju un skaistumu."], "O3": ["Jūtīgums", "Uzmanība pret savām un citu emocijām."], "O4": ["Piedzīvojumu kāre", "Vēlme izmēģināt jauno, nevis turēties pie ierastā."], "O5": ["Intelekts", "Interese par idejām, teorijām un abstraktām diskusijām."], "O6": ["Liberālisms", "Gatavība apšaubīt tradīcijas un autoritātes."], "A1": ["Uzticēšanās", "Pieņēmums, ka citiem ir labi nodomi."], "A2": ["Morāle", "Godīgums un atteikšanās izmantot citus."], "A3": ["Altruisms", "Rūpes par citiem un vēlme palīdzēt."], "A4": ["Sadarbīgums", "Izvairīšanās no konfliktiem un piekāpšanās."], "A5": ["Pieticība", "Pazemība pretstatā augstām domām par sevi."], "A6": ["Līdzjūtība", "Līdzpārdzīvojums tiem, kam klājas grūti."], "C1": ["Pašefektivitāte", "Pārliecība, ka spēj paveikt uzdevumus."], "C2": ["Kārtīgums", "Kārtība, sistēma un organizētība apkārtnē."], "C3": ["Pienākuma apziņa", "Solījumu turēšana un noteikumu ievērošana."], "C4": ["Tiekšanās pēc sasniegumiem", "Centība un augsti mērķi darbā."], "C5": ["Pašdisciplīna", "Spēja sākt un pabeigt darbu bez atlikšanas."], "C6": ["Piesardzība", "Apdomība pirms rīcības un lēmumiem."]};
+var ITEMS=[{"n": 1, "t": "Raizējos par dažādām lietām.", "f": "N1", "k": 1}, {"n": 2, "t": "Viegli sadraudzējos ar citiem.", "f": "E1", "k": 1}, {"n": 3, "t": "Man ir spilgta iztēle.", "f": "O1", "k": 1}, {"n": 4, "t": "Uzticos citiem.", "f": "A1", "k": 1}, {"n": 5, "t": "Veiksmīgi paveicu uzdevumus.", "f": "C1", "k": 1}, {"n": 6, "t": "Viegli sadusmojos.", "f": "N2", "k": 1}, {"n": 7, "t": "Man ļoti patīk lielas ballītes.", "f": "E2", "k": 1}, {"n": 8, "t": "Uzskatu, ka māksla ir svarīga.", "f": "O2", "k": 1}, {"n": 9, "t": "Izmantoju citus savu mērķu sasniegšanai.", "f": "A2", "k": -1}, {"n": 10, "t": "Man patīk ieviest kārtību.", "f": "C2", "k": 1}, {"n": 11, "t": "Bieži jūtos nomākts/nomākta.", "f": "N3", "k": 1}, {"n": 12, "t": "Uzņemos vadību.", "f": "E3", "k": 1}, {"n": 13, "t": "Savas emocijas izjūtu ļoti spēcīgi.", "f": "O3", "k": 1}, {"n": 14, "t": "Man patīk palīdzēt citiem.", "f": "A3", "k": 1}, {"n": 15, "t": "Turu savus solījumus.", "f": "C3", "k": 1}, {"n": 16, "t": "Man ir grūti uzrunāt citus.", "f": "N4", "k": 1}, {"n": 17, "t": "Vienmēr esmu aizņemts/aizņemta.", "f": "E4", "k": 1}, {"n": 18, "t": "Dodu priekšroku daudzveidībai, nevis rutīnai.", "f": "O4", "k": 1}, {"n": 19, "t": "Man patīk kārtīgi pastrīdēties.", "f": "A4", "k": -1}, {"n": 20, "t": "Strādāju cītīgi.", "f": "C4", "k": 1}, {"n": 21, "t": "Mēdzu ļauties pārmērībām.", "f": "N5", "k": 1}, {"n": 22, "t": "Man ļoti patīk asas izjūtas.", "f": "E5", "k": 1}, {"n": 23, "t": "Man patīk lasīt intelektuāli sarežģītus tekstus.", "f": "O5", "k": 1}, {"n": 24, "t": "Uzskatu, ka esmu labāks/labāka par citiem.", "f": "A5", "k": -1}, {"n": 25, "t": "Vienmēr esmu sagatavojies/sagatavojusies.", "f": "C5", "k": 1}, {"n": 26, "t": "Mani viegli pārņem panika.", "f": "N6", "k": 1}, {"n": 27, "t": "No manis staro prieks.", "f": "E6", "k": 1}, {"n": 28, "t": "Mēdzu balsot par liberāliem politiskajiem kandidātiem.", "f": "O6", "k": 1}, {"n": 29, "t": "Jūtu līdzi bezpajumtniekiem.", "f": "A6", "k": 1}, {"n": 30, "t": "Ķeros pie lietām, iepriekš nepadomājot.", "f": "C6", "k": -1}, {"n": 31, "t": "Baidos no vissliktākā.", "f": "N1", "k": 1}, {"n": 32, "t": "Jūtos ērti citu cilvēku sabiedrībā.", "f": "E1", "k": 1}, {"n": 33, "t": "Man patīk ļauties neierobežotām fantāzijām.", "f": "O1", "k": 1}, {"n": 34, "t": "Uzskatu, ka citiem ir labi nodomi.", "f": "A1", "k": 1}, {"n": 35, "t": "Man ļoti labi padodas tas, ko daru.", "f": "C1", "k": 1}, {"n": 36, "t": "Viegli kļūstu aizkaitināts/aizkaitināta.", "f": "N2", "k": 1}, {"n": 37, "t": "Ballītēs sarunājos ar daudziem dažādiem cilvēkiem.", "f": "E2", "k": 1}, {"n": 38, "t": "Saskatu skaistumu lietās, ko citi varētu nepamanīt.", "f": "O2", "k": 1}, {"n": 39, "t": "Krāpjos, lai tiktu uz priekšu.", "f": "A2", "k": -1}, {"n": 40, "t": "Bieži aizmirstu nolikt lietas atpakaļ to vietā.", "f": "C2", "k": -1}, {"n": 41, "t": "Es sev nepatīku.", "f": "N3", "k": 1}, {"n": 42, "t": "Cenšos vadīt citus.", "f": "E3", "k": 1}, {"n": 43, "t": "Izjūtu citu cilvēku emocijas.", "f": "O3", "k": 1}, {"n": 44, "t": "Man rūp citi cilvēki.", "f": "A3", "k": 1}, {"n": 45, "t": "Saku patiesību.", "f": "C3", "k": 1}, {"n": 46, "t": "Baidos pievērst sev uzmanību.", "f": "N4", "k": 1}, {"n": 47, "t": "Vienmēr esmu kustībā.", "f": "E4", "k": 1}, {"n": 48, "t": "Dodu priekšroku tam, ko jau pazīstu.", "f": "O4", "k": -1}, {"n": 49, "t": "Kliedzu uz cilvēkiem.", "f": "A4", "k": -1}, {"n": 50, "t": "Izdaru vairāk, nekā no manis sagaida.", "f": "C4", "k": 1}, {"n": 51, "t": "Reti ļaujos pārmērībām.", "f": "N5", "k": -1}, {"n": 52, "t": "Meklēju piedzīvojumus.", "f": "E5", "k": 1}, {"n": 53, "t": "Izvairos no filozofiskām diskusijām.", "f": "O5", "k": -1}, {"n": 54, "t": "Esmu ļoti augstās domās par sevi.", "f": "A5", "k": -1}, {"n": 55, "t": "Īstenoju savus plānus.", "f": "C5", "k": 1}, {"n": 56, "t": "Netieku galā ar notiekošo.", "f": "N6", "k": 1}, {"n": 57, "t": "Daudz priecājos un izklaidējos.", "f": "E6", "k": 1}, {"n": 58, "t": "Uzskatu, ka nekas nav absolūti pareizs vai nepareizs.", "f": "O6", "k": 1}, {"n": 59, "t": "Jūtu līdzi tiem, kam klājas sliktāk nekā man.", "f": "A6", "k": 1}, {"n": 60, "t": "Pieņemu pārsteidzīgus lēmumus.", "f": "C6", "k": -1}, {"n": 61, "t": "Baidos no daudzām lietām.", "f": "N1", "k": 1}, {"n": 62, "t": "Izvairos no saskarsmes ar citiem.", "f": "E1", "k": -1}, {"n": 63, "t": "Man patīk sapņot nomodā.", "f": "O1", "k": 1}, {"n": 64, "t": "Ticu tam, ko cilvēki saka.", "f": "A1", "k": 1}, {"n": 65, "t": "Ar uzdevumiem tieku galā bez grūtībām.", "f": "C1", "k": 1}, {"n": 66, "t": "Zaudēju savaldību.", "f": "N2", "k": 1}, {"n": 67, "t": "Dodu priekšroku būt vienatnē.", "f": "E2", "k": -1}, {"n": 68, "t": "Man nepatīk dzeja.", "f": "O2", "k": -1}, {"n": 69, "t": "Mēdzu iedzīvoties uz citu rēķina.", "f": "A2", "k": -1}, {"n": 70, "t": "Atstāju savā istabā nekārtību.", "f": "C2", "k": -1}, {"n": 71, "t": "Bieži jūtos ļoti nomākts/nomākta.", "f": "N3", "k": 1}, {"n": 72, "t": "Kontrolēju situāciju.", "f": "E3", "k": 1}, {"n": 73, "t": "Reti pamanu savas emocionālās reakcijas.", "f": "O3", "k": -1}, {"n": 74, "t": "Esmu vienaldzīgs/vienaldzīga pret citu jūtām.", "f": "A3", "k": -1}, {"n": 75, "t": "Pārkāpju noteikumus.", "f": "C3", "k": -1}, {"n": 76, "t": "Jūtos ērti tikai draugu vidū.", "f": "N4", "k": 1}, {"n": 77, "t": "Brīvajā laikā daudz ko daru.", "f": "E4", "k": 1}, {"n": 78, "t": "Man nepatīk pārmaiņas.", "f": "O4", "k": -1}, {"n": 79, "t": "Apvainoju cilvēkus.", "f": "A4", "k": -1}, {"n": 80, "t": "Izdaru tikai pašu minimumu.", "f": "C4", "k": -1}, {"n": 81, "t": "Viegli pretojos kārdinājumiem.", "f": "N5", "k": -1}, {"n": 82, "t": "Man patīk rīkoties pārgalvīgi.", "f": "E5", "k": 1}, {"n": 83, "t": "Man ir grūti saprast abstraktas idejas.", "f": "O5", "k": -1}, {"n": 84, "t": "Augstu vērtēju sevi.", "f": "A5", "k": -1}, {"n": 85, "t": "Velti izšķiežu savu laiku.", "f": "C5", "k": -1}, {"n": 86, "t": "Jūtu, ka nespēju tikt galā ar lietām.", "f": "N6", "k": 1}, {"n": 87, "t": "Mīlu dzīvi.", "f": "E6", "k": 1}, {"n": 88, "t": "Mēdzu balsot par konservatīviem politiskajiem kandidātiem.", "f": "O6", "k": -1}, {"n": 89, "t": "Mani neinteresē citu cilvēku problēmas.", "f": "A6", "k": -1}, {"n": 90, "t": "Pārsteidzīgi ķeros pie lietām.", "f": "C6", "k": -1}, {"n": 91, "t": "Viegli nonāku stresā.", "f": "N1", "k": 1}, {"n": 92, "t": "Turu citus no sevis pa gabalu.", "f": "E1", "k": -1}, {"n": 93, "t": "Man patīk iegrimt domās.", "f": "O1", "k": 1}, {"n": 94, "t": "Neuzticos cilvēkiem.", "f": "A1", "k": -1}, {"n": 95, "t": "Zinu, kā panākt, lai lietas tiktu izdarītas.", "f": "C1", "k": 1}, {"n": 96, "t": "Mani nav viegli aizkaitināt.", "f": "N2", "k": -1}, {"n": 97, "t": "Izvairos no cilvēku pūļiem.", "f": "E2", "k": -1}, {"n": 98, "t": "Man nepatīk apmeklēt mākslas muzejus.", "f": "O2", "k": -1}, {"n": 99, "t": "Traucēju citiem īstenot viņu plānus.", "f": "A2", "k": -1}, {"n": 100, "t": "Atstāju savas mantas mētājamies.", "f": "C2", "k": -1}, {"n": 101, "t": "Jūtos labi pats/pati ar sevi.", "f": "N3", "k": -1}, {"n": 102, "t": "Gaidu, lai citi uzņemas vadību.", "f": "E3", "k": -1}, {"n": 103, "t": "Nesaprotu cilvēkus, kuri kļūst emocionāli.", "f": "O3", "k": -1}, {"n": 104, "t": "Neveltu laiku citiem.", "f": "A3", "k": -1}, {"n": 105, "t": "Neturu savus solījumus.", "f": "C3", "k": -1}, {"n": 106, "t": "Mani nesatrauc sarežģītas sociālās situācijas.", "f": "N4", "k": -1}, {"n": 107, "t": "Man patīk dzīvot bez steigas.", "f": "E4", "k": -1}, {"n": 108, "t": "Dodu priekšroku ierastajai kārtībai.", "f": "O4", "k": -1}, {"n": 109, "t": "Atriebjos citiem.", "f": "A4", "k": -1}, {"n": 110, "t": "Savam darbam veltu maz laika un pūļu.", "f": "C4", "k": -1}, {"n": 111, "t": "Spēju savaldīt savas iegribas.", "f": "N5", "k": -1}, {"n": 112, "t": "Mēdzu uzvesties trakulīgi un neprātīgi.", "f": "E5", "k": 1}, {"n": 113, "t": "Mani neinteresē teorētiskas diskusijas.", "f": "O5", "k": -1}, {"n": 114, "t": "Lielos ar savām labajām īpašībām.", "f": "A5", "k": -1}, {"n": 115, "t": "Man ir grūti sākt pildīt uzdevumus.", "f": "C5", "k": -1}, {"n": 116, "t": "Saglabāju mieru saspringtās situācijās.", "f": "N6", "k": -1}, {"n": 117, "t": "Redzu dzīves gaišo pusi.", "f": "E6", "k": 1}, {"n": 118, "t": "Uzskatu, ka pret noziedzību jāvēršas stingri.", "f": "O6", "k": -1}, {"n": 119, "t": "Cenšos nedomāt par cilvēkiem, kuriem nepieciešama palīdzība.", "f": "A6", "k": -1}, {"n": 120, "t": "Rīkojos neapdomīgi.", "f": "C6", "k": -1}];
+var REFS=["Ashton, M. C., &amp; Lee, K. (2007). Empirical, theoretical, and practical advantages of the HEXACO model of personality structure. Personality and Social Psychology Review, 11(2), 150–166. https://doi.org/10.1177/1088868306294907", "Costa, P. T., Jr., &amp; McCrae, R. R. (1992). Revised NEO Personality Inventory (NEO PI‑R) and NEO Five‑Factor Inventory (NEO‑FFI) professional manual. Psychological Assessment Resources.", "Goldberg, L. R., Johnson, J. A., Eber, H. W., Hogan, R., Ashton, M. C., Cloninger, C. R., &amp; Gough, H. G. (2006). The international personality item pool and the future of public‑domain personality measures. Journal of Research in Personality, 40(1), 84–96. https://doi.org/10.1016/j.jrp.2005.08.007", "Goodman, D. P., &amp; Hambleton, R. K. (2004). Student test score reports and interpretive guides: Review of current practices and suggestions for future research. Applied Measurement in Education, 17(2), 145–220. https://doi.org/10.1207/s15324818ame1702_3", "Graziano, W. G., &amp; Eisenberg, N. (1997). Agreeableness: A dimension of personality. In R. Hogan, J. A. Johnson, &amp; S. R. Briggs (Eds.), Handbook of personality psychology (pp. 795–824). Academic Press. https://doi.org/10.1016/B978-012134645-4/50031-7", "Johnson, J. A. (2014). Measuring thirty facets of the Five Factor Model with a 120‑item public domain inventory: Development of the IPIP‑NEO‑120. Journal of Research in Personality, 51, 78–89. https://doi.org/10.1016/j.jrp.2014.05.003", "Lahey, B. B. (2009). Public health significance of neuroticism. American Psychologist, 64(4), 241–256. https://doi.org/10.1037/a0015309", "McCrae, R. R., &amp; John, O. P. (1992). An introduction to the five‑factor model and its applications. Journal of Personality, 60(2), 175–215. https://doi.org/10.1111/j.1467-6494.1992.tb00970.x", "Mõttus, R., Wood, D., Condon, D. M., Back, M. D., Baumert, A., Costantini, G., Epskamp, S., Greiff, S., Johnson, W., Lukaszewski, A., Murray, A., Revelle, W., Wright, A. G. C., Yarkoni, T., Ziegler, M., &amp; Zimmermann, J. (2020). Descriptive, predictive and explanatory personality research: Different goals, different approaches, but a shared need to move beyond the Big Few traits. European Journal of Personality, 34(6), 1175–1201. https://doi.org/10.1002/per.2311", "Roberts, B. W., Kuncel, N. R., Shiner, R., Caspi, A., &amp; Goldberg, L. R. (2007). The power of personality: The comparative validity of personality traits, socioeconomic status, and cognitive ability for predicting important life outcomes. Perspectives on Psychological Science, 2(4), 313–345. https://doi.org/10.1111/j.1745-6916.2007.00047.x", "Zenisky, A. L., &amp; Hambleton, R. K. (2015). Good practices for score reporting. In S. Lane, M. R. Raymond, &amp; T. M. Haladyna (Eds.), Handbook of test development (2nd ed., pp. 585–602). Routledge."];
+var LIBNOTE="Liberālisma šķautnes panti ir veidoti ASV politiskajā kontekstā, kur vārdiem “liberāls” un “konservatīvs” ir cita nozīme nekā Latvijā. Tāpēc šīs šķautnes rezultāts jālasa piesardzīgi.";
+var BAND={zems:'Zems',videjs:'Vidējs',augsts:'Augsts'};
+var answers=new Array(ITEMS.length).fill(0);
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");}
+function band(m){return m<2.5?"zems":(m>=3.5?"augsts":"videjs");}
+var LV={};DOMS.forEach(function(F){LV[F.k]=F.lv;});
+document.getElementById('intro-sci').innerHTML=INTRO_SCI;
+document.getElementById('res-sci').innerHTML=INTRO_SCI;
+document.getElementById('reflist').innerHTML=REFS.map(function(r){return '<li>'+r+'</li>';}).join('');
+
+var itemsEl=document.getElementById('items');var frag=document.createDocumentFragment();
+ITEMS.forEach(function(it,idx){
+  var d=document.createElement('div');d.className='item';d.id='it-'+idx;
+  var q=document.createElement('div');q.className='q';
+  q.innerHTML='<span class="n">'+(idx+1<10?'0':'')+(idx+1)+'</span><span class="stmt"></span>';
+  q.querySelector('.stmt').textContent=it.t;d.appendChild(q);
+  var g=document.createElement('div');g.className='gauge';
+  var rail=document.createElement('div');rail.className='rail';g.appendChild(rail);
+  var stops=document.createElement('div');stops.className='stops';stops.setAttribute('role','radiogroup');stops.setAttribute('aria-label',it.t);
+  for(var v=1;v<=5;v++){var lab=document.createElement('label');lab.className='stop';
+    var inp=document.createElement('input');inp.type='radio';inp.name='q'+idx;inp.value=v;inp.setAttribute('aria-label',v+'');
+    var num=document.createElement('span');num.className='num';num.textContent=v;
+    var dot=document.createElement('span');dot.className='dot';
+    lab.appendChild(inp);lab.appendChild(num);lab.appendChild(dot);stops.appendChild(lab);}
+  g.appendChild(stops);
+  var ends=document.createElement('div');ends.className='ends';
+  ends.innerHTML='<span>Ļoti neprecīzi</span><span>Ļoti precīzi</span>';g.appendChild(ends);
+  d.appendChild(g);frag.appendChild(d);});
+itemsEl.appendChild(frag);
+
+var mi=document.getElementById('mi'),ct=document.getElementById('ct');
+itemsEl.addEventListener('change',function(e){if(e.target&&e.target.type==='radio'){var idx=parseInt(e.target.name.slice(1),10);answers[idx]=parseInt(e.target.value,10);var el=document.getElementById('it-'+idx);if(el)el.classList.remove('miss');document.getElementById('warnmsg').textContent='';prog();}});
+function ans(){return answers.filter(function(a){return a>0;}).length;}
+function prog(){var n=ans();ct.textContent=n+' / '+ITEMS.length+' atbildēts';mi.style.width=(100*n/ITEMS.length)+'%';}
+var intro=document.getElementById('intro'),survey=document.getElementById('survey'),results=document.getElementById('results'),bar=document.getElementById('bar'),top=document.querySelector('header.top');
+document.getElementById('start').addEventListener('click',function(){intro.style.display='none';top.style.display='none';bar.style.display='block';survey.style.display='block';window.scrollTo(0,0);});
+document.getElementById('submit').addEventListener('click',function(){var first=-1;for(var i=0;i<answers.length;i++){if(answers[i]===0){document.getElementById('it-'+i).classList.add('miss');if(first<0)first=i;}}if(first>=0){document.getElementById('warnmsg').textContent='Lūdzu, atbildi uz visiem apgalvojumiem. Trūkst atbilžu: '+(ITEMS.length-ans())+'.';document.getElementById('it-'+first).scrollIntoView({behavior:'smooth',block:'center'});return;}show();});
+document.getElementById('restart').addEventListener('click',function(){answers=new Array(ITEMS.length).fill(0);document.querySelectorAll('#items input[type=radio]').forEach(function(r){r.checked=false;});prog();results.style.display='none';top.style.display='block';intro.style.display='block';bar.style.display='none';window.scrollTo(0,0);});
+document.getElementById('print').addEventListener('click',function(){window.print();});
+var tabs=document.querySelectorAll('.views button');
+tabs.forEach(function(b){b.addEventListener('click',function(){tabs.forEach(function(x){x.setAttribute('aria-selected',x===b?'true':'false');});document.querySelectorAll('.vpanel').forEach(function(p){p.hidden=(p.id!=='view-'+b.dataset.view);});});});
+
+function score(){var d={},f={};
+  DOMS.forEach(function(F){d[F.k]={s:0,n:0};});
+  Object.keys(FAC).forEach(function(k){f[k]={s:0,n:0,raw:[]};});
+  ITEMS.forEach(function(it,idx){var r=answers[idx],v=(it.k===1?r:6-r);f[it.f].s+=v;f[it.f].n++;f[it.f].raw.push({t:it.t,raw:r});d[it.f[0]].s+=v;d[it.f[0]].n++;});
+  function fin(x){x.mean=x.s/x.n;x.pct=(x.mean-1)/4*100;x.band=band(x.mean);}
+  Object.keys(d).forEach(function(k){fin(d[k]);});Object.keys(f).forEach(function(k){fin(f[k]);});
+  return {d:d,f:f};}
+
+function radar(sc){var cx=300,cy=175,R=118,ks=["N","E","O","A","C"];
+  function ang(i){return(-90+i*72)*Math.PI/180;}
+  function pt(p,i){var a=ang(i),r=R*p/100;return[cx+r*Math.cos(a),cy+r*Math.sin(a)];}
+  var s='<svg viewBox="0 0 600 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Dimensiju radars">';
+  [20,40,60,80,100].forEach(function(L){s+='<polygon points="'+ks.map(function(k,i){var p=pt(L,i);return p[0].toFixed(0)+","+p[1].toFixed(0);}).join(" ")+'" fill="none" stroke="var(--rule)"/>';});
+  ks.forEach(function(k,i){var p=pt(100,i);s+='<line x1="'+cx+'" y1="'+cy+'" x2="'+p[0].toFixed(0)+'" y2="'+p[1].toFixed(0)+'" stroke="var(--rule)"/>';});
+  s+='<polygon points="'+ks.map(function(k,i){var p=pt(sc.d[k].pct,i);return p[0].toFixed(0)+","+p[1].toFixed(0);}).join(" ")+'" fill="var(--accent)" fill-opacity="0.12" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/>';
+  ks.forEach(function(k,i){var p=pt(sc.d[k].pct,i);s+='<circle cx="'+p[0].toFixed(0)+'" cy="'+p[1].toFixed(0)+'" r="4.5" fill="var(--accent)"/>';});
+  ks.forEach(function(k,i){var a=ang(i),lx=cx+(R+20)*Math.cos(a),ly=cy+(R+20)*Math.sin(a),anc=Math.cos(a)>0.3?"start":(Math.cos(a)<-0.3?"end":"middle"),dy=Math.sin(a)>0.5?12:(Math.sin(a)<-0.5?-4:4);
+    s+='<text class="lbl" x="'+lx.toFixed(0)+'" y="'+(ly+dy).toFixed(0)+'" text-anchor="'+anc+'" font-size="12.5" fill="var(--ink)">'+LV[k]+'</text>';});
+  s+='</svg>';
+  var list='<ul class="rad-list">'+DOMS.map(function(F){var x=sc.d[F.k];
+    return '<li><span>'+F.lv+' <span class="num">'+x.mean.toFixed(1)+'</span></span><span class="w">'+BAND[x.band]+'</span></li>';}).join("")+'</ul>';
+  var note='<p class="cnote"><em>Neirotismā augstāks rādītājs nozīmē lielāku jutību pret stresu, nevis “labāku” rezultātu. Atvērtība pieredzei ir plašāka nekā IPIP‑100 Intelekts/iztēle.</em></p>';
+  return '<div class="svgwrap">'+s+'</div>'+note+list;}
+
+function wrapName(t,max){var w=t.split(" "),L=[],c="";w.forEach(function(x){if(c&&(c+" "+x).length>max){L.push(c);c=x;}else{c=c?c+" "+x:x;}});if(c)L.push(c);return L;}
+function tspans(lines,x,y,dy,extra){return lines.map(function(l,i){return '<tspan x="'+x+'" y="'+(y+i*dy)+'"'+(extra||'')+'>'+esc(l)+'</tspan>';}).join("");}
+var UP="var(--accent)",DN="var(--series-b)";
+function mk(id,col){return '<marker id="'+id+'" viewBox="0 0 10 10" refX="10" refY="5" markerUnits="userSpaceOnUse" markerWidth="11" markerHeight="11" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="'+col+'"/></marker>';}
+function facWide(sc,F){var W=660,ry=34,S=150,cy=ry+S+96,H=cy+ry+S+96,xs=[72,175,278,382,485,588],x0=20,x1=640,LH=17,CW=8.1;
+  function yv(v){var d=v-3;return d>=0?cy-ry-d/2*S:cy+ry+(-d)/2*S;}
+  var s='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+F.lv+' un tās šķautnes">';
+  s+='<defs>'+mk('au'+F.k,UP)+mk('ad'+F.k,DN)+'</defs>';
+  [5,4,2,1].forEach(function(v){var y=yv(v);s+='<line x1="'+(x0+4)+'" x2="'+x1+'" y1="'+y+'" y2="'+y+'" stroke="var(--rule)" stroke-dasharray="4 5"/><text x="4" y="'+(y+4)+'" font-size="12" fill="var(--ink-muted)" font-family="var(--mono)">'+v+'</text>';});
+  s+='<rect x="'+x0+'" y="'+(cy-ry)+'" width="'+(x1-x0)+'" height="'+(2*ry)+'" rx="'+ry+'" fill="var(--accent)"/>';
+  s+='<text x="4" y="'+(cy-ry+4)+'" font-size="12" fill="var(--ink-muted)" font-family="var(--mono)">3</text><text x="4" y="'+(cy+ry+4)+'" font-size="12" fill="var(--ink-muted)" font-family="var(--mono)">3</text>';
+  s+='<text x="330" y="'+(cy+1)+'" text-anchor="middle" font-size="18" font-weight="600" fill="#fff">'+F.lv+'</text>';
+  s+='<text x="330" y="'+(cy+20)+'" text-anchor="middle" font-size="12.5" fill="#fff" font-family="var(--mono)">'+sc.d[F.k].mean.toFixed(1)+' · '+BAND[sc.d[F.k].band].toLowerCase()+'</text>';
+  var placed=[],labels="";
+  for(var i=1;i<=6;i++){var k=F.k+i,m=sc.f[k].mean,d=m-3,x=xs[i-1],up=d>=0,edge=up?cy-ry:cy+ry,ty=d===0?cy-ry:yv(m);
+    if(d===0){s+='<circle cx="'+x+'" cy="'+edge+'" r="5" fill="var(--paper)" stroke="var(--ink-muted)" stroke-width="2"/>';}
+    else{s+='<line x1="'+x+'" y1="'+edge+'" x2="'+x+'" y2="'+ty.toFixed(1)+'" stroke="'+(up?UP:DN)+'" stroke-width="3" marker-end="url(#a'+(up?'u':'d')+F.k+')"/>';}
+    var lines=wrapName(FAC[k][0],12),n=lines.length+1,w=Math.max.apply(null,lines.map(function(l){return l.length;}))*CW;
+    var top=up?ty-10-n*LH:ty+8,bot=top+n*LH;
+    placed.forEach(function(q){if(q.up===up&&Math.abs(q.x-x)<(q.w+w)/2+6&&top<q.bot+2&&bot>q.top-2){if(up){bot=q.top-4;top=bot-n*LH;}else{top=q.bot+4;bot=top+n*LH;}}});
+    placed.push({x:x,w:w,top:top,bot:bot,up:up});
+    var col=d===0?"var(--ink)":(up?UP:DN),y0=top+LH-3;
+    labels+='<text text-anchor="middle" font-size="14.5" font-weight="600" fill="'+col+'" paint-order="stroke" stroke="var(--paper)" stroke-width="5" stroke-linejoin="round">'+tspans(lines,x,y0,LH)+'<tspan x="'+x+'" y="'+(y0+lines.length*LH)+'" font-family="var(--mono)" font-weight="500" font-size="14">'+m.toFixed(2)+'</tspan></text>';}
+  return s+labels+'</svg>';}
+function facNarrow(sc,F){var W=360,cx=180,S=150,top=96,step=58,H=top+30+6*step;
+  var s='<svg viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="'+F.lv+' un tās šķautnes">';
+  s+='<defs>'+mk('nu'+F.k,UP)+mk('nd'+F.k,DN)+'</defs>';
+  s+='<ellipse cx="'+cx+'" cy="38" rx="140" ry="34" fill="var(--accent)"/><text x="'+cx+'" y="36" text-anchor="middle" font-size="16" font-weight="600" fill="#fff">'+F.lv+'</text><text x="'+cx+'" y="54" text-anchor="middle" font-size="12" fill="#fff" font-family="var(--mono)">'+sc.d[F.k].mean.toFixed(1)+' · '+BAND[sc.d[F.k].band].toLowerCase()+'</text>';
+  [[1,cx-S],[2,cx-S/2],[3,cx],[4,cx+S/2],[5,cx+S]].forEach(function(g){s+='<line x1="'+g[1]+'" x2="'+g[1]+'" y1="'+(top+6)+'" y2="'+(H-8)+'" stroke="'+(g[0]===3?'var(--ink-muted)':'var(--rule)')+'" stroke-dasharray="'+(g[0]===3?'0':'4 5')+'"/><text x="'+g[1]+'" y="'+top+'" text-anchor="middle" font-size="11" fill="var(--ink-muted)" font-family="var(--mono)">'+g[0]+'</text>';});
+  s+='<line x1="'+cx+'" y1="72" x2="'+cx+'" y2="'+(top-12)+'" stroke="var(--ink-muted)"/>';
+  s+='<text x="8" y="'+(top-14)+'" font-size="11" fill="'+DN+'">← zemāk</text><text x="'+(W-8)+'" y="'+(top-14)+'" text-anchor="end" font-size="11" fill="'+UP+'">augstāk →</text>';
+  for(var i=1;i<=6;i++){var k=F.k+i,m=sc.f[k].mean,d=m-3,y=top+30+(i-1)*step,up=d>=0,ex=cx+d/2*S;
+    s+='<text x="'+cx+'" y="'+y+'" text-anchor="middle" font-size="15" font-weight="600" fill="var(--ink)" paint-order="stroke" stroke="var(--paper)" stroke-width="5">'+esc(FAC[k][0])+' <tspan font-family="var(--mono)" font-weight="500" font-size="14">'+m.toFixed(2)+'</tspan></text>';
+    if(d===0){s+='<circle cx="'+cx+'" cy="'+(y+16)+'" r="4" fill="var(--ink-muted)"/>';}
+    else{s+='<line x1="'+cx+'" y1="'+(y+16)+'" x2="'+ex.toFixed(1)+'" y2="'+(y+16)+'" stroke="'+(up?UP:DN)+'" stroke-width="4" marker-end="url(#n'+(up?'u':'d')+F.k+')"/>';}}
+  return s+'</svg>';}
+var LASTSC=null,NARROW=null;
+function facSummary(sc,F){var hi=[],lo=[],mid=[];for(var i=1;i<=6;i++){var k=F.k+i,m=sc.f[k].mean;(m>3?hi:(m<3?lo:mid)).push({n:FAC[k][0],m:m});}
+  hi.sort(function(a,b){return b.m-a.m;});lo.sort(function(a,b){return a.m-b.m;});
+  function L(a){return a.map(function(x){return x.n;}).join(", ");}
+  var out=[];if(hi.length)out.push('<b>Tev vairāk raksturīgs:</b> '+L(hi)+'.');if(lo.length)out.push('<b>Tev mazāk raksturīgs:</b> '+L(lo)+'.');if(mid.length)out.push('<b>Pie skalas vidus:</b> '+L(mid)+'.');
+  return '<p class="fsum">'+out.join(' ')+'</p>';}
+function facets(sc){var narrow=(document.getElementById('view-fac').clientWidth||window.innerWidth)<540;NARROW=narrow;
+  var h='<p class="vintro">Katra dimensija sastāv no sešām šķautnēm. '+(narrow?'Bulta pa labi':'Bulta uz augšu')+' nozīmē, ka šīs šķautnes apgalvojumus tu vidēji novērtēji kā sev <b>vairāk raksturīgus</b>, '+(narrow?'bulta pa kreisi':'bulta uz leju')+', ka kā <b>mazāk raksturīgus</b>. Jo garāka bulta, jo izteiktāk. Tas ir salīdzinājums ar skalas vidu (3), nevis ar citiem cilvēkiem: ja, piemēram, Dusmīgums ir zem vidus, tu sevi raksturo kā cilvēku, kurš nesadusmojas viegli, bet tas nenozīmē, ka mazāk nekā vairums citu. Ja bultas vienā dimensijā vērstas pretējos virzienos, dimensijas kopvērtējums slēpj atšķirīgu saturu.</p>';
+  DOMS.forEach(function(F){var dsc=F.desc.charAt(0).toLowerCase()+F.desc.slice(1);
+    h+='<div class="dom"><p class="dhead"><b>'+F.gen+' dimensija:</b> '+dsc+'</p><div class="svgwrap">'+(narrow?facNarrow(sc,F):facWide(sc,F))+'</div>'+facSummary(sc,F)+(F.k==="O"?'<p class="libnote">'+LIBNOTE+'</p>':'')+'</div>';});
+  return h;}
+window.addEventListener('resize',function(){if(!LASTSC)return;var n=(document.getElementById('view-fac').clientWidth||window.innerWidth)<540;if(n!==NARROW){document.getElementById("view-fac").innerHTML=facets(LASTSC);}});
+
+function narrative(sc){return DOMS.map(function(F){var x=sc.d[F.k];
+  var fs=[1,2,3,4,5,6].map(function(i){return {k:F.k+i,m:sc.f[F.k+i].mean};});
+  var hi=fs.reduce(function(a,b){return b.m>a.m?b:a;}),lo=fs.reduce(function(a,b){return b.m<a.m?b:a;});
+  var rng=hi.m-lo.m;
+  var spread=rng>=1.5?'Tavas šķautnes šajā dimensijā atšķiras par <span class="num">'+rng.toFixed(2)+'</span> punktiem. Domēna kopvērtējums te slēpj ievērojamas atšķirības, tāpēc skaties uz šķautnēm.':(rng>=0.75?'Šķautnes šajā dimensijā nedaudz atšķiras (<span class="num">'+rng.toFixed(2)+'</span> punkti), bet četru apgalvojumu skalās nelielas atšķirības var būt nejaušas.':'Šķautnes šajā dimensijā ir samērā vienādas, tāpēc dimensijas kopvērtējums tās labi apkopo.');
+  return '<div class="nar"><div class="nar-hd"><span class="nar-first">'+F.lv+': '+BAND[x.band].toLowerCase()+'</span></div>'+
+    '<p class="fdesc">'+F.desc+'</p>'+
+    '<p class="nar-p">Vidējais <span class="num">'+x.mean.toFixed(1)+'</span> no 5. '+F.b[x.band]+' Augstākā šķautne: <b>'+FAC[hi.k][0]+'</b> (<span class="num">'+hi.m.toFixed(2)+'</span>). Zemākā šķautne: <b>'+FAC[lo.k][0]+'</b> (<span class="num">'+lo.m.toFixed(2)+'</span>).</p>'+
+    '<p class="spread">'+spread+'</p>'+
+    '<details class="more"><summary>Vairāk par šo dimensiju</summary><div class="sci">'+F.sci+'</div></details></div>';}).join("");}
+
+function show(){var sc=score();LASTSC=sc;
+  document.getElementById("view-radar").innerHTML=radar(sc);
+  document.getElementById("view-fac").innerHTML=facets(sc);
+  document.getElementById("view-narr").innerHTML=narrative(sc);
+  tabs[0].click();
+  survey.style.display="none";bar.style.display="none";results.style.display="block";window.scrollTo(0,0);}
+prog();
+})();
+</script>
+</body>
+</html>
