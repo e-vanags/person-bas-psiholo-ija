@@ -443,12 +443,13 @@
 <p class="stepnote" id="stepnote"></p>
 <svg id="plot" class="plot" viewBox="0 0 640 640" role="img" aria-label="Sadalījumi un izkliedes diagramma"></svg>
 <p class="small">Katrs punkts attēlo viena cilvēka atbildi. Dati ir simulēti tā, lai saistības ciešums atbilstu pētījumos iegūtajai korelācijai. Tie nav īstu cilvēku dati. Uzvedības biežums un sadalījuma forma šajā rīkā ir ilustratīvi pieņēmumi.</p>
+<p class="small">* Regresijas taisne ir taisne, kas vislabāk atbilst datu punktiem. To novelk tā, lai punktu vertikālo attālumu līdz taisnei kvadrātu summa būtu vismazākā (mazāko kvadrātu metode). Taisne rāda, kāds vidēji ir uzvedības rādītājs cilvēkiem ar noteiktu apzinīguma līmeni, un tās slīpums atspoguļo saistības virzienu.</p>
 </div>
 <div class="ctl">
 <div class="row"><label for="beh">Uzvedība</label><select id="beh"></select></div>
 <div class="row" id="customRow" hidden><label for="rr">Korelācija (r): <span id="rrv" class="num"></span></label><input id="rr" type="range" min="-0.9" max="0.9" step="0.01" value="-0.28"></div>
 <div class="row"><label>Cilvēku skaits</label><div class="seg" id="nseg"><button data-n="100">100</button><button data-n="300" aria-pressed="true">300</button><button data-n="1000">1000</button></div></div>
-<div class="row"><label style="display:flex;gap:10px;align-items:center;font-weight:500;cursor:pointer"><input type="checkbox" id="regl" checked style="width:20px;height:20px"> Rādīt regresijas taisni</label><p class="small" id="regnote" style="margin:6px 0 0" hidden>Ja uzvedībai ir tikai divas iespējas, dara vai nedara, regresijas taisnes vietā parādīts, cik no 100 cilvēkiem katrā apzinīguma līmenī šo uzvedību veic.</p></div>
+<div class="row"><label style="display:flex;gap:10px;align-items:center;font-weight:500;cursor:pointer"><input type="checkbox" id="regl" checked style="width:20px;height:20px"> Rādīt regresijas taisni*</label><p class="small" id="regnote" style="margin:6px 0 0" hidden>Ja uzvedībai ir tikai divas iespējas, dara vai nedara, regresijas taisnes vietā parādīts, cik no 100 cilvēkiem katrā apzinīguma līmenī šo uzvedību veic.</p></div>
 <div class="row"><button class="btn" id="resample" style="padding:10px 20px">Jauna izlase</button></div>
 <div class="stat" id="statbox">
 <p>Korelācija: <span id="rpop" class="big"></span></p>
@@ -549,6 +550,7 @@ function points(t,final){var q=qcut(),rad=N>500?2.6:(N>200?3.4:4.4),op=N>500?0.5
     el('text',{x:L+W-6,y:BAND[0]-BH/2-6,'text-anchor':'end','font-size':12.5,'font-weight':600,fill:'#0E0F12','font-family':FONT},'nedara');}}
 function notes(s){var t=O.type;
   if(s===1)return '1. solis. Katram cilvēkam ir apzinīguma rādītājs. Visu cilvēku atbildes kopā veido datu sadalījumu: vairāk cilvēku ir tuvāk vidējam rezultātam, bet mazāk pie zemākajām un augstākajām vērtībām.';
+  if(s===2&&O.r===null)return '2. solis. Tiem pašiem cilvēkiem ir arī otrs rādītājs, piemēram, kādas uzvedības biežums, ar savu datu sadalījumu. Aplūkojot abus sadalījumus atsevišķi, vēl nevar redzēt, vai abi mainīgie ir savstarpēji saistīti.';
   if(s===2)return t==='bin'?'2. solis. Tiem pašiem cilvēkiem ir arī dati par uzvedību “'+O.name+'”. Šeit uzvedības iznākumam ir divas iespējas: dara vai nedara.':(t==='skew'?'2. solis. Tiem pašiem cilvēkiem ir arī dati par uzvedību “'+O.name+'”. Tās sadalījums ir asimetrisks: daudz cilvēku ir pie zemām vērtībām, bet tikai daži pie ļoti augstām.':'2. solis. Tiem pašiem cilvēkiem ir arī uzvedības “'+O.name+'” rādītājs ar savu datu sadalījumu. Aplūkojot abus sadalījumus atsevišķi, vēl nevar redzēt, vai abi mainīgie ir savstarpēji saistīti.');
   return '3. solis. Tagad abus rādītājus savienojam katram cilvēkam. Punkta novietojums horizontāli rāda apzinīgumu, bet vertikāli uzvedības rādītāju. Punktu kopējais izvietojums ļauj ieraudzīt abu mainīgo saistību.';}
 function stats(show){document.getElementById('statbox').style.visibility=show?'visible':'hidden';if(!show)return;
@@ -579,6 +581,7 @@ rr.addEventListener('input',function(){rCustom=+rr.value;rrv.textContent=fmt(rCu
 document.querySelectorAll('#nseg button').forEach(function(b){b.addEventListener('click',function(){document.querySelectorAll('#nseg button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});N=+b.dataset.n;run(step,true);});});
 document.getElementById('regl').addEventListener('change',function(){run(3,false);});
 document.getElementById('resample').addEventListener('click',function(){seed=Math.floor(Math.random()*4294967296);gen();run(step,true);});
+cur=flat.length-1;sel.value=String(cur);document.getElementById('customRow').hidden=false;
 gen();run(3,false);
 })();
 </script>
