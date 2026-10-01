@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Testi un aptaujas · Personības psiholoģija</title>
+<title>Kā veidojas aptaujas atbilžu sadalījums?</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -399,46 +399,149 @@
   .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
   .nar details.more{margin-top:10px}
 
-  .cat{padding:30px 0 56px}
-  .cat h2{font-size:1.25rem;margin:34px 0 12px}
-  .cat h2:first-of-type{margin-top:6px}
-  .card{display:block;border:1px solid var(--rule);border-radius:10px;padding:18px 20px;margin:0 0 14px;text-decoration:none;color:var(--ink);transition:border-color .15s,background .15s}
-  .card:hover,.card:focus-visible{border-color:var(--accent);background:var(--accent-soft)}
-  .card h3{margin:0 0 4px;font-size:1.12rem;color:var(--accent)}
-  .card p{margin:0 0 10px;font-size:.98rem}
-  .meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-family:var(--mono);font-size:.78rem;color:var(--ink-muted)}
-  .go{font-weight:600;font-size:.92rem;color:var(--accent)}
-  .foot{border-top:1px solid var(--rule);padding-top:18px;font-size:.9rem;color:var(--ink-muted)}
-  .foot ol{padding-left:1.2rem}
-  .foot li{margin-bottom:6px}
+  .backlink{margin:0 0 14px;font-size:.9rem}
+  .backlink a{text-decoration:none;font-weight:600;color:var(--accent)}
+  .tool{padding:26px 0 56px}
+  .wrapw{max-width:60rem;margin:0 auto;padding:0 22px}
+  .grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:28px;align-items:start}
+  @media (max-width:820px){.grid{grid-template-columns:1fr}}
+  .plot{width:100%;height:auto;display:block;border:1px solid var(--rule);border-radius:8px;background:#fff}
+  .ctl label{display:block;font-weight:600;margin:0 0 6px}
+  .ctl select,.ctl input[type=range]{width:100%;font:inherit;font-size:1rem}
+  .ctl select{padding:10px;border:1px solid var(--rule);border-radius:8px;background:#fff}
+  .ctl .row{margin:0 0 20px}
+  .seg{display:flex;gap:8px;flex-wrap:wrap}
+  .seg button{font:inherit;font-size:.95rem;padding:8px 14px;border:1px solid var(--rule);background:#fff;border-radius:8px;cursor:pointer}
+  .seg button[aria-pressed=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .stat{border-top:1px solid var(--rule);padding-top:14px;margin-top:6px}
+  .stat p{margin:0 0 10px}
+  .num{font-family:var(--mono)}
+  .big{font-family:var(--mono);font-size:1.6rem;color:var(--accent)}
+  .quart{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0 0}
+  .quart div{background:var(--paper-2);border-radius:8px;padding:10px 12px;font-size:.92rem;line-height:1.4}
+  .quart b{display:block;font-family:var(--mono);font-size:1.4rem;color:var(--ink)}
+  .small{font-size:.88rem;color:var(--ink-muted)}
+
+  .modes{display:flex;gap:8px;flex-wrap:wrap}
+  .modes button{font:inherit;font-size:.95rem;padding:9px 12px;border:1px solid var(--rule);background:#fff;border-radius:8px;cursor:pointer}
+  .modes button[aria-pressed=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
+  canvas.plot{aspect-ratio:1/0.82}
+  .btns{display:flex;gap:8px;flex-wrap:wrap}
+  .btn2{font:inherit;font-size:.95rem;padding:9px 14px;border:1px solid var(--accent);color:var(--accent);background:#fff;border-radius:8px;cursor:pointer;font-weight:600}
+  .last{background:var(--paper-2);border-radius:8px;padding:12px 14px;font-size:.95rem;line-height:1.5;min-height:4.6em}
+  .itemq{font-weight:600;font-size:1.05rem;margin:0 0 4px}
 </style>
+<script>function gc(p){try{if(window.goatcounter&&window.goatcounter.count){window.goatcounter.count({path:p,title:p,event:true});}}catch(e){}}</script>
 </head>
 <body>
-<header class="top"><div class="wrap"><p class="kick">Personības psiholoģijas seminārs</p><h1>Testi un aptaujas</h1><p class="tag">Pašnovērtējuma rīki mācībām un pašrefleksijai</p></div></header>
-<main class="cat"><div class="wrap">
-<div class="warnbox">Visi rīki paredzēti tikai izglītojošiem un pašrefleksijas nolūkiem. Tie nav diagnostiski instrumenti, un tiem nav Latvijas normu. Tavas atbildes paliek tikai Tavā ierīcē un netiek nekur nosūtītas vai saglabātas. Lapu apmeklējumi un pabeigto aptauju skaits tiek skaitīti anonīmi, bez sīkdatnēm.</div>
-
-<h2>Personības iezīmes</h2>
-<a class="card" href="lielais-piecinieks-ipip100.html"><h3>Lielā piecinieka aptauja (IPIP‑100)</h3><p>Piecas plašas personības dimensijas: ekstraversija, labvēlība, apzinīgums, emocionālā stabilitāte un intelekts/iztēle (Goldberg, 1992).</p><div class="meta"><span>100 apgalvojumu</span><span>12 līdz 15 min</span><span>5 dimensijas</span></div><p class="go" style="margin:10px 0 0">Atvērt aptauju →</p></a>
-<a class="card" href="lielais-piecinieks-ipip-neo120.html"><h3>Personības šķautnes (IPIP‑NEO‑120)</h3><p>Piecas dimensijas un katras dimensijas sešas šķautnes jeb apakšskalas, kopā 30. Parāda, kas slēpjas aiz katras dimensijas kopvērtējuma (Johnson, 2014).</p><div class="meta"><span>120 apgalvojumu</span><span>15 līdz 20 min</span><span>5 dimensijas, 30 šķautnes</span></div><p class="go" style="margin:10px 0 0">Atvērt aptauju →</p></a>
-
-<h2>Tumšās iezīmes</h2>
-<a class="card" href="levensona-psihopatijas-skala-lsrp.html"><h3>Levensona pašnovērtējuma psihopātijas skala (LSRP)</h3><p>Psihopātijas iezīmes divās dimensijās: primārā (emocionālās un starppersonu iezīmes) un sekundārā (impulsīvs dzīvesveids un uzvedība) (Levenson et al., 1995).</p><div class="meta"><span>26 apgalvojumi</span><span>apmēram 5 min</span><span>2 dimensijas</span></div><p class="go" style="margin:10px 0 0">Atvērt aptauju →</p></a>
-
-<h2>Demonstrācijas</h2>
-<a class="card" href="atbilzu-sadalijums.html"><h3>Kā veidojas aptaujas atbilžu sadalījums?</h3><p>Punkti krīt stabiņos, kad izdomāti cilvēki atbild uz vienu apgalvojumu, vienas šķautnes četriem vai vienas dimensijas 24 apgalvojumiem (Johnson, 2014).</p><div class="meta"><span>interaktīvs rīks</span><span>bez aptaujas</span></div><p class="go" style="margin:10px 0 0">Atvērt rīku →</p></a>
-<a class="card" href="korelacijas-apzinigums.html"><h3>Kā veidojas korelācija?</h3><p>Soli pa solim no diviem sadalījumiem līdz izkliedes diagrammai: apzinīgums un riskanta uzvedība ar simulētiem datiem un metaanalīzē atrastajām korelācijām (Bogg &amp; Roberts, 2004).</p><div class="meta"><span>interaktīvs rīks</span><span>bez aptaujas</span></div><p class="go" style="margin:10px 0 0">Atvērt rīku →</p></a>
-
-<div class="foot"><p>Aptauju panti ir publiski pieejami vai izmantoti mācību nolūkos ar atsauci uz autoriem. IPIP aptaujas balstās uz Starptautiskās personības pantu krātuves (IPIP) publiskā domēna apgalvojumiem (Goldberg et al., 2006).</p>
+<header class="top"><div class="wrap" style="max-width:60rem"><p class="backlink"><a href="index.html">← Visi rīki un aptaujas</a></p><p class="kick">Personības psiholoģijas seminārs</p><h1>Kā veidojas aptaujas atbilžu sadalījums?</h1><p class="tag">No atsevišķām atbildēm līdz aptaujas rezultātu sadalījumam</p></div></header>
+<main class="tool"><div class="wrapw">
+<div class="grid">
+<div>
+<div class="modes" role="group" aria-label="Kas tiek mērīts">
+<button data-m="1" aria-pressed="true">Viens apgalvojums</button><button data-m="4">Šķautne: 4 apgalvojumi</button><button data-m="24">Dimensija: 24 apgalvojumi</button>
+</div>
+<p class="stepnote small" id="modenote" style="margin:10px 0 12px"></p>
+<canvas id="cv" class="plot" role="img" aria-label="Atbilžu sadalījums"></canvas>
+<p class="small">Katrs punkts attēlo viena cilvēka atbildi uz aptaujas jautājumu. Punkts iekrīt stabiņā, kas atbilst viņa atbildei vai rezultātam. Pievienojot arvien vairāk cilvēku atbildes, pamazām izveidojas datu sadalījums. Dati ir simulēti, tie nav īstu cilvēku dati.</p>
+</div>
+<div class="ctl">
+<div class="row" id="itemRow"><label for="item">Apgalvojums</label><select id="item"></select></div>
+<div class="row"><label>Atbilžu skaits</label><div class="seg" id="nseg"><button data-n="100">100</button><button data-n="300" aria-pressed="true">300</button><button data-n="1000">1000</button></div></div>
+<div class="row"><label>Pievienot atbildes</label><div class="btns"><button class="btn2" id="add1">+1</button><button class="btn2" id="add10">+10</button><button class="btn" id="addAll" style="padding:9px 16px">Pievienot visus</button></div></div>
+<div class="row"><button class="btn2" id="reset">Sākt no jauna</button></div>
+<div class="row" id="curveRow" hidden><label style="display:flex;gap:10px;align-items:center;font-weight:500;cursor:pointer"><input type="checkbox" id="curve" style="width:20px;height:20px"> Rādīt normāla sadalījuma līkni</label></div>
+<div class="stat">
+<p>Atbildējuši: <span id="cnt" class="big"></span></p>
+<p style="margin:14px 0 6px"><b>Pēdējā atbilde</b></p>
+<div class="last" id="last">Vēl neviens nav atbildējis. Pievieno pirmo atbildi.</div>
+</div>
+</div>
+</div>
+<div class="note" style="max-width:60rem">
+<p><b>Ko šeit var redzēt?</b> Katrs cilvēks uz apgalvojumu atbild, izvēloties vienu no pieciem variantiem. Kad atbildējuši daudzi cilvēki, var saskaitīt, cik bieži izvēlēts katrs variants. Tas ir atbilžu biežuma sadalījums. Stabiņu diagrammā augstāks stabiņš nozīmē, ka šo atbildi izvēlējušies vairāk cilvēku.</p>
+<p>Viena apgalvojuma atbilžu sadalījums var būt izteikti asimetrisks. Piemēram, apgalvojumam “Man patīk palīdzēt citiem” vairākums var piekrist, bet apgalvojumam “Bieži jūtos nomākts/nomākta” vairākums var nepiekrist. Tāpēc viena atbilde sniedz ierobežotu informāciju par cilvēka personību.</p>
+<p>Personības skalas rezultātu veido vairākas atbildes. IPIP‑NEO‑120 katru šķautni mēra ar četriem apgalvojumiem, bet katru dimensiju ar 24 apgalvojumiem (Johnson, 2014). Aprēķinot vairāku atbilžu vidējo, iespējamo rezultātu kļūst vairāk un sadalījums parasti kļūst gludāks. Atsevišķu atbilžu nejaušās svārstības daļēji izlīdzinās. Tas palīdz saprast arī to, kāpēc no vairāk apgalvojumiem veidots rezultāts parasti ir uzticamāks.</p>
+<p>Tavas atbildes netiek nekur nosūtītas. Anonīmi, bez sīkdatnēm tiek skaitīts tikai lapas apmeklējums.</p>
 <details class="refs"><summary>Atsauces</summary><ol>
-<li>Bogg, T., &amp; Roberts, B. W. (2004). Conscientiousness and health-related behaviors: A meta-analysis of the leading behavioral contributors to mortality. Psychological Bulletin, 130(6), 887–919. https://doi.org/10.1037/0033-2909.130.6.887</li>
-<li>Goldberg, L. R. (1992). The development of markers for the Big‑Five factor structure. Psychological Assessment, 4(1), 26–42. https://doi.org/10.1037/1040-3590.4.1.26</li>
-<li>Goldberg, L. R., Johnson, J. A., Eber, H. W., Hogan, R., Ashton, M. C., Cloninger, C. R., &amp; Gough, H. G. (2006). The international personality item pool and the future of public‑domain personality measures. Journal of Research in Personality, 40(1), 84–96. https://doi.org/10.1016/j.jrp.2005.08.007</li>
-<li>Johnson, J. A. (2014). Measuring thirty facets of the Five Factor Model with a 120‑item public domain inventory: Development of the IPIP‑NEO‑120. Journal of Research in Personality, 51, 78–89. https://doi.org/10.1016/j.jrp.2014.05.003</li>
-<li>Levenson, M. R., Kiehl, K. A., &amp; Fitzpatrick, C. M. (1995). Assessing psychopathic attributes in a noninstitutionalized population. Journal of Personality and Social Psychology, 68(1), 151–158. https://doi.org/10.1037/0022-3514.68.1.151</li>
-</ol></details></div>
+<li>Johnson, J. A. (2014). Measuring thirty facets of the Five Factor Model with a 120-item public domain inventory: Development of the IPIP-NEO-120. Journal of Research in Personality, 51, 78–89. https://doi.org/10.1016/j.jrp.2014.05.003</li>
+</ol></details>
+<p class="backlink" style="margin-top:18px"><a href="index.html">← Visi rīki un aptaujas</a></p>
+</div>
 </div></main>
-<script>window.goatcounter={path:function(p){return p.replace(/index\.html$/,"").replace(/\/$/,"")||"/";}};</script>
+<script>
+(function(){
+var LAB=['Ļoti neprecīzi','Drīzāk neprecīzi','Ne precīzi, ne neprecīzi','Drīzāk precīzi','Ļoti precīzi'];
+var ITEMS=[["Man patīk palīdzēt citiem.","Labvēlība, šķautne Altruisms",-1.3],["Vienmēr esmu sagatavojies/sagatavojusies.","Apzinīgums, šķautne Pašdisciplīna",-0.2],["Bieži jūtos nomākts/nomākta.","Neirotisms, šķautne Nomāktība",1.0]];
+var sel=document.getElementById('item');ITEMS.forEach(function(it,i){var o=document.createElement('option');o.value=i;o.textContent=it[0];sel.appendChild(o);});
+var seed=7;function rnd(){seed=(seed+0x6D2B79F5)|0;var t=seed;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return ((t^(t>>>14))>>>0)/4294967296;}
+function gauss(){var u=1-rnd(),v=rnd();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+var BASE=[-2.0,-0.8,0.3,1.5];
+function answer(theta,a,shift){var k=1;for(var j=0;j<4;j++){var p=1/(1+Math.exp(-a*(theta-(BASE[j]+shift))));if(rnd()<p)k=j+2;else break;}return k;}
+// graded response: sequential approximation via cumulative probs
+function answerGRM(theta,a,shift){var u=rnd(),k=1;for(var j=0;j<4;j++){var p=1/(1+Math.exp(-a*(theta-(BASE[j]+shift))));if(u<p)k=j+2;}return k;}
+var mode=1,itemIx=0,N=300,people=[],multiItems=[],landed=[],falling=[],counts=[],bins=[],maxCount=1,added=0;
+function setupItems(){multiItems=[];for(var i=0;i<24;i++)multiItems.push({a:1.3+rnd()*0.9,s:-1.0+rnd()*1.6});}
+function binsFor(){if(mode===1)return [1,2,3,4,5];var g=mode===24?2:1,nb=Math.floor(4*mode/g)+1,b=[];for(var i=0;i<nb;i++)b.push(1+(i*g+(g-1)/2)/mode);return b;}
+function binOf(v){if(mode===1)return Math.round(v)-1;var g=mode===24?2:1,S=Math.round(v*mode);return Math.min(bins.length-1,Math.floor((S-mode)/g));}
+function simulate(){seed=Math.floor(Math.random()*4294967296);setupItems();people=[];
+  for(var i=0;i<N;i++){var th=gauss(),ans=[];
+    if(mode===1)ans=[answerGRM(th,1.8,ITEMS[itemIx][2])];
+    else for(var j=0;j<mode;j++)ans.push(answerGRM(th,multiItems[j].a,multiItems[j].s));
+    var m=ans.reduce(function(s,x){return s+x;},0)/ans.length;people.push({ans:ans,score:m,bin:0});}
+  bins=binsFor();counts=bins.map(function(){return 0;});var full=bins.map(function(){return 0;});
+  people.forEach(function(p){p.bin=binOf(p.score);full[p.bin]++;});maxCount=Math.max.apply(null,full);
+  landed=[];falling=[];added=0;counts=bins.map(function(){return 0;});}
+var cv=document.getElementById('cv'),ctx=cv.getContext('2d'),Wc,Hc,dpr;
+function size(){dpr=window.devicePixelRatio||1;var w=cv.clientWidth;Wc=w;Hc=Math.round(w*0.82);cv.width=w*dpr;cv.height=Hc*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);}
+function geom(){var L=52,R=16,T=mode===1?34:20,B=mode===1?70:50,pw=Wc-L-R,ph=Hc-T-B,cw=pw/bins.length;
+  var r=Math.min(cw*0.42,14),cols;for(;r>1;r-=0.1){cols=Math.max(1,Math.floor(cw*0.92/(2*r)));if(Math.ceil(maxCount/cols)*2*r<=ph*0.97)break;}cols=Math.max(1,Math.floor(cw*0.92/(2*r)));return {L:L,R:R,T:T,B:B,pw:pw,ph:ph,cw:cw,r:r,cols:cols};}
+function slotY(g,k){return g.T+g.ph-g.r-(Math.floor(k/g.cols)*2*g.r);}
+function slotX(g,i,k){var c=k%g.cols;return g.L+g.cw*(i+0.5)+(c-(g.cols-1)/2)*2*g.r;}
+function binX(g,i){return g.L+g.cw*(i+0.5);}
+function addPeople(n){var g=geom();for(var i=0;i<n&&added<N;i++){var p=people[added],k=counts[p.bin]++;added++;
+  falling.push({x:slotX(g,p.bin,k),y0:g.T-10,y1:slotY(g,k),t0:performance.now()+i*(n>20?Math.min(8,1500/n):120),bin:p.bin,k:k});showLast(p);}
+  document.getElementById('cnt').textContent=added+' no '+N;if(!raf)raf=requestAnimationFrame(loop);}
+function showLast(p){var el=document.getElementById('last');
+  if(mode===1)el.innerHTML='Atbilde: <b>'+p.ans[0]+'</b> (“'+LAB[p.ans[0]-1]+'”).';
+  else{var a=p.ans.length>8?p.ans.slice(0,8).join(', ')+', …':p.ans.join(', ');el.innerHTML='Atbildes: '+a+'<br>'+p.ans.length+' apgalvojumu vidējais: <b>'+p.score.toFixed(2).replace('.',',')+'</b>';}}
+var raf=null;
+function draw(now){var g=geom();ctx.clearRect(0,0,Wc,Hc);ctx.fillStyle='#fff';ctx.fillRect(0,0,Wc,Hc);
+  ctx.strokeStyle='#8A9099';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(g.L,g.T+g.ph+0.5);ctx.lineTo(g.L+g.pw,g.T+g.ph+0.5);ctx.stroke();
+  ctx.fillStyle='#0E0F12';ctx.font='13px Hanken Grotesk, sans-serif';ctx.textAlign='center';
+  if(mode===1){bins.forEach(function(b,i){var x=binX(g,i);ctx.font='bold 15px Hanken Grotesk, sans-serif';ctx.fillText(String(b),x,g.T+g.ph+20);ctx.font='12px Hanken Grotesk, sans-serif';ctx.fillStyle='#5B6068';wrap(LAB[i],x,g.T+g.ph+38,g.cw-6);ctx.fillStyle='#0E0F12';});}
+  else{[1,2,3,4,5].forEach(function(v){var x=g.L+g.cw*(bins.length*(v-1)/4*(bins.length-1)/bins.length+0.5);ctx.fillText(String(v),x,g.T+g.ph+20);});ctx.fillStyle='#5B6068';ctx.fillText(mode+' apgalvojumu vidējais (skala no 1 līdz 5)',g.L+g.pw/2,g.T+g.ph+40);}
+  ctx.save();ctx.translate(16,g.T+g.ph/2);ctx.rotate(-Math.PI/2);ctx.fillStyle='#0E0F12';ctx.font='14px Hanken Grotesk, sans-serif';ctx.fillText('Cilvēku skaits',0,0);ctx.restore();
+  // landed
+  ctx.fillStyle='rgba(24,59,107,0.85)';landed.forEach(function(d){dot(d.x,d.y1,g.r);});
+  var still=[];falling.forEach(function(d){var t=(now-d.t0)/520;if(t<0){still.push(d);return;}if(t>=1){landed.push(d);dot(d.x,d.y1,g.r);return;}var e=t*t;ctx.fillStyle='rgba(196,92,38,0.95)';dot(d.x,d.y0+(d.y1-d.y0)*e,g.r*1.1);ctx.fillStyle='rgba(24,59,107,0.85)';still.push(d);});
+  falling=still;
+  if(mode===1&&added>0){ctx.fillStyle='#0E0F12';ctx.font='bold 14px Spline Sans Mono, monospace';bins.forEach(function(b,i){if(!counts[i])return;var top=slotY(g,counts[i]-1)-g.r-8;ctx.fillText(String(counts[i]),binX(g,i),Math.max(g.T+12,top));});}
+  if(mode!==1&&document.getElementById('curve').checked&&added>0){var sc=people.slice(0,added).map(function(p){return p.score;}),m=sc.reduce(function(a,b){return a+b;},0)/sc.length,sd=Math.sqrt(sc.reduce(function(a,b){return a+(b-m)*(b-m);},0)/sc.length)||0.01,w=mode===4?0.25:2/24;
+    ctx.strokeStyle='#c45c26';ctx.lineWidth=2.5;ctx.beginPath();for(var px=0;px<=g.pw;px+=2){var v=bins[0]-w/2+(px/g.pw)*(bins.length*w),dens=Math.exp(-0.5*Math.pow((v-m)/sd,2))/(sd*Math.sqrt(2*Math.PI)),cnt=dens*w*added,y=g.T+g.ph-(cnt/g.cols)*2*g.r;if(px===0)ctx.moveTo(g.L+px,y);else ctx.lineTo(g.L+px,y);}ctx.stroke();}
+}
+function wrap(t,x,y,w){var words=t.split(' '),line='',yy=y;words.forEach(function(wd){var test=line?line+' '+wd:wd;if(ctx.measureText(test).width>w&&line){ctx.fillText(line,x,yy);line=wd;yy+=14;}else line=test;});ctx.fillText(line,x,yy);}
+function dot(x,y,r){ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();}
+function loop(now){draw(now);if(falling.length){raf=requestAnimationFrame(loop);}else{raf=null;draw(performance.now());}}
+var NOTE={1:'Katrs cilvēks atbild uz vienu apgalvojumu, izvēloties vienu no pieciem atbilžu variantiem. Tāpēc iespējamas tikai piecas atbilžu vērtības un diagrammā ir pieci stabiņi.',
+ 4:'Katrs cilvēks atbild uz četriem vienas šķautnes apgalvojumiem. Rezultāts ir šo četru atbilžu vidējais. Tāpēc iespējamo rezultātu jau ir vairāk: 1,00; 1,25; 1,50 un tā tālāk līdz 5,00.',
+ 24:'Katrs cilvēks atbild uz 24 vienas dimensijas apgalvojumiem. Aprēķinot atbilžu vidējo, iespējamo rezultātu ir daudz vairāk. Tāpēc sadalījums kļūst gludāks un var vairāk līdzināties zvanveida jeb normālam Gausa sadalījumam.'};
+function reset(){simulate();document.getElementById('cnt').textContent='0 no '+N;document.getElementById('last').textContent='Vēl neviens nav atbildējis. Pievieno pirmo atbildi.';
+  document.getElementById('itemRow').hidden=mode!==1;document.getElementById('curveRow').hidden=mode===1;
+  var it=ITEMS[itemIx];document.getElementById('modenote').innerHTML=(mode===1?'<span class="itemq">“'+it[0]+'”</span><br>'+it[1]+'. ':'')+NOTE[mode];
+  size();draw(performance.now());}
+document.querySelectorAll('.modes button').forEach(function(b){b.addEventListener('click',function(){document.querySelectorAll('.modes button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});mode=+b.dataset.m;reset();});});
+document.querySelectorAll('#nseg button').forEach(function(b){b.addEventListener('click',function(){document.querySelectorAll('#nseg button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});N=+b.dataset.n;reset();});});
+sel.addEventListener('change',function(){itemIx=+sel.value;reset();});
+document.getElementById('add1').addEventListener('click',function(){addPeople(1);});
+document.getElementById('add10').addEventListener('click',function(){addPeople(10);});
+document.getElementById('addAll').addEventListener('click',function(){addPeople(N);});
+document.getElementById('reset').addEventListener('click',reset);
+document.getElementById('curve').addEventListener('change',function(){draw(performance.now());});
+window.addEventListener('resize',function(){var g0=geom();size();var g=geom();landed.forEach(function(d){d.x=slotX(g,d.bin,d.k);d.y1=slotY(g,d.k);});falling.forEach(function(d){d.x=slotX(g,d.bin,d.k);d.y1=slotY(g,d.k);});draw(performance.now());});
+reset();
+})();
+</script>
 <script data-goatcounter="https://slowscience.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>

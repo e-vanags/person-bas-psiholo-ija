@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Testi un aptaujas · Personības psiholoģija</title>
+<title>Kā veidojas korelācija?</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -399,46 +399,189 @@
   .nar-p{margin:8px 0 0;line-height:1.6;max-width:40rem}
   .nar details.more{margin-top:10px}
 
-  .cat{padding:30px 0 56px}
-  .cat h2{font-size:1.25rem;margin:34px 0 12px}
-  .cat h2:first-of-type{margin-top:6px}
-  .card{display:block;border:1px solid var(--rule);border-radius:10px;padding:18px 20px;margin:0 0 14px;text-decoration:none;color:var(--ink);transition:border-color .15s,background .15s}
-  .card:hover,.card:focus-visible{border-color:var(--accent);background:var(--accent-soft)}
-  .card h3{margin:0 0 4px;font-size:1.12rem;color:var(--accent)}
-  .card p{margin:0 0 10px;font-size:.98rem}
-  .meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-family:var(--mono);font-size:.78rem;color:var(--ink-muted)}
-  .go{font-weight:600;font-size:.92rem;color:var(--accent)}
-  .foot{border-top:1px solid var(--rule);padding-top:18px;font-size:.9rem;color:var(--ink-muted)}
-  .foot ol{padding-left:1.2rem}
-  .foot li{margin-bottom:6px}
+  .backlink{margin:0 0 14px;font-size:.9rem}
+  .backlink a{text-decoration:none;font-weight:600;color:var(--accent)}
+  .tool{padding:26px 0 56px}
+  .wrapw{max-width:60rem;margin:0 auto;padding:0 22px}
+  .grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:28px;align-items:start}
+  @media (max-width:820px){.grid{grid-template-columns:1fr}}
+  .plot{width:100%;height:auto;display:block;border:1px solid var(--rule);border-radius:8px;background:#fff}
+  .ctl label{display:block;font-weight:600;margin:0 0 6px}
+  .ctl select,.ctl input[type=range]{width:100%;font:inherit;font-size:1rem}
+  .ctl select{padding:10px;border:1px solid var(--rule);border-radius:8px;background:#fff}
+  .ctl .row{margin:0 0 20px}
+  .seg{display:flex;gap:8px;flex-wrap:wrap}
+  .seg button{font:inherit;font-size:.95rem;padding:8px 14px;border:1px solid var(--rule);background:#fff;border-radius:8px;cursor:pointer}
+  .seg button[aria-pressed=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .stat{border-top:1px solid var(--rule);padding-top:14px;margin-top:6px}
+  .stat p{margin:0 0 10px}
+  .num{font-family:var(--mono)}
+  .big{font-family:var(--mono);font-size:1.6rem;color:var(--accent)}
+  .quart{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0 0}
+  .quart div{background:var(--paper-2);border-radius:8px;padding:10px 12px;font-size:.92rem;line-height:1.4}
+  .quart b{display:block;font-family:var(--mono);font-size:1.4rem;color:var(--ink)}
+  .small{font-size:.88rem;color:var(--ink-muted)}
+
+  .steps{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 6px}
+  .steps button{font:inherit;font-size:.95rem;padding:9px 12px;border:1px solid var(--rule);background:#fff;border-radius:8px;cursor:pointer;text-align:left}
+  .steps button[aria-pressed=true]{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .stepnote{min-height:3.2em;font-size:.95rem;margin:6px 0 14px}
+  .grp{display:flex;align-items:flex-start;gap:10px;margin:0 0 10px}
+  .dot{width:14px;height:14px;border-radius:50%;flex:0 0 14px;margin-top:5px}
+  .grp b{font-family:var(--mono);font-size:1.3rem}
 </style>
+<script>function gc(p){try{if(window.goatcounter&&window.goatcounter.count){window.goatcounter.count({path:p,title:p,event:true});}}catch(e){}}</script>
 </head>
 <body>
-<header class="top"><div class="wrap"><p class="kick">Personības psiholoģijas seminārs</p><h1>Testi un aptaujas</h1><p class="tag">Pašnovērtējuma rīki mācībām un pašrefleksijai</p></div></header>
-<main class="cat"><div class="wrap">
-<div class="warnbox">Visi rīki paredzēti tikai izglītojošiem un pašrefleksijas nolūkiem. Tie nav diagnostiski instrumenti, un tiem nav Latvijas normu. Tavas atbildes paliek tikai Tavā ierīcē un netiek nekur nosūtītas vai saglabātas. Lapu apmeklējumi un pabeigto aptauju skaits tiek skaitīti anonīmi, bez sīkdatnēm.</div>
-
-<h2>Personības iezīmes</h2>
-<a class="card" href="lielais-piecinieks-ipip100.html"><h3>Lielā piecinieka aptauja (IPIP‑100)</h3><p>Piecas plašas personības dimensijas: ekstraversija, labvēlība, apzinīgums, emocionālā stabilitāte un intelekts/iztēle (Goldberg, 1992).</p><div class="meta"><span>100 apgalvojumu</span><span>12 līdz 15 min</span><span>5 dimensijas</span></div><p class="go" style="margin:10px 0 0">Atvērt aptauju →</p></a>
-<a class="card" href="lielais-piecinieks-ipip-neo120.html"><h3>Personības šķautnes (IPIP‑NEO‑120)</h3><p>Piecas dimensijas un katras dimensijas sešas šķautnes jeb apakšskalas, kopā 30. Parāda, kas slēpjas aiz katras dimensijas kopvērtējuma (Johnson, 2014).</p><div class="meta"><span>120 apgalvojumu</span><span>15 līdz 20 min</span><span>5 dimensijas, 30 šķautnes</span></div><p class="go" style="margin:10px 0 0">Atvērt aptauju →</p></a>
-
-<h2>Tumšās iezīmes</h2>
-<a class="card" href="levensona-psihopatijas-skala-lsrp.html"><h3>Levensona pašnovērtējuma psihopātijas skala (LSRP)</h3><p>Psihopātijas iezīmes divās dimensijās: primārā (emocionālās un starppersonu iezīmes) un sekundārā (impulsīvs dzīvesveids un uzvedība) (Levenson et al., 1995).</p><div class="meta"><span>26 apgalvojumi</span><span>apmēram 5 min</span><span>2 dimensijas</span></div><p class="go" style="margin:10px 0 0">Atvērt aptauju →</p></a>
-
-<h2>Demonstrācijas</h2>
-<a class="card" href="atbilzu-sadalijums.html"><h3>Kā veidojas aptaujas atbilžu sadalījums?</h3><p>Punkti krīt stabiņos, kad izdomāti cilvēki atbild uz vienu apgalvojumu, vienas šķautnes četriem vai vienas dimensijas 24 apgalvojumiem (Johnson, 2014).</p><div class="meta"><span>interaktīvs rīks</span><span>bez aptaujas</span></div><p class="go" style="margin:10px 0 0">Atvērt rīku →</p></a>
-<a class="card" href="korelacijas-apzinigums.html"><h3>Kā veidojas korelācija?</h3><p>Soli pa solim no diviem sadalījumiem līdz izkliedes diagrammai: apzinīgums un riskanta uzvedība ar simulētiem datiem un metaanalīzē atrastajām korelācijām (Bogg &amp; Roberts, 2004).</p><div class="meta"><span>interaktīvs rīks</span><span>bez aptaujas</span></div><p class="go" style="margin:10px 0 0">Atvērt rīku →</p></a>
-
-<div class="foot"><p>Aptauju panti ir publiski pieejami vai izmantoti mācību nolūkos ar atsauci uz autoriem. IPIP aptaujas balstās uz Starptautiskās personības pantu krātuves (IPIP) publiskā domēna apgalvojumiem (Goldberg et al., 2006).</p>
+<header class="top"><div class="wrap" style="max-width:60rem"><p class="backlink"><a href="index.html">← Visi rīki un aptaujas</a></p><p class="kick">Personības psiholoģijas seminārs</p><h1>Kā veidojas korelācija?</h1><p class="tag">Apzinīgums un riskanta uzvedība: simulēti dati, saglabājot pētījumos novērotās korelācijas</p><p class="tag" style="font-size:1rem;margin-top:6px">Korelācija rāda divu mainīgo savstarpējo saistību.</p></div></header>
+<main class="tool"><div class="wrapw">
+<div class="grid">
+<div>
+<div class="steps" role="group" aria-label="Soļi">
+<button data-s="1">1. Apzinīguma sadalījums</button><button data-s="2">2. Uzvedības sadalījums</button><button data-s="3" aria-pressed="true">3. Abi kopā</button>
+</div>
+<p class="stepnote" id="stepnote"></p>
+<svg id="plot" class="plot" viewBox="0 0 640 640" role="img" aria-label="Sadalījumi un izkliedes diagramma"></svg>
+<p class="small">Katrs punkts attēlo viena cilvēka atbildi. Dati ir simulēti tā, lai saistības ciešums atbilstu pētījumos iegūtajai korelācijai. Tie nav īstu cilvēku dati. Uzvedības biežums un sadalījuma forma šajā rīkā ir ilustratīvi pieņēmumi.</p>
+</div>
+<div class="ctl">
+<div class="row"><label for="beh">Uzvedība</label><select id="beh"></select></div>
+<div class="row" id="customRow" hidden><label for="rr">Korelācija (r): <span id="rrv" class="num"></span></label><input id="rr" type="range" min="-0.9" max="0.9" step="0.01" value="-0.28"></div>
+<div class="row"><label>Cilvēku skaits</label><div class="seg" id="nseg"><button data-n="100">100</button><button data-n="300" aria-pressed="true">300</button><button data-n="1000">1000</button></div></div>
+<div class="row"><label style="display:flex;gap:10px;align-items:center;font-weight:500;cursor:pointer"><input type="checkbox" id="regl" checked style="width:20px;height:20px"> Rādīt regresijas taisni</label><p class="small" id="regnote" style="margin:6px 0 0" hidden>Ja uzvedībai ir tikai divas iespējas, dara vai nedara, regresijas taisnes vietā parādīts, cik no 100 cilvēkiem katrā apzinīguma līmenī šo uzvedību veic.</p></div>
+<div class="row"><button class="btn" id="resample" style="padding:10px 20px">Jauna izlase</button></div>
+<div class="stat" id="statbox">
+<p>Korelācija: <span id="rpop" class="big"></span></p>
+<p class="small" id="src"></p>
+<p style="margin-top:16px"><b>Ko šī korelācija nozīmē?</b></p>
+<div class="grp"><span class="dot" style="background:#c45c26"></span><div id="qlo"></div></div>
+<div class="grp"><span class="dot" style="background:#183B6B"></span><div id="qhi"></div></div>
+<p class="small" style="margin-top:6px" id="qnote"></p>
+</div>
+</div>
+</div>
+<div class="note" style="max-width:60rem">
+<p><b>Ko šeit var redzēt?</b> Katram cilvēkam, kurš piedalījies aptaujā, ir apzinīguma rādītājs. Visu cilvēku aptaujas rezultāti kopā veido datu sadalījumu. Līdzīgi arī uzvedības rādītājiem ir savs datu sadalījums. Korelāciju aprēķinām tad, kad abus rādītājus savienojam pārī katram cilvēkam. Tas ļauj noskaidrot, vai, piemēram, augstāks apzinīguma rādītājs ir saistīts ar augstāku vai zemāku uzvedības rādītāju.</p>
+<p>Pat pie r = −.28, kas šeit ir stiprākā metaanalīzē konstatētā saistība, datu punkti joprojām ir ļoti izkliedēti. Daudzi cilvēki ar augstāku apzinīgumu uzvedas riskanti, bet daudzi ar zemāku apzinīgumu to nedara. Korelācijas aprēķini raksturo kopēju tendenci datos, nevis ļauj droši paredzēt konkrēta cilvēka uzvedību. Funder un Ozer (2019) piedāvā r = .10, .20 un .30 interpretēt attiecīgi kā mazu, vidēju un lielu efektu, vērtējot to iespējamās sekas ilgākā laikā.</p>
+<p>Rīkā izmantotās korelācijas ņemtas no Bogg un Roberts (2004) metaanalīzes, kurā apkopoti 194 pētījumi. Dažas uzvedības rīkā attēlotas kā divas grupas, kuras attiecīgo darbību dara un nedara. Citām, piemēram, pārmērīgai alkohola lietošanai, izmantots asimetrisks sadalījums. Simulācijā saistības stiprums starp apzinīgumu un uzvedību ir veidots atbilstoši metaanalīzē norādītajai korelācijai, taču uzvedību izplatība un sadalījuma forma ir ilustratīvi pieņēmumi, nevis pētījumu vai Latvijas dati.</p>
+<p>Tavas atbildes netiek nekur nosūtītas. Anonīmi, bez sīkdatnēm tiek skaitīts tikai lapas apmeklējums.</p>
 <details class="refs"><summary>Atsauces</summary><ol>
 <li>Bogg, T., &amp; Roberts, B. W. (2004). Conscientiousness and health-related behaviors: A meta-analysis of the leading behavioral contributors to mortality. Psychological Bulletin, 130(6), 887–919. https://doi.org/10.1037/0033-2909.130.6.887</li>
-<li>Goldberg, L. R. (1992). The development of markers for the Big‑Five factor structure. Psychological Assessment, 4(1), 26–42. https://doi.org/10.1037/1040-3590.4.1.26</li>
-<li>Goldberg, L. R., Johnson, J. A., Eber, H. W., Hogan, R., Ashton, M. C., Cloninger, C. R., &amp; Gough, H. G. (2006). The international personality item pool and the future of public‑domain personality measures. Journal of Research in Personality, 40(1), 84–96. https://doi.org/10.1016/j.jrp.2005.08.007</li>
-<li>Johnson, J. A. (2014). Measuring thirty facets of the Five Factor Model with a 120‑item public domain inventory: Development of the IPIP‑NEO‑120. Journal of Research in Personality, 51, 78–89. https://doi.org/10.1016/j.jrp.2014.05.003</li>
-<li>Levenson, M. R., Kiehl, K. A., &amp; Fitzpatrick, C. M. (1995). Assessing psychopathic attributes in a noninstitutionalized population. Journal of Personality and Social Psychology, 68(1), 151–158. https://doi.org/10.1037/0022-3514.68.1.151</li>
-</ol></details></div>
+<li>Funder, D. C., &amp; Ozer, D. J. (2019). Evaluating effect size in psychological research: Sense and nonsense. Advances in Methods and Practices in Psychological Science, 2(2), 156–168. https://doi.org/10.1177/2515245919847202</li>
+</ol></details>
+<p class="backlink" style="margin-top:18px"><a href="index.html">← Visi rīki un aptaujas</a></p>
+</div>
 </div></main>
-<script>window.goatcounter={path:function(p){return p.replace(/index\.html$/,"").replace(/\/$/,"")||"/";}};</script>
+<script>
+(function(){
+var B=[["Narkotiku lietošana",-0.28,44,"bin",0.15],["Pārmērīga alkohola lietošana",-0.25,65,"skew"],["Riskanta braukšana",-0.25,21,"skew"],["Vardarbība",-0.25,25,"bin",0.10],
+  ["Smēķēšana",-0.14,46,"bin",0.25],["Neveselīga ēšana",-0.13,14,"norm"],["Riskanta seksuālā uzvedība",-0.13,25,"bin",0.20],["Pašnāvības domas vai mēģinājumi",-0.12,19,"bin",0.08],["Fiziskā aktivitāte",0.05,17,"skew"]];
+var sel=document.getElementById('beh'),flat=[];
+function fmt(r){var s=Math.abs(r).toFixed(2).replace(/^0/,'');return (r<0?'−':'')+s;}
+var og=document.createElement('optgroup');og.label='Apzinīgums un veselības uzvedība (Bogg & Roberts, 2004)';
+B.forEach(function(it){var o=document.createElement('option');o.value=flat.length;o.textContent=it[0]+'  (r = '+fmt(it[1])+')';og.appendChild(o);flat.push({name:it[0],r:it[1],k:it[2],type:it[3],p:it[4]});});sel.appendChild(og);
+var og2=document.createElement('optgroup');og2.label='Cits';var o2=document.createElement('option');o2.value=flat.length;o2.textContent='Pats izvēlos r';og2.appendChild(o2);sel.appendChild(og2);flat.push({name:'Uzvedība',r:null,type:'norm'});
+var seed=355;function rnd(){seed=(seed+0x6D2B79F5)|0;var t=seed;t=Math.imul(t^(t>>>15),t|1);t^=t+Math.imul(t^(t>>>7),t|61);return ((t^(t>>>14))>>>0)/4294967296;}
+function gauss(){var u=1-rnd(),v=rnd();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+var N=300,cur=0,rCustom=-0.28,base=[],jit=[],step=3,anim=null;
+function gen(){base=[];jit=[];for(var i=0;i<1000;i++){base.push([gauss(),gauss()]);jit.push(rnd());}}
+function z(v){var m=v.reduce(function(s,x){return s+x;},0)/v.length,sd=Math.sqrt(v.reduce(function(s,x){return s+(x-m)*(x-m);},0)/v.length);return v.map(function(x){return (x-m)/sd;});}
+function corr(a,b){var n=a.length,ma=0,mb=0,i;for(i=0;i<n;i++){ma+=a[i];mb+=b[i];}ma/=n;mb/=n;var sab=0,saa=0,sbb=0;for(i=0;i<n;i++){var x=a[i]-ma,y=b[i]-mb;sab+=x*y;saa+=x*x;sbb+=y*y;}return sab/Math.sqrt(saa*sbb);}
+function quant(v,q){var s=v.slice().sort(function(a,b){return a-b;});return s[Math.min(s.length-1,Math.max(0,Math.floor(q*s.length)))];}
+var A=[],E=[];
+function prep(){var a=[],e=[],i;for(i=0;i<N;i++){a.push(base[i][0]);e.push(base[i][1]);}a=z(a);e=z(e);var ab=0;for(i=0;i<N;i++)ab+=a[i]*e[i];ab/=N;for(i=0;i<N;i++)e[i]-=ab*a[i];A=a;E=z(e);}
+function observe(rho,o){var ys=A.map(function(x,i){return rho*x+Math.sqrt(1-rho*rho)*E[i];});
+  if(o.type==='bin'){var th=quant(ys,1-o.p);return ys.map(function(y){return y>th?1:0;});}
+  if(o.type==='skew'){return ys.map(function(y){return Math.exp(0.6*y);});}
+  return ys;}
+function calibrate(target,o){if(o.type==='norm')return {rho:target,y:observe(target,o)};
+  var lo=-0.99,hi=0.99,y,m;for(var it=0;it<40;it++){m=(lo+hi)/2;y=observe(m,o);if(corr(A,y)<target)lo=m;else hi=m;}return {rho:m,y:observe(m,o)};}
+var svg=document.getElementById('plot'),NS='http://www.w3.org/2000/svg';
+function el(t,a,txt,par){var e=document.createElementNS(NS,t);for(var k in a)e.setAttribute(k,a[k]);if(txt!==undefined&&txt!==null)e.textContent=txt;(par||svg).appendChild(e);return e;}
+var L=150,T=20,W=470,H=440,lim=3.2,HB=T+H+22,HBh=110,HLx=L-22,HLw=110,BW=0.4,FONT='Hanken Grotesk, sans-serif';
+function X(v){return L+(v+lim)/(2*lim)*W;}
+var O,Yv,R,ymin,ymax,MED;
+function frame(){O=flat[cur];R=O.r===null?rCustom:O.r;prep();Yv=calibrate(R,O).y;
+  if(O.type!=='bin'){ymin=quant(Yv,0.0);ymax=O.type==='skew'?Math.max.apply(null,Yv)*1.02:quant(Yv,0.995);if(O.type==='norm'){var m=Math.max(Math.abs(ymin),Math.abs(ymax),3);ymin=-m;ymax=m;}MED=quant(Yv,0.5);}}
+function Yc(v){return T+H-(Math.min(Math.max(v,ymin),ymax)-ymin)/(ymax-ymin)*H;}
+var BAND={1:T+H*0.28,0:T+H*0.72},BH=H*0.28;
+function Yb(v,i){return BAND[v]+(jit[i]-0.5)*BH;}
+function drawBase(){while(svg.firstChild)svg.removeChild(svg.firstChild);
+  el('rect',{x:L,y:T,width:W,height:H,fill:'#fff',stroke:'#D9DCE1'});
+  [-2,-1,0,1,2].forEach(function(v){el('line',{x1:X(v),x2:X(v),y1:T,y2:T+H,stroke:'#EEF0F3'});});
+  if(O.type==='bin'){el('line',{x1:L,x2:L+W,y1:T+H/2,y2:T+H/2,stroke:'#D9DCE1'});}
+  el('text',{x:L+W/2,y:HB+HBh+26,'text-anchor':'middle','font-size':16,fill:'#0E0F12','font-family':FONT},'Apzinīgums →');
+  var yl=O.type==='bin'?O.name:O.name+' →';
+  el('text',{x:L-HLw-26,y:T+H/2,'text-anchor':'middle','font-size':16,fill:'#0E0F12','font-family':FONT,transform:'rotate(-90 '+(L-HLw-26)+' '+(T+H/2)+')'},yl);
+  el('text',{x:L+4,y:HB+HBh+10,'font-size':12,fill:'#5B6068','font-family':FONT},'zemāk');
+  el('text',{x:L+W-4,y:HB+HBh+10,'text-anchor':'end','font-size':12,fill:'#5B6068','font-family':FONT},'augstāk');}
+function bins(vals,a,b,nb){var c=new Array(nb).fill(0),w=(b-a)/nb;vals.forEach(function(v){var k=Math.floor((Math.min(Math.max(v,a),b-1e-9)-a)/w);if(k>=0&&k<nb)c[k]++;});return c;}
+function histX(frac){var nb=Math.round(2*lim/BW),all=bins(A,-lim,lim,nb),c=bins(A.slice(0,Math.round(N*frac)),-lim,lim,nb),mx=Math.max.apply(null,all)||1,g=el('g',{});
+  c.forEach(function(n,k){if(!n)return;var h=n/mx*HBh;el('rect',{x:X(-lim+k*BW)+1,y:HB+HBh-h,width:W*BW/(2*lim)-2,height:h,fill:'#8FA3BF'},null,g);});
+  el('line',{x1:L,x2:L+W,y1:HB+HBh,y2:HB+HBh,stroke:'#8A9099'},null,g);}
+function histY(frac){var g=el('g',{}),part=Yv.slice(0,Math.round(N*frac));
+  if(O.type==='bin'){var c1=part.filter(function(v){return v===1;}).length,c0=part.length-c1,mx=N;
+    [[0,c0,'nedara'],[1,c1,'dara']].forEach(function(t){var w=t[1]/mx*HLw;el('rect',{x:HLx-w,y:BAND[t[0]]-BH/2,width:w,height:BH,fill:'#D9A58A'},null,g);
+      el('text',{x:HLx-4,y:BAND[t[0]]-BH/2-6,'text-anchor':'end','font-size':13,fill:'#0E0F12','font-family':FONT},t[2]+': '+t[1]);});}
+  else{var nb=16,all=bins(Yv,ymin,ymax,nb),c=bins(part,ymin,ymax,nb),mx=Math.max.apply(null,all)||1,bh=H/nb;
+    c.forEach(function(n,k){if(!n)return;var w=n/mx*HLw;el('rect',{x:HLx-w,y:T+H-(k+1)*bh+1,width:w,height:bh-2,fill:'#D9A58A'},null,g);});}
+  el('line',{x1:HLx,x2:HLx,y1:T,y2:T+H,stroke:'#8A9099'},null,g);}
+function qcut(){return {lo:quant(A,0.25),hi:quant(A,0.75)};}
+function points(t,final){var q=qcut(),rad=N>500?2.6:(N>200?3.4:4.4),op=N>500?0.5:0.7,e=t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+  if(final){el('rect',{x:L,y:T,width:X(q.lo)-L,height:H,fill:'#c45c26','fill-opacity':0.06});el('rect',{x:X(q.hi),y:T,width:L+W-X(q.hi),height:H,fill:'#183B6B','fill-opacity':0.06});}
+  for(var i=0;i<N;i++){var x=A[i];if(Math.abs(x)>lim)continue;var yEnd=O.type==='bin'?Yb(Yv[i],i):Yc(Yv[i]),y=(1-e)*(T+H)+e*yEnd;
+    var col=final?(x<q.lo?'#c45c26':(x>=q.hi?'#183B6B':'#9AA3AE')):'#183B6B';
+    el('circle',{cx:X(x).toFixed(1),cy:y.toFixed(1),r:rad,fill:col,'fill-opacity':op});}
+  if(final&&O.type!=='bin'){el('line',{x1:L,x2:L+W,y1:Yc(MED),y2:Yc(MED),stroke:'#0E0F12','stroke-dasharray':'6 5','stroke-width':1.5});
+    el('text',{x:L+6,y:Yc(MED)-6,'font-size':12.5,'font-weight':600,fill:'#0E0F12','font-family':FONT,'paint-order':'stroke',stroke:'#fff','stroke-width':4},'pārtrauktā līnija: puse cilvēku zem tās, puse virs tās');}
+  if(final&&O.type!=='bin'&&document.getElementById('regl').checked){var n=N,mx=0,my=0,i2;for(i2=0;i2<n;i2++){mx+=A[i2];my+=Yv[i2];}mx/=n;my/=n;var sxy=0,sxx=0;for(i2=0;i2<n;i2++){sxy+=(A[i2]-mx)*(Yv[i2]-my);sxx+=(A[i2]-mx)*(A[i2]-mx);}var bb=sxy/sxx,aa=my-bb*mx;
+    function py(v){if(O.type==='bin')return BAND[0]+v*(BAND[1]-BAND[0]);return Yc(v);}
+    var x1=-lim,x2=lim,y1=py(aa+bb*x1),y2=py(aa+bb*x2);
+    el('line',{x1:X(x1),y1:Math.max(T,Math.min(T+H,y1)),x2:X(x2),y2:Math.max(T,Math.min(T+H,y2)),stroke:'#0E0F12','stroke-width':2.5,'stroke-opacity':0.75});
+    el('text',{x:X(x2)-6,y:Math.max(T+14,Math.min(T+H-6,y2))+(bb<0?-10:18),'text-anchor':'end','font-size':12.5,'font-weight':600,fill:'#0E0F12','font-family':FONT,'paint-order':'stroke',stroke:'#fff','stroke-width':4},'regresijas taisne');}
+  if(final&&O.type==='bin'){var qs=[-Infinity,quant(A,0.25),quant(A,0.5),quant(A,0.75),Infinity];
+    el('text',{x:L+W/2,y:T+16,'text-anchor':'middle','font-size':12.5,fill:'#5B6068','font-family':FONT},'Cik no 100 cilvēkiem šajā apzinīguma grupā to dara:');
+    for(var g5=0;g5<4;g5++){var lo5=qs[g5],hi5=qs[g5+1],grp=[];for(var k5=0;k5<N;k5++){if(A[k5]>=lo5&&A[k5]<hi5)grp.push(Yv[k5]);}
+      var sh=Math.round(100*grp.filter(function(v){return v===1;}).length/grp.length),xa=Math.max(-lim,lo5===-Infinity?-lim:lo5),xb=Math.min(lim,hi5===Infinity?lim:hi5),xc=X((xa+xb)/2);
+      el('line',{x1:X(xa)+3,x2:X(xb)-3,y1:T+24,y2:T+24,stroke:'#8A9099'});
+      el('text',{x:xc,y:T+44,'text-anchor':'middle','font-size':17,'font-weight':700,fill:'#0E0F12','font-family':FONT,'paint-order':'stroke',stroke:'#fff','stroke-width':4},String(sh));}}
+  if(final&&O.type==='bin'){el('text',{x:L+W-6,y:BAND[1]-BH/2-6,'text-anchor':'end','font-size':12.5,'font-weight':600,fill:'#0E0F12','font-family':FONT},'dara');
+    el('text',{x:L+W-6,y:BAND[0]-BH/2-6,'text-anchor':'end','font-size':12.5,'font-weight':600,fill:'#0E0F12','font-family':FONT},'nedara');}}
+function notes(s){var t=O.type;
+  if(s===1)return '1. solis. Katram cilvēkam ir apzinīguma rādītājs. Visu cilvēku atbildes kopā veido datu sadalījumu: vairāk cilvēku ir tuvāk vidējam rezultātam, bet mazāk pie zemākajām un augstākajām vērtībām.';
+  if(s===2)return t==='bin'?'2. solis. Tiem pašiem cilvēkiem ir arī dati par uzvedību “'+O.name+'”. Šeit uzvedības iznākumam ir divas iespējas: dara vai nedara.':(t==='skew'?'2. solis. Tiem pašiem cilvēkiem ir arī dati par uzvedību “'+O.name+'”. Tās sadalījums ir asimetrisks: daudz cilvēku ir pie zemām vērtībām, bet tikai daži pie ļoti augstām.':'2. solis. Tiem pašiem cilvēkiem ir arī uzvedības “'+O.name+'” rādītājs ar savu datu sadalījumu. Aplūkojot abus sadalījumus atsevišķi, vēl nevar redzēt, vai abi mainīgie ir savstarpēji saistīti.');
+  return '3. solis. Tagad abus rādītājus savienojam katram cilvēkam. Punkta novietojums horizontāli rāda apzinīgumu, bet vertikāli uzvedības rādītāju. Punktu kopējais izvietojums ļauj ieraudzīt abu mainīgo saistību.';}
+function stats(show){document.getElementById('statbox').style.visibility=show?'visible':'hidden';if(!show)return;
+  document.getElementById('rpop').textContent='r = '+fmt(R);
+  document.getElementById('src').textContent=O.r===null?'Paša izvēlēta vērtība.':O.k+' pētījumi. Avots: Bogg & Roberts (2004).';
+  var q=qcut(),lo=[],hi=[];for(var i=0;i<N;i++){if(A[i]<q.lo)lo.push(Yv[i]);else if(A[i]>=q.hi)hi.push(Yv[i]);}
+  var nm=O.name.toLowerCase(),B1='<b style="font-family:inherit;font-size:1rem">';
+  if(O.type==='bin'){function pr(a){return Math.round(100*a.filter(function(v){return v===1;}).length/a.length);}
+    document.getElementById('qlo').innerHTML='No 100 cilvēkiem ar '+B1+'zemāku apzinīgumu</b> (oranžie punkti kreisajā pusē) to dara <b>'+pr(lo)+'</b>.';
+    document.getElementById('qhi').innerHTML='No 100 cilvēkiem ar '+B1+'augstāku apzinīgumu</b> (zilie punkti labajā pusē) to dara <b>'+pr(hi)+'</b>.';
+    document.getElementById('qnote').textContent='Kopumā simulācijā šo dara '+Math.round(O.p*100)+' no 100 cilvēkiem. Tas ir ilustratīvs pieņēmums, nevis Latvijas dati. Ja starp apzinīgumu un šo uzvedību nebūtu saistības, abās grupās to darītu aptuveni '+Math.round(O.p*100)+' no 100.';}
+  else{function pm(a){return Math.round(100*a.filter(function(v){return v>MED;}).length/a.length);}
+    document.getElementById('qlo').innerHTML='No 100 cilvēkiem ar '+B1+'zemāku apzinīgumu</b> (oranžie punkti kreisajā pusē) <b>'+pm(lo)+'</b> ir virs pārtrauktās līnijas.';
+    document.getElementById('qhi').innerHTML='No 100 cilvēkiem ar '+B1+'augstāku apzinīgumu</b> (zilie punkti labajā pusē) <b>'+pm(hi)+'</b> ir virs pārtrauktās līnijas.';
+    document.getElementById('qnote').textContent='Pārtrauktā līnija sadala visus cilvēkus divās vienādās daļās. Ja starp mainīgajiem nebūtu saistības, abās apzinīguma grupās virs līnijas būtu aptuveni 50 no 100 cilvēkiem.';}}
+function run(s,animate){if(anim)cancelAnimationFrame(anim);step=s;frame();document.getElementById('regnote').hidden=O.type!=='bin';document.getElementById('regl').disabled=O.type==='bin';
+  document.querySelectorAll('.steps button').forEach(function(b){b.setAttribute('aria-pressed',+b.dataset.s===s?'true':'false');});
+  document.getElementById('stepnote').textContent=notes(s);
+  var t0=null,dur=animate?1600:0;
+  function tick(ts){if(t0===null)t0=ts;var t=dur?Math.min(1,(ts-t0)/dur):1;drawBase();
+    if(s===1){histX(t);}else if(s===2){histX(1);histY(t);}else{histX(1);histY(1);points(t,t>=1);}
+    stats(s===3&&t>=1);if(t<1)anim=requestAnimationFrame(tick);}
+  anim=requestAnimationFrame(tick);}
+document.querySelectorAll('.steps button').forEach(function(b){b.addEventListener('click',function(){run(+b.dataset.s,true);});});
+sel.addEventListener('change',function(){cur=+sel.value;document.getElementById('customRow').hidden=flat[cur].r!==null;run(3,false);});
+var rr=document.getElementById('rr'),rrv=document.getElementById('rrv');
+rr.addEventListener('input',function(){rCustom=+rr.value;rrv.textContent=fmt(rCustom);run(3,false);});rrv.textContent=fmt(rCustom);
+document.querySelectorAll('#nseg button').forEach(function(b){b.addEventListener('click',function(){document.querySelectorAll('#nseg button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});N=+b.dataset.n;run(step,true);});});
+document.getElementById('regl').addEventListener('change',function(){run(3,false);});
+document.getElementById('resample').addEventListener('click',function(){seed=Math.floor(Math.random()*4294967296);gen();run(step,true);});
+gen();run(3,false);
+})();
+</script>
 <script data-goatcounter="https://slowscience.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </body>
 </html>
