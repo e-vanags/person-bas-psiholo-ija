@@ -2,8 +2,115 @@
 <html lang="lv">
 <head>
 <meta charset="utf-8">
+<script>
+/* =====================================================================
+   VISI LAPAS TEKSTI
+   Labo tekstu tikai starp pēdiņām "...". Pēdiņas, komatus un iekavas
+   neaiztiec. Teksta iekšienē pēdiņu vietā lieto “ ” vai ‘ ’.
+   Var lietot HTML: <i>slīpraksts</i>, <b>treknraksts</b>.
+   {n}, {laiks}, {l}, {r} ir vietas, kur rīks ieliek skaitli vai vārdu.
+   ===================================================================== */
+var TEKSTI = {
+  lapas_nosaukums: "Kā Tu jūties tieši tagad? Zviedru kodola afekta skala",
+  atpakal_saite: "← Visi rīki un aptaujas",
+  virsraksts: "Kā Tu jūties tieši tagad?",
+  apaksvirsraksts: "Zviedru kodola afekta skala. 12 jautājumi, aptuveni viena minūte.",
+  definicija: "<b>Kas ir afekts?</b> Kodola afekts ir vienkārša, vienmēr klātesoša sajūta par to, cik patīkami vai nepatīkami Tu jūties un cik enerģisks vai miegains Tu esi. Tas ir emociju pamatā, bet var būt arī bez konkrēta iemesla. Piemēram, Tu vari justies laimīgs, saņemot dāvanu, un tā ir emocija. Bet Tu vari justies laimīgs arī bez iemesla. Abos gadījumos tā pamatā ir kodola afekts (Vanags, 2023).",
+
+  /* ---------- Aptaujas lapa ---------- */
+  instrukcija: "Novērtē, kā Tu jūties tieši šajā brīdī. Katrā rindā izvēlies vienu punktu no 0 līdz 8 starp diviem pretējiem vārdiem. Jo tuvāk punkts ir vārdam, jo vairāk tas atbilst Tavām sajūtām. Nav pareizu vai nepareizu atbilžu, atbildi raitā tempā.",
+  instrukcija_piezime: "Aptauju var aizpildīt vairākas reizes. Katrs mērījums parādās afekta aplī, un bultiņas rāda, kā Tavs stāvoklis mainījās.",
+  jautajums: "Cik {l} vai {r} Tu šobrīd jūties?",
+  /* Panti oriģinālajā secībā: [kreisais vārds, labais vārds]. Secību nemaini, no tās atkarīgs aprēķins. */
+  panti: [
+    ["pesimistisks/a", "optimistisks/a"],
+    ["miegains/a", "modrs/a"],
+    ["bēdīgs/a", "priecīgs/a"],
+    ["nemierīgs/a", "mierīgs/a"],
+    ["neapmierināts/a", "apmierināts/a"],
+    ["vienaldzīgs/a", "iesaistīts/a"],
+    ["notrulināts/a", "enerģisks/a"],
+    ["garlaikots/a", "ieinteresēts/a"],
+    ["nervozs/a", "atvieglots/a"],
+    ["saspringts/a", "rāms/a"],
+    ["pasīvs/a", "aktīvs/a"],
+    ["nomākts/a", "laimīgs/a"]
+  ],
+  poga_saglabat: "Saglabāt mērījumu",
+  progress: "Atbildēti {n} no 12",
+  poga_atpakal_uz_rezultatiem: "Atpakaļ uz rezultātiem",
+
+  /* ---------- Rezultātu lapa ---------- */
+  rezultati_virsraksts: "Tavi mērījumi",
+  ievads_viens_merijums: "Šis ir Tavs pirmais mērījums. Aizpildi aptauju vēlreiz pēc kāda laika, un afekta aplī parādīsies, kā Tavs stāvoklis ir mainījies.",
+  ievads_vairaki_merijumi: "Tev ir {n} mērījumi. Bultiņas rāda, kā Tavs stāvoklis pārvietojās no viena mērījuma uz nākamo.",
+  legenda_pilnais_punkts: "valence un aktivizācija",
+  legenda_tukss_punkts: "diagonālās skalas",
+  legenda_bulta: "pārmaiņa starp mērījumiem",
+  poga_jauns_merijums: "Jauns mērījums",
+  poga_dzest_pedejo: "Dzēst pēdējo mērījumu",
+  poga_dzest_visus: "Dzēst visus mērījumus",
+  apstiprinat_dzest_pedejo: "Dzēst pēdējo mērījumu?",
+  apstiprinat_dzest_visus: "Dzēst visus mērījumus no šī pārlūka?",
+
+  tabula_virsraksts: "Mērījumu tabula",
+  tabula_kolonnas: ["Nr.", "Laiks", "Valence", "Aktivizācija", "Pozitīva aktivizācija pret negatīvu deaktivizāciju", "Negatīva aktivizācija pret pozitīvu deaktivizāciju"],
+  tabula_piezime: "Katrs indekss ir trīs jautājumu vidējais skalā no 0 līdz 8, kur 4 ir viduspunkts.",
+
+  lasit_virsraksts: "Kā lasīt attēlu",
+  lasit_rindkopas: [
+    "Kodola afektu var aprakstīt ar divām pamata sajūtu dimensijām: cik patīkami vai nepatīkami Tu jūties (valence) un cik enerģisks vai miegains Tu esi (aktivizācija) (Russell, 1980). Aptauja mēra šīs dimensijas ar vairāku apakšdimensiju palīdzību. Rezultāti tiek attēloti uz x un y grafika. Pilnais punkts, atbilstoši Taviem rezultātiem, atrodas uz horizontālās un vertikālās ass. Tukšais punkts atrodas uz abām diagonālajām asīm (Västfjäll et al., 2002).",
+    "Elipse savieno abus viena mērījuma punktus. Ja punkti ir tuvu, apakšdimensijas Tavu stāvokli apraksta līdzīgi. Ja tālu, Tavas atbildes var būt atšķirīgas, un tas šādā īsā aptaujā ir pieņemami.",
+    "Uzbrauc ar peli uz ovāla vai pieskaries tam, un parādīsies emociju vārdi, kas raksturīgi šim afekta apļa apgabalam (Scherer, 2005).",
+    "Bultiņas savieno mērījumu centrus laika secībā. Pēdējais mērījums ir tumši zils. Arī stundas laikā cilvēka afekts parasti pārvietojas, un tas ir normāli. Tas ir stāvoklis konkrētā brīdī, nevis personības iezīme."
+  ],
+  privatums: "Latviskā versija ir adaptēta un psihometriski pārbaudīta 1102 pieaugušo izlasē (Vanags, 2023). Atbildes netiek nosūtītas nekur, tās glabājas tikai šajā pārlūkā. Statistikai anonīmi tiek skaitīts tikai lapas apmeklējums un aizpildīšanas fakts. Ja izmanto kopīgu datoru, beigās nospied “Dzēst visus mērījumus”.",
+
+  /* ---------- Afekta aplis ---------- */
+  aplis: {
+    augsa: "Aktivizācija", augsa_vardi: "modrs, enerģisks",
+    apaksa: "Deaktivizācija", apaksa_vardi: "miegains, pasīvs",
+    pa_labi: ["Pozitīvs", "afekts"], pa_labi_vardi: "priecīgs, laimīgs",
+    pa_kreisi: ["Negatīvs", "afekts"], pa_kreisi_vardi: "bēdīgs, nomākts",
+    augsa_pa_labi: ["Pozitīvs afekts/", "aktivizācija"], augsa_pa_labi_vardi: "ieinteresēts, iesaistīts",
+    augsa_pa_kreisi: ["Negatīvs afekts/", "aktivizācija"], augsa_pa_kreisi_vardi: "nervozs, saspringts",
+    apaksa_pa_labi: ["Pozitīvs afekts/", "deaktivizācija"], apaksa_pa_labi_vardi: "atvieglots, rāms",
+    apaksa_pa_kreisi: ["Negatīvs afekts/", "deaktivizācija"], apaksa_pa_kreisi_vardi: "garlaikots, vienaldzīgs"
+  },
+
+  /* ---------- Lodziņš, uzbraucot uz ovāla ---------- */
+  lodzins_virsraksts: "{n}. mērījums, {laiks}",
+  lodzins_centrs_nosaukums: "Tuvu viduspunktam",
+  lodzins_centrs_teksts: "Neitrāls, līdzsvarots afekts. Neviens virziens nav izteikts.",
+  lodzins_viegli: ", viegli izteikts",
+  lodzins_piezime: "Vārdi ir apgabala orientieri, nevis Tavs rezultāts.",
+  /* Astoņi apgabali pretēji pulksteņrādītāja virzienam, sākot no labās puses. Secību nemaini. */
+  apgabali: [
+    ["Pozitīvs afekts", "priecīgs/a, laimīgs/a, līksms/a, gandarīts/a, jūtos labi, iemīlējies/usies, ieinteresēts/a, apņēmīgs/a"],
+    ["Pozitīvs afekts un aktivizācija", "patīkami satraukts/a, aizrautīgs/a, triumfējošs/a, pašpārliecināts/a, drosmīgs/a, piedzīvojumu kārs/a, bezrūpīgs/a, uzjautrināts/a, kaislīgs/a, gaidu pilns/a, pārliecināts/a"],
+    ["Aktivizācija", "uzbudināts/a, pārsteigts/a, iekārīgs/a, iedomīgs/a, jūtos pārāks/a, saspringts/a, satraukts/a, nobijies/usies, naidīgs/a, kareivīgs/a, saniknots/a, nokaitināts/a"],
+    ["Negatīvs afekts un aktivizācija", "dusmīgs/a, frustrēts/a, nepacietīgs/a, sašutis/usi, greizsirdīgs/a, skaudīgs/a, izaicinošs/a, nievājošs/a, pretīgs/a, riebuma pilns/a, neapmierināts/a, aizdomīgs/a"],
+    ["Negatīvs afekts", "aizvainots/a, rūgtuma pilns/a, neuzticīgs/a, izbiedēts/a, vīlies/usies, nožēlojams/a, apjucis/usi, skumjš/a, drūms/a, neērti"],
+    ["Negatīvs afekts un deaktivizācija", "bezcerīgs/a, nomākts/a, izmisis/usi, vainīgs/a, nokaunējies/usies, noraizējies/usies, samulsis/usi, apātisks/a, gurdens/a, melanholisks/a, neizlēmīgs/a, garlaikots/a, padevies/usies"],
+    ["Deaktivizācija", "noguris/usi, miegains/a, šaubīgs/a, ilgu pilns/a, domu pilns/a, nopietns/a, apzinīgs/a, godbijīgs/a, mierpilns/a, vērojošs/a"],
+    ["Pozitīvs afekts un deaktivizācija", "rāms/a, apmierināts/a, mierā, atpūties/usies, svinīgs/a, draudzīgs/a, pieklājīgs/a, līdzjūtīgs/a, uzmanīgs/a, cerību pilns/a"]
+  ],
+
+  /* ---------- Avoti ---------- */
+  avoti_virsraksts: "Avoti",
+  avoti: [
+    "Russell, J. A. (1980). A circumplex model of affect. <i>Journal of Personality and Social Psychology, 39</i>(6), 1161–1178. https://doi.org/10.1037/h0077714",
+    "Scherer, K. R. (2005). What are emotions? And how can they be measured? <i>Social Science Information, 44</i>(4), 695–729. https://doi.org/10.1177/0539018405058216",
+    "Vanags, E. (2023). <i>Depresijas simptomu un kodola afekta saistība ar kognitīvajām funkcijām</i> [Promocijas darbs, Latvijas Universitāte].",
+    "Västfjäll, D., Friman, M., Gärling, T., &amp; Kleiner, M. (2002). The measurement of core affect: A Swedish self-report measure derived from the affect circumplex. <i>Scandinavian Journal of Psychology, 43</i>(1), 19–31. https://doi.org/10.1111/1467-9450.00265",
+    "Yik, M., Russell, J. A., &amp; Steiger, J. H. (2011). A 12-Point Circumplex Structure of Core Affect. <i>Emotion, 11</i>(4), 705–731. https://doi.org/10.1037/a0023980"
+  ],
+  avoti_piezime: "Latvisko versiju un emociju vārdu tulkojumus sagatavojis Edmunds Vanags."
+};
+/* ===================== TEKSTU BEIGAS ===================== */
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Kā Tu jūties tieši tagad? Zviedru kodola afekta skala</title>
+<title></title>
 <script data-goatcounter="https://slowscience.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <style>
 :root{
@@ -23,6 +130,7 @@ a{color:var(--accent)}
 h1{font-size:34px;line-height:1.15;margin:0 0 8px;font-weight:700}
 .sub{color:var(--ink2);margin:0 0 24px;font-size:19px}
 h2{font-size:24px;margin:40px 0 12px}
+.def{border-left:3px solid var(--accent);padding:4px 0 4px 14px;margin:0 0 24px;max-width:70ch}
 p{max-width:70ch;margin:0 0 12px}
 .note{color:var(--ink2);font-size:16px}
 .items{margin:24px 0 0;padding:0;list-style:none;counter-reset:item}
@@ -79,92 +187,66 @@ tr.latest td{font-weight:700}
 </head>
 <body>
 <main>
-<a class="back" href="index.html">← Visi rīki un aptaujas</a>
+<a class="back" href="index.html" data-t="atpakal_saite"></a>
 
-<h1>Kā Tu jūties tieši tagad?</h1>
-<p class="sub">Zviedru kodola afekta skala. 12 jautājumi, aptuveni viena minūte.</p>
+<h1 data-t="virsraksts"></h1>
+<p class="sub" data-t="apaksvirsraksts"></p>
+<p class="def" data-t="definicija"></p>
 
 <section id="formSection">
-  <p>Novērtē, kā Tu jūties tieši šajā brīdī. Katrā rindā izvēlies vienu punktu no 0 līdz 8 starp diviem pretējiem vārdiem. Jo tuvāk punkts ir vārdam, jo vairāk tas atbilst Tavām sajūtām. Nav pareizu vai nepareizu atbilžu, atbildi raitā tempā.</p>
-  <p class="note">Aptauju var aizpildīt vairākas reizes. Katrs mērījums parādās afekta aplī, un bultiņas rāda, kā Tavs stāvoklis mainījās.</p>
+  <p data-t="instrukcija"></p>
+  <p class="note" data-t="instrukcija_piezime"></p>
   <ol class="items" id="items"></ol>
   <div class="actions">
-    <button class="btn" id="submitBtn" disabled>Saglabāt mērījumu</button>
-    <span class="progress" id="progress">Atbildēti 0 no 12</span>
-    <button class="btn quiet" id="cancelBtn" hidden>Atpakaļ uz rezultātiem</button>
+    <button class="btn" id="submitBtn" disabled data-t="poga_saglabat"></button>
+    <span class="progress" id="progress"></span>
+    <button class="btn quiet" id="cancelBtn" hidden data-t="poga_atpakal_uz_rezultatiem"></button>
   </div>
 </section>
 
 <section id="resultSection" hidden>
-  <h2 id="resTitle">Tavi mērījumi</h2>
+  <h2 id="resTitle" data-t="rezultati_virsraksts"></h2>
   <p id="resLead"></p>
   <div class="figure" id="figure"></div>
   <div class="legend">
-    <span><svg width="14" height="14"><circle cx="7" cy="7" r="5" fill="#183B6B"/></svg>valence un aktivizācija</span>
-    <span><svg width="14" height="14"><circle cx="7" cy="7" r="4.5" fill="#fff" stroke="#183B6B" stroke-width="2"/></svg>diagonālās skalas</span>
-    <span><svg width="30" height="14"><line x1="2" y1="7" x2="26" y2="7" stroke="#5F646E" stroke-width="2"/><path d="M22 3 L28 7 L22 11" fill="none" stroke="#5F646E" stroke-width="2"/></svg>pārmaiņa starp mērījumiem</span>
+    <span><svg width="14" height="14"><circle cx="7" cy="7" r="5" fill="#183B6B"/></svg><span data-t="legenda_pilnais_punkts"></span></span>
+    <span><svg width="14" height="14"><circle cx="7" cy="7" r="4.5" fill="#fff" stroke="#183B6B" stroke-width="2"/></svg><span data-t="legenda_tukss_punkts"></span></span>
+    <span><svg width="30" height="14"><line x1="2" y1="7" x2="26" y2="7" stroke="#5F646E" stroke-width="2"/><path d="M22 3 L28 7 L22 11" fill="none" stroke="#5F646E" stroke-width="2"/></svg><span data-t="legenda_bulta"></span></span>
   </div>
   <div class="actions">
-    <button class="btn" id="againBtn">Jauns mērījums</button>
-    <button class="btn quiet" id="undoBtn">Dzēst pēdējo mērījumu</button>
-    <button class="btn quiet" id="clearBtn">Dzēst visus mērījumus</button>
+    <button class="btn" id="againBtn" data-t="poga_jauns_merijums"></button>
+    <button class="btn quiet" id="undoBtn" data-t="poga_dzest_pedejo"></button>
+    <button class="btn quiet" id="clearBtn" data-t="poga_dzest_visus"></button>
   </div>
 
-  <h2>Mērījumu tabula</h2>
+  <h2 data-t="tabula_virsraksts"></h2>
   <div class="tablewrap">
     <table>
-      <thead><tr><th>Nr.</th><th>Laiks</th><th>Valence</th><th>Aktivizācija</th><th>Pozitīva aktivizācija pret negatīvu deaktivizāciju</th><th>Negatīva aktivizācija pret pozitīvu deaktivizāciju</th></tr></thead>
+      <thead><tr id="thead"></tr></thead>
       <tbody id="tbody"></tbody>
     </table>
   </div>
-  <p class="note">Katrs indekss ir trīs jautājumu vidējais skalā no 0 līdz 8, kur 4 ir viduspunkts.</p>
+  <p class="note" data-t="tabula_piezime"></p>
 
-  <h2>Kā lasīt attēlu</h2>
-  <p>Kodola afektu var aprakstīt ar divām pamata dimensijām: cik patīkami vai nepatīkami Tu jūties (valence) un cik enerģisks vai miegains Tu esi (aktivizācija) (Russell, 1980). Šī aptauja tās mēra divos veidos. Pilnais punkts atrodas uz horizontālās un vertikālās ass. Tukšais punkts atrodas uz abām diagonālajām asīm (Västfjäll et al., 2002).</p>
-  <p>Elipse savieno abus viena mērījuma punktus. Ja punkti ir tuvu, abi mērīšanas veidi Tavu stāvokli apraksta līdzīgi. Ja tālu, Tavas atbildes uz dažādiem vārdiem nav pilnīgi saskaņotas, un tas šādā īsā aptaujā ir parasti.</p>
-  <p>Uzbrauc ar peli uz ovāla vai pieskaries tam, un parādīsies emociju vārdi, kas raksturīgi šim afekta apļa apgabalam (Scherer, 2005).</p>
-  <p>Bultiņas savieno mērījumu centrus laika secībā. Pēdējais mērījums ir tumši zils. Arī stundas laikā cilvēka afekts parasti pārvietojas, un tas ir normāli. Tas ir stāvoklis konkrētā brīdī, nevis personības iezīme.</p>
-  <p class="note">Šī latviskā versija nav normēta. Atbildes netiek nosūtītas nekur, tās glabājas tikai šajā pārlūkā. Statistikai anonīmi tiek skaitīts tikai lapas apmeklējums un aizpildīšanas fakts. Ja izmanto kopīgu datoru, beigās nospied “Dzēst visus mērījumus”.</p>
+  <h2 data-t="lasit_virsraksts"></h2>
+  <div id="lasit"></div>
+  <p class="note" data-t="privatums"></p>
 </section>
 
 <section class="refs">
-  <h2>Avoti</h2>
-  <p>Russell, J. A. (1980). A circumplex model of affect. <i>Journal of Personality and Social Psychology, 39</i>(6), 1161–1178. https://doi.org/10.1037/h0077714</p>
-  <p>Västfjäll, D., Friman, M., Gärling, T., &amp; Kleiner, M. (2002). The measurement of core affect: A Swedish self-report measure derived from the affect circumplex. <i>Scandinavian Journal of Psychology, 43</i>(1), 19–31. https://doi.org/10.1111/1467-9450.00265</p>
-  <p>Yik, M., Russell, J. A., &amp; Steiger, J. H. (2011). A 12-Point Circumplex Structure of Core Affect. <i>Emotion, 11</i>(4), 705–731. https://doi.org/10.1037/a0023980</p>
-  <p>Scherer, K. R. (2005). What are emotions? And how can they be measured? <i>Social Science Information, 44</i>(4), 695–729. https://doi.org/10.1177/0539018405058216</p>
-  <p>Latvisko versiju un emociju vārdu tulkojumus sagatavojis Edmunds Vanags.</p>
+  <h2 data-t="avoti_virsraksts"></h2>
+  <div id="avoti"></div>
+  <p data-t="avoti_piezime"></p>
 </section>
 </main>
 
 <script>
 (function(){
   "use strict";
-  // Panti oriģinālajā secībā; s = indekss, kuram pants pieder
-  var ITEMS = [
-    {l:"pesimistisks/a", r:"optimistisks/a", s:"pa"},
-    {l:"miegains/a", r:"modrs/a", s:"a"},
-    {l:"bēdīgs/a", r:"priecīgs/a", s:"v"},
-    {l:"nemierīgs/a", r:"mierīgs/a", s:"ua"},
-    {l:"neapmierināts/a", r:"apmierināts/a", s:"v"},
-    {l:"vienaldzīgs/a", r:"iesaistīts/a", s:"pa"},
-    {l:"notrulināts/a", r:"enerģisks/a", s:"a"},
-    {l:"garlaikots/a", r:"ieinteresēts/a", s:"pa"},
-    {l:"nervozs/a", r:"atvieglots/a", s:"ua"},
-    {l:"saspringts/a", r:"rāms/a", s:"ua"},
-    {l:"pasīvs/a", r:"aktīvs/a", s:"a"},
-    {l:"nomākts/a", r:"laimīgs/a", s:"v"}
-  ];
-  var AREAS = [
-    {n:"Pozitīvs afekts", w:"priecīgs/a, laimīgs/a, līksms/a, gandarīts/a, jūtos labi, iemīlējies/usies, ieinteresēts/a, apņēmīgs/a"},
-    {n:"Pozitīvs afekts un aktivizācija", w:"patīkami satraukts/a, aizrautīgs/a, triumfējošs/a, pašpārliecināts/a, drosmīgs/a, piedzīvojumu kārs/a, bezrūpīgs/a, uzjautrināts/a, kaislīgs/a, gaidu pilns/a, pārliecināts/a"},
-    {n:"Aktivizācija", w:"uzbudināts/a, pārsteigts/a, iekārīgs/a, iedomīgs/a, jūtos pārāks/a, saspringts/a, satraukts/a, nobijies/usies, naidīgs/a, kareivīgs/a, saniknots/a, nokaitināts/a"},
-    {n:"Negatīvs afekts un aktivizācija", w:"dusmīgs/a, frustrēts/a, nepacietīgs/a, sašutis/usi, greizsirdīgs/a, skaudīgs/a, izaicinošs/a, nievājošs/a, pretīgs/a, riebuma pilns/a, neapmierināts/a, aizdomīgs/a"},
-    {n:"Negatīvs afekts", w:"aizvainots/a, rūgtuma pilns/a, neuzticīgs/a, izbiedēts/a, vīlies/usies, nožēlojams/a, apjucis/usi, skumjš/a, drūms/a, neērti"},
-    {n:"Negatīvs afekts un deaktivizācija", w:"bezcerīgs/a, nomākts/a, izmisis/usi, vainīgs/a, nokaunējies/usies, noraizējies/usies, samulsis/usi, apātisks/a, gurdens/a, melanholisks/a, neizlēmīgs/a, garlaikots/a, padevies/usies"},
-    {n:"Deaktivizācija", w:"noguris/usi, miegains/a, šaubīgs/a, ilgu pilns/a, domu pilns/a, nopietns/a, apzinīgs/a, godbijīgs/a, mierpilns/a, vērojošs/a"},
-    {n:"Pozitīvs afekts un deaktivizācija", w:"rāms/a, apmierināts/a, mierā, atpūties/usies, svinīgs/a, draudzīgs/a, pieklājīgs/a, līdzjūtīgs/a, uzmanīgs/a, cerību pilns/a"}
-  ];
+  // Pantu piederība indeksiem oriģinālajā secībā (anketas atslēga). Nemainīt.
+  var KEYS = ["pa","a","v","ua","v","pa","a","pa","ua","ua","a","v"];
+  var ITEMS = TEKSTI.panti.map(function(p,i){ return {l:p[0], r:p[1], s:KEYS[i]}; });
+  var AREAS = TEKSTI.apgabali.map(function(x){ return {n:x[0], w:x[1]}; });
   var KEY = "scas-merijumi-v1";
   var answers = new Array(12).fill(null);
   var data = load();
@@ -176,6 +258,14 @@ tr.latest td{font-weight:700}
   function save(){
     try{ localStorage.setItem(KEY, JSON.stringify(data)); }catch(e){}
   }
+  function fill(t, o){ return String(t).replace(/\{(\w+)\}/g, function(m,k){ return (o && k in o) ? o[k] : m; }); }
+  // tekstu ielikšana lapā
+  document.title = TEKSTI.lapas_nosaukums;
+  Array.prototype.forEach.call(document.querySelectorAll("[data-t]"), function(e){ e.innerHTML = TEKSTI[e.getAttribute("data-t")]; });
+  TEKSTI.tabula_kolonnas.forEach(function(c){ var th=document.createElement("th"); th.innerHTML=c; document.getElementById("thead").appendChild(th); });
+  TEKSTI.lasit_rindkopas.forEach(function(c){ var p=document.createElement("p"); p.innerHTML=c; document.getElementById("lasit").appendChild(p); });
+  TEKSTI.avoti.forEach(function(c){ var p=document.createElement("p"); p.innerHTML=c; document.getElementById("avoti").appendChild(p); });
+
   function fmt(x){ return x.toFixed(1).replace(".", ","); }
   function pad(n){ return (n<10?"0":"")+n; }
 
@@ -184,7 +274,7 @@ tr.latest td{font-weight:700}
   ITEMS.forEach(function(it, i){
     var li = document.createElement("li"); li.className = "item";
     var q = document.createElement("p"); q.className = "q";
-    q.textContent = (i+1) + ". Cik " + it.l + " vai " + it.r + " Tu šobrīd jūties?";
+    q.textContent = (i+1) + ". " + fill(TEKSTI.jautajums, {l:it.l, r:it.r});
     var row = document.createElement("div"); row.className = "row";
     var al = document.createElement("span"); al.className = "anchor l"; al.textContent = it.l;
     var ar = document.createElement("span"); ar.className = "anchor r"; ar.textContent = it.r;
@@ -207,7 +297,7 @@ tr.latest td{font-weight:700}
   var submitBtn = document.getElementById("submitBtn");
   function updateProgress(){
     var n = answers.filter(function(a){return a!==null;}).length;
-    document.getElementById("progress").textContent = "Atbildēti " + n + " no 12";
+    document.getElementById("progress").textContent = fill(TEKSTI.progress, {n:n});
     submitBtn.disabled = n < 12;
   }
   function resetForm(){
@@ -232,11 +322,11 @@ tr.latest td{font-weight:700}
   document.getElementById("cancelBtn").addEventListener("click", function(){ showResults(false); });
   document.getElementById("undoBtn").addEventListener("click", function(){
     if(!data.length) return;
-    if(!confirm("Dzēst pēdējo mērījumu?")) return;
+    if(!confirm(TEKSTI.apstiprinat_dzest_pedejo)) return;
     data.pop(); save(); data.length ? showResults(false) : showForm();
   });
   document.getElementById("clearBtn").addEventListener("click", function(){
-    if(!confirm("Dzēst visus mērījumus no šī pārlūka?")) return;
+    if(!confirm(TEKSTI.apstiprinat_dzest_visus)) return;
     data = []; save(); showForm();
   });
 
@@ -250,9 +340,9 @@ tr.latest td{font-weight:700}
     document.getElementById("formSection").hidden = true;
     document.getElementById("resultSection").hidden = false;
     var n = data.length;
-    document.getElementById("resLead").textContent = n === 1
-      ? "Šis ir Tavs pirmais mērījums. Aizpildi aptauju vēlreiz pēc kāda laika, un afekta aplī parādīsies, kā Tavs stāvoklis ir mainījies."
-      : "Tev ir " + n + " mērījumi. Bultiņas rāda, kā Tavs stāvoklis pārvietojās no viena mērījuma uz nākamo.";
+    document.getElementById("resLead").innerHTML = n === 1
+      ? TEKSTI.ievads_viens_merijums
+      : fill(TEKSTI.ievads_vairaki_merijumi, {n:n});
     draw(fresh); table();
     window.scrollTo(0,0);
   }
@@ -321,16 +411,17 @@ tr.latest td{font-weight:700}
     }
     // asu nosaukumi ar aptaujas vārdiem
     var G = {size:13, fill:"#5F646E"};
-    txt(base, CX, CY-R-44, "Aktivizācija", {size:17, weight:700});
-    txt(base, CX, CY-R-26, "modrs, enerģisks", G);
-    txt(base, CX, CY+R+26, "miegains, pasīvs", G);
-    txt(base, CX, CY+R+44, "Deaktivizācija", {size:17, weight:700});
-    txt(base, CX+R+22, CY-20, "Pozitīvs", {size:17, weight:700, anchor:"start"});
-    txt(base, CX+R+22, CY, "afekts", {size:17, weight:700, anchor:"start"});
-    txt(base, CX+R+22, CY+20, "priecīgs, laimīgs", Object.assign({anchor:"start"},G));
-    txt(base, CX-R-22, CY-20, "Negatīvs", {size:17, weight:700, anchor:"end"});
-    txt(base, CX-R-22, CY, "afekts", {size:17, weight:700, anchor:"end"});
-    txt(base, CX-R-22, CY+20, "bēdīgs, nomākts", Object.assign({anchor:"end"},G));
+    var T = TEKSTI.aplis;
+    txt(base, CX, CY-R-44, T.augsa, {size:17, weight:700});
+    txt(base, CX, CY-R-26, T.augsa_vardi, G);
+    txt(base, CX, CY+R+26, T.apaksa_vardi, G);
+    txt(base, CX, CY+R+44, T.apaksa, {size:17, weight:700});
+    txt(base, CX+R+22, CY-20, T.pa_labi[0], {size:17, weight:700, anchor:"start"});
+    txt(base, CX+R+22, CY, T.pa_labi[1], {size:17, weight:700, anchor:"start"});
+    txt(base, CX+R+22, CY+20, T.pa_labi_vardi, Object.assign({anchor:"start"},G));
+    txt(base, CX-R-22, CY-20, T.pa_kreisi[0], {size:17, weight:700, anchor:"end"});
+    txt(base, CX-R-22, CY, T.pa_kreisi[1], {size:17, weight:700, anchor:"end"});
+    txt(base, CX-R-22, CY+20, T.pa_kreisi_vardi, Object.assign({anchor:"end"},G));
     var c = (R+28)*S2;
     function corner(sx, sy, a, b, w){
       var x = CX + sx*(c+6), y0 = CY + sy*c + (sy<0 ? -36 : 0), an = sx>0 ? "start" : "end";
@@ -338,10 +429,10 @@ tr.latest td{font-weight:700}
       txt(base, x, y0+18, b, {size:15, weight:700, anchor:an});
       txt(base, x, y0+36, w, Object.assign({anchor:an},G));
     }
-    corner(1,-1,"Pozitīvs afekts/","aktivizācija","ieinteresēts, iesaistīts");
-    corner(-1,-1,"Negatīvs afekts/","aktivizācija","nervozs, saspringts");
-    corner(1,1,"Pozitīvs afekts/","deaktivizācija","atvieglots, rāms");
-    corner(-1,1,"Negatīvs afekts/","deaktivizācija","garlaikots, vienaldzīgs");
+    corner(1,-1,T.augsa_pa_labi[0],T.augsa_pa_labi[1],T.augsa_pa_labi_vardi);
+    corner(-1,-1,T.augsa_pa_kreisi[0],T.augsa_pa_kreisi[1],T.augsa_pa_kreisi_vardi);
+    corner(1,1,T.apaksa_pa_labi[0],T.apaksa_pa_labi[1],T.apaksa_pa_labi_vardi);
+    corner(-1,1,T.apaksa_pa_kreisi[0],T.apaksa_pa_kreisi[1],T.apaksa_pa_kreisi_vardi);
 
     // apgabala iezīmējums
     var wedge = el("path", {d:"", fill:"#183B6B", "fill-opacity":0.08, stroke:"none", visibility:"hidden"}, base);
@@ -358,16 +449,16 @@ tr.latest td{font-weight:700}
     }
     function showTip(i, evt){
       var m = data[i], c = centres[i], a = areaOf(c[0], c[1]), d = new Date(m.t);
-      var html = "<b>" + (i+1) + ". mērījums, " + pad(d.getHours()) + ":" + pad(d.getMinutes()) + "</b>";
+      var html = "<b>" + fill(TEKSTI.lodzins_virsraksts, {n:i+1, laiks:pad(d.getHours()) + ":" + pad(d.getMinutes())}) + "</b>";
       if(a.r < 0.75){
-        html += "<div class='area'>Tuvu viduspunktam</div><p class='words'>Neitrāls, līdzsvarots afekts. Neviens virziens nav izteikts.</p>";
+        html += "<div class='area'>" + TEKSTI.lodzins_centrs_nosaukums + "</div><p class='words'>" + TEKSTI.lodzins_centrs_teksts + "</p>";
         wedge.setAttribute("visibility","hidden");
       } else {
-        html += "<div class='area'>" + AREAS[a.k].n + (a.r < 2 ? ", viegli izteikts" : "") + "</div>" +
+        html += "<div class='area'>" + AREAS[a.k].n + (a.r < 2 ? TEKSTI.lodzins_viegli : "") + "</div>" +
           "<p class='words'>" + AREAS[a.k].w + "</p>";
         wedge.setAttribute("d", wedgePath(a.k)); wedge.setAttribute("visibility","visible");
       }
-      html += "<div class='hint'>Vārdi ir apgabala orientieri, nevis Tavs rezultāts.</div>";
+      html += "<div class='hint'>" + TEKSTI.lodzins_piezime + "</div>";
       tip.innerHTML = html; tip.hidden = false;
       var rect = box.getBoundingClientRect(), sv = svg.getBoundingClientRect(), sc = sv.width/800;
       var x = c[0]*sc + (sv.left-rect.left), y = c[1]*sc + (sv.top-rect.top);
