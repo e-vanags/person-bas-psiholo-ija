@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vadingtona ainava</title>
+<script data-goatcounter="https://slowscience.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+<style>
+:root{
+  --paper:#FFFFFF; --ink:#000000; --ink2:#4A4D55; --rule:#D5D8DE; --soft:#F2F3F5;
+  --accent:#183B6B;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--paper);color:var(--ink);
+  font-family:Calibri,Carlito,"Segoe UI",Arial,sans-serif;font-size:18px;line-height:1.45}
+main{max-width:1000px;margin:0 auto;padding:24px 20px 64px}
+a{color:var(--accent)}
+.back{display:inline-block;margin-bottom:24px;font-size:16px;text-decoration:none}
+.back:hover{text-decoration:underline}
+h1{font-size:34px;line-height:1.15;margin:0 0 8px}
+.sub{color:var(--ink2);margin:0 0 20px;font-size:19px;max-width:70ch}
+h2{font-size:24px;margin:40px 0 12px}
+p{max-width:72ch;margin:0 0 12px}
+.note{color:var(--ink2);font-size:16px}
+.controls{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;padding:14px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin:8px 0 16px}
+.btn{font:inherit;font-size:17px;padding:8px 16px;border:1.5px solid var(--accent);border-radius:6px;background:var(--paper);color:var(--accent);cursor:pointer}
+.btn.primary{background:var(--accent);color:#fff}
+.btn:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+label.chk{display:flex;align-items:center;gap:8px;font-size:17px;cursor:pointer}
+.stage{position:relative;width:100%}
+canvas{display:block;width:100%;height:auto;touch-action:manipulation}
+.tally{display:flex;flex-wrap:wrap;gap:8px 28px;font-size:17px;margin:10px 0 0;color:var(--ink2)}
+.tally b{color:var(--ink)}
+ol.refs{padding-left:0;list-style:none}
+ol.refs li{margin:0 0 8px;padding-left:2em;text-indent:-2em;font-size:16px}
+</style>
+</head>
+<body>
+<main>
+<a class="back" href="index.html">← Visi rīki un aptaujas</a>
+<h1>Vadingtona ainava: viens sākums, dažādi ceļi</h1>
+<p class="sub">Visas bumbas sāk vienā un tajā pašā punktā. Sīki, nejauši grūdieni pašā sākumā nosaka, kurā ielejā bumba nonāks. Kad bumba ir ielejā, tās sienas to notur.</p>
+
+<div class="controls">
+  <button class="btn primary" id="run" type="button">Palaist bumbas</button>
+  <button class="btn" id="one" type="button">Palaist vienu bumbu</button>
+  <button class="btn" id="clear" type="button">Notīrīt</button>
+  <label class="chk"><input type="checkbox" id="trails" checked> Rādīt ceļus</label>
+</div>
+
+<div class="stage"><canvas id="cv" width="1000" height="770" role="img" aria-label="Ainava ar trim ielejām. Bumbas ripo no virsotnes un nonāk dažādās ielejās."></canvas></div>
+<div class="tally" id="tally" aria-live="polite"></div>
+
+<h2>Kā lasīt šo modeli?</h2>
+<p>Konrāds Vadingtons attīstību attēloja kā bumbu, kas ripo lejup pa ainavu ar ielejām un grēdām (Waddington, 1957). Ielejas ir iespējamie attīstības ceļi. Grēdas starp tām notur bumbu izvēlētajā ielejā. To viņš sauca par kanalizāciju.</p>
+<p>Šeit ainava ir izmantota kā metafora personībai. Ainavas reljefu veido gēni un agrīnā vide. Bumbas ceļu nosaka arī nejauši grūdieni, piemēram, notikumi, attiecības un iespējas. Augšā, kur ainava ir lēzena, pat mazs grūdiens var mainīt virzienu. Lejā ielejas ir dziļas, un bumbu no tām izkustināt ir grūti.</p>
+<p class="note">Modelis ir kvalitatīva metafora, nevis mērījums. Ieleju nosaukumi ir ilustratīvi piemēri, nevis personības tipi.</p>
+
+<h2>Literatūra</h2>
+<ol class="refs">
+<li>Ferrell, J. E., Jr. (2012). Bistability, bifurcations, and Waddington’s epigenetic landscape. Current Biology, 22(11), R458–R466. https://doi.org/10.1016/j.cub.2012.03.045</li>
+<li>Waddington, C. H. (1957). The strategy of the genes. George Allen &amp; Unwin.</li>
+</ol>
+</main>
+
+<script>
+(function(){
+"use strict";
+var cv=document.getElementById("cv"), ctx=cv.getContext("2d");
+var W=1000, H=770;
+
+/* ---------- ainava (u: pa labi, v: uz aizmuguri) ---------- */
+function g(x,y,cx,cy,s){var dx=x-cx,dy=y-cy;return Math.exp(-(dx*dx+dy*dy)/(2*s*s));}
+var START={u:0,v:0.58}, RH=0.20, V0=0.22, SPREAD=0.85, FRIC=1.3;
+var VALLEYS=[
+  {x:-0.58,y:-0.02,name:"Atvērts un sociāls"},
+  {x: 0.00,y:-0.62,name:"Kluss un pārdomāts"},
+  {x: 0.58,y:-0.02,name:"Impulsīvs un drosmīgs"}];
+function base(u,v){
+  var back=Math.max(0,v-0.62);
+  var z=1.05*g(u,v,START.u,START.v,0.26)+6.0*back*back
+       +0.62*g(u,v,-0.58,0.40,0.19)+0.62*g(u,v,0.58,0.40,0.19)
+       +RH*(g(u,v,-0.28,-0.28,0.10)+g(u,v,0.28,-0.28,0.10));
+  for(var i=0;i<VALLEYS.length;i++) z-=(i===1?0.24:0.38)*g(u,v,VALLEYS[i].x,VALLEYS[i].y,i===1?0.17:0.21);
+  return z+0.15*v;}
+function wall(u,v){var r=Math.abs(u)+Math.abs(v);return r>0.86?12*(r-0.86)*(r-0.86):0;}
+function h(u,v){return base(u,v)+wall(u,v);}
+function hv(u,v){return base(u,v);}
+function grad(x,y){var e=1e-3;return [(h(x+e,y)-h(x-e,y))/(2*e),(h(x,y+e)-h(x,y-e))/(2*e)];}
+
+/* ---------- projekcija ---------- */
+var CX=W/2, CY=440, AX=440, AY=175, AZ=180;
+function P(u,v,z){return [CX+u*AX, CY-v*AY-z*AZ];}
+
+/* ---------- rombveida siets: x,y režģis, u=(x-y)/2, v=(x+y)/2 ---------- */
+var N=56, grid=[], quads=[];
+function uv(i,j){var x=-1+2*i/N,y=-1+2*j/N;return [(x-y)/2,(x+y)/2];}
+for(var j=0;j<=N;j++){grid[j]=[];for(var i=0;i<=N;i++){var q=uv(i,j);grid[j][i]=P(q[0],q[1],hv(q[0],q[1]));}}
+for(j=0;j<N;j++)for(i=0;i<N;i++){var c=uv(i+0.5,j+0.5);quads.push([i,j,c[1]]);}
+quads.sort(function(a,b){return b[2]-a[2];}); // no aizmugures uz priekšu
+
+function drawTerrain(){
+  ctx.lineWidth=0.7; ctx.strokeStyle="#7A7D85"; ctx.fillStyle="#FFFFFF";
+  for(var k=0;k<quads.length;k++){var i=quads[k][0],j=quads[k][1];
+    var a=grid[j][i],b=grid[j][i+1],c=grid[j+1][i+1],d=grid[j+1][i];
+    ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.lineTo(c[0],c[1]);ctx.lineTo(d[0],d[1]);ctx.closePath();
+    ctx.fill();ctx.stroke();}}
+
+function label(txt,x,y,size,align,weight){
+  ctx.font=(weight||"400")+" "+size+"px Calibri, Carlito, Arial, sans-serif";
+  ctx.textAlign=align||"center"; ctx.textBaseline="middle";
+  ctx.lineWidth=5; ctx.strokeStyle="rgba(255,255,255,0.9)"; ctx.strokeText(txt,x,y);
+  ctx.fillStyle="#000"; ctx.fillText(txt,x,y);}
+
+function drawLabels(){
+  var t=P(START.u,START.v,hv(START.u,START.v));
+  label("Sākums",t[0],t[1]-64,22); label("(iedzimtas tendences)",t[0],t[1]-40,20);
+  var l=P(-0.58,0.40,hv(-0.58,0.40)), r=P(0.58,0.40,hv(0.58,0.40));
+  label("Grūti mainīt",l[0]-20,l[1]-28,20); label("Grūti mainīt",r[0]+20,r[1]-28,20);
+  var a=P(VALLEYS[0].x,VALLEYS[0].y,0), b=P(VALLEYS[1].x,VALLEYS[1].y,0), c=P(VALLEYS[2].x,VALLEYS[2].y,0);
+  label(VALLEYS[0].name,a[0]-40,a[1]+118,21);
+  label(VALLEYS[1].name,b[0],b[1]+122,21);
+  label(VALLEYS[2].name,c[0]+40,c[1]+118,21);
+  label("Ainavu veido gēni un agrīnā vide",W/2,H-20,22,"center","600");}
+
+/* ---------- bumbas ---------- */
+var balls=[], queue=0, nextAt=0, tally=[0,0,0];
+var COLORS=["#E8772E","#D9621C","#F08A3E","#C9561A","#EE7F33","#E06A24","#F39548"];
+function rnd(){return Math.random();}
+function gauss(){var u=rnd()||1e-9,v=rnd();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v);}
+function spawn(){
+  var ang=-Math.PI/2+(rnd()-0.5)*Math.PI*SPREAD; // grūdiens uz priekšu, nejaušā virzienā
+  var sp=V0*(0.85+0.3*rnd());
+  balls.push({x:START.u+gauss()*0.004,y:START.v+gauss()*0.004,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp,
+    trail:[],done:false,col:COLORS[balls.length%COLORS.length],t:0});}
+function step(b,dt){
+  if(b.done) return;
+  var gr=grad(b.x,b.y), G=0.55, FR=FRIC, NZ=0.05;
+  var nz=NZ*Math.sqrt(dt);
+  b.vx+=(-G*gr[0]-FR*b.vx)*dt+nz*gauss();
+  b.vy+=(-G*gr[1]-FR*b.vy)*dt+nz*gauss();
+  b.x+=b.vx*dt; b.y+=b.vy*dt; b.t+=dt;
+  if(b.t%0.08<dt) b.trail.push([b.x,b.y]);
+  var spd=Math.hypot(b.vx,b.vy);
+  if(b.t>6 && spd<0.004){ b.done=true;
+    var best=0,bd=1e9; for(var k=0;k<3;k++){var d=Math.hypot(b.x-VALLEYS[k].x,b.y-VALLEYS[k].y);if(d<bd){bd=d;best=k;}}
+    tally[best]++; showTally(); }}
+function showTally(){
+  var el=document.getElementById("tally"), n=tally[0]+tally[1]+tally[2];
+  if(!n){el.innerHTML="";return;}
+  el.innerHTML=VALLEYS.map(function(v,k){return v.name+": <b>"+tally[k]+"</b>";}).join("")+"";}
+
+function drawBalls(){
+  var showT=document.getElementById("trails").checked;
+  for(var i=0;i<balls.length;i++){var b=balls[i];
+    if(showT && b.trail.length>1){
+      ctx.save(); ctx.setLineDash([7,6]); ctx.lineWidth=2; ctx.strokeStyle="rgba(0,0,0,0.75)";
+      ctx.beginPath(); for(var k=0;k<b.trail.length;k++){var q=b.trail[k],p=P(q[0],q[1],hv(q[0],q[1])); if(k)ctx.lineTo(p[0],p[1]); else ctx.moveTo(p[0],p[1]);}
+      var cur=P(b.x,b.y,hv(b.x,b.y)); ctx.lineTo(cur[0],cur[1]); ctx.stroke(); ctx.restore();}}
+  for(i=0;i<balls.length;i++){b=balls[i]; var p=P(b.x,b.y,hv(b.x,b.y)), R=13;
+    var gr=ctx.createRadialGradient(p[0]-4,p[1]-R-4,2,p[0],p[1]-R,R);
+    gr.addColorStop(0,"#FFD2A8"); gr.addColorStop(0.35,b.col); gr.addColorStop(1,"#9C4210");
+    ctx.beginPath(); ctx.arc(p[0],p[1]-R+2,R,0,2*Math.PI); ctx.fillStyle=gr; ctx.fill();}}
+
+/* ---------- cikls ---------- */
+var last=null, simT=0, SPEED=0.55; // lēna kustība
+function frame(ts){
+  if(last===null) last=ts; var real=Math.min(0.05,(ts-last)/1000); last=ts;
+  var dt=real*SPEED; simT+=dt;
+  if(queue>0 && simT>=nextAt){spawn(); queue--; nextAt=simT+0.9;}
+  for(var s=0;s<4;s++) for(var i=0;i<balls.length;i++) step(balls[i],dt/4);
+  ctx.clearRect(0,0,W,H); ctx.fillStyle="#fff"; ctx.fillRect(0,0,W,H);
+  drawTerrain(); drawBalls(); drawLabels();
+  requestAnimationFrame(frame);}
+
+function resize(){var dpr=Math.max(1,Math.min(2,window.devicePixelRatio||1));
+  cv.width=W*dpr; cv.height=H*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);}
+window.addEventListener("resize",resize); resize();
+
+document.getElementById("run").addEventListener("click",function(){queue+=7; if(nextAt<simT) nextAt=simT;});
+document.getElementById("one").addEventListener("click",function(){queue+=1; if(nextAt<simT) nextAt=simT;});
+document.getElementById("clear").addEventListener("click",function(){balls=[];queue=0;tally=[0,0,0];showTally();});
+window.__test={get balls(){return balls;},get tally(){return tally;},h:h,grad:grad,VALLEYS:VALLEYS};
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
