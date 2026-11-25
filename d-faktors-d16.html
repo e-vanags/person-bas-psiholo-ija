@@ -336,7 +336,7 @@
   var lastXY = null;
   var REF = (function(){ var a=0.906, r=a/(2-a); return {mu:2.14, sd:0.67*Math.sqrt(2/(1+r)), rho:r}; })();
   var CHARS = [["Teds Laso",1.30,"r"],["Frodo",1.65,"l"],["dr. Hauss",2.85,"r"],["Džeimss Bonds",3.15,"l"],
-               ["Dekstera",3.55,"r"],["Hanibals Lekters",4.35,"l"],["Antons Čigurs",4.75,"l"]];
+               ["Deksters",3.55,"r"],["Hanibals Lekters",4.35,"l"],["Antons Čigurs",4.75,"l"]];
   function densAt(x,y){
     var zx=(x-REF.mu)/REF.sd, zy=(y-REF.mu)/REF.sd, r=REF.rho;
     return Math.exp(-1/(2*(1-r*r))*(zx*zx-2*r*zx*zy+zy*zy));
