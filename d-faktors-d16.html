@@ -91,6 +91,14 @@
   .ilist li{font-size:15px;color:var(--muted);line-height:1.45;padding:10px 14px;border:1px solid var(--line);border-radius:10px}
   .ilist li .lab{display:block;font-size:12.5px;color:var(--faint);margin-bottom:2px}
 
+
+  .density-wrap{margin:32px 0 6px;border-top:1px solid var(--line);padding-top:24px}
+  .density-title{font-weight:600;font-size:17px;margin:0 0 4px}
+  .density-sub{font-size:14px;color:var(--faint);margin:0 0 16px}
+  .plot{width:100%;max-width:440px;margin:0 auto;display:block}
+  .plot canvas{width:100%;height:auto;display:block}
+  .density-cap{font-size:14px;color:var(--muted);line-height:1.55;margin:16px 0 0}
+  .density-cap .red{color:var(--red);font-weight:600}
   details{border-top:1px solid var(--line);margin-top:8px;padding-top:6px}
   summary{cursor:pointer;font-weight:600;font-size:15px;padding:12px 0;list-style:none;color:var(--accent)}
   summary::-webkit-details-marker{display:none}
@@ -195,6 +203,14 @@
       <p class="items-sub">Apgalvojumi, kuros Tava atbilde bija vistuvāk tumšajam polam</p>
       <ul class="ilist" id="topitems"></ul>
 
+      <div class="density-wrap">
+        <p class="density-title">Vai abas apgalvojumu puses saka vienu un to pašu?</p>
+        <p class="density-sub">Melnais punkts rāda Tavu rezultātu. Sarkanie punkti ir kino tēli salīdzinājumam.</p>
+        <div class="plot"><canvas id="dens" width="440" height="440" aria-label="Tiešie pret apgrieztajiem apgalvojumiem"></canvas></div>
+        <p class="density-cap">Uz horizontālās ass ir Tavs D rādītājs pēc astoņiem tieši formulētajiem apgalvojumiem (piemēram, „Atriebībai jābūt ātrai un nežēlīgai”), uz vertikālās pēc astoņiem apgrieztajiem (piemēram, „Es izvairos pazemot citus”). Abas puses mēra to pašu, tāpēc parasti punkts atrodas tuvu diagonālei. <span id="biascap">Ja Tavs punkts ir krietni zem diagonāles, Tu, iespējams, esi piekritis vai piekritusi gandrīz visam. Ja krietni virs, Tu, iespējams, neesi piekritis vai piekritusi gandrīz nekam.</span></p>
+        <p class="density-cap" style="font-size:13px;color:var(--faint)">Pelēkais sadalījums veidots pēc publicētā D16 vidējā (2,14) un standartnovirzes (0,67) vācu tiešsaistes izlasē (Bader et al., 2022). Pušu savstarpējā korelācija aprēķināta no skalas iekšējās saskaņotības. Tas nav Latvijas normu sadalījums. <span class="red">Kino tēlu vietas ir izdomātas ilustrācijai, nevis izmērītas.</span></p>
+      </div>
+
       <div class="note" style="margin-top:26px">
         Apzīmējumi „zema”, „vidēja” un „augsta” attiecas tikai uz skalas viduspunktu, nevis uz normām vai klīnisku robežvērtību. Latviskajai versijai nav normu, un rezultāts nav diagnoze. Izmanto to tikai kā mācību piemēru.
       </div>
@@ -216,7 +232,7 @@
           <p><strong>Apgrieztā vērtēšana.</strong> Astoņi apgalvojumi ir formulēti pretējā virzienā (piemēram, „Es izvairos pazemot citus”), un to vērtējums pirms vidējā aprēķina tiek apgriezts. Tas palīdz mazināt automātisku piekrišanu.</p>
           <p><strong>Tikai kopīgais kodols.</strong> Autori uzsver, ka šie apgalvojumi nav paredzēti atsevišķu tumšo iezīmju mērīšanai. Tāpēc rīks nerāda apakšskalas.</p>
           <p><strong>Ierobežojumi.</strong> Šī ir mācību vajadzībām sagatavota latviskota versija, nevis validēta adaptācija ar atgriezenisko tulkojumu. Sociāli vēlamas atbildes šādās aptaujās var pazemināt rezultātu.</p>
-          <p style="color:var(--faint)">Avoti: Moshagen, M., Hilbig, B. E., &amp; Zettler, I. (2018). The dark core of personality. Psychological Review, 125(5), 656–688. Moshagen, M., Zettler, I., &amp; Hilbig, B. E. (2020). Measuring the dark core of personality. Psychological Assessment, 32(2), 182–196.</p>
+          <p style="color:var(--faint)">Avoti: Moshagen, M., Hilbig, B. E., &amp; Zettler, I. (2018). The dark core of personality. Psychological Review, 125(5), 656–688. Moshagen, M., Zettler, I., &amp; Hilbig, B. E. (2020). Measuring the dark core of personality. Psychological Assessment, 32(2), 182–196. Bader, M., Horsten, L. K., Hilbig, B. E., Zettler, I., &amp; Moshagen, M. (2022). Measuring the dark core of personality in German: Psychometric properties, measurement invariance, predictive validity, and self-other agreement. Journal of Personality Assessment, 104(5), 660–673.</p>
         </div>
       </details>
 
@@ -316,6 +332,72 @@
   }
   function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
 
+  // Reference density: D16 M=2.14, SD=0.67 (Bader et al., 2022); halves r from alpha .906 (Spearman-Brown)
+  var lastXY = null;
+  var REF = (function(){ var a=0.906, r=a/(2-a); return {mu:2.14, sd:0.67*Math.sqrt(2/(1+r)), rho:r}; })();
+  var CHARS = [["Teds Laso",1.30,"r"],["Frodo",1.65,"l"],["dr. Hauss",2.85,"r"],["Džeimss Bonds",3.15,"l"],
+               ["Dekstera",3.55,"r"],["Hanibals Lekters",4.35,"l"],["Antons Čigurs",4.75,"l"]];
+  function densAt(x,y){
+    var zx=(x-REF.mu)/REF.sd, zy=(y-REF.mu)/REF.sd, r=REF.rho;
+    return Math.exp(-1/(2*(1-r*r))*(zx*zx-2*r*zx*zy+zy*zy));
+  }
+  function ramp(t){
+    var st=[[0,255,255,255],[0.25,230,230,230],[0.5,189,189,189],[0.75,140,140,140],[1,77,77,77]];
+    for(var i=1;i<st.length;i++){ if(t<=st[i][0]){ var a=st[i-1],b=st[i],f=(t-a[0])/(b[0]-a[0]);
+      return [Math.round(a[1]+(b[1]-a[1])*f),Math.round(a[2]+(b[2]-a[2])*f),Math.round(a[3]+(b[3]-a[3])*f)]; } }
+    return [77,77,77];
+  }
+  function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+  function drawDensity(){
+    if(!lastXY) return;
+    var cv=$("dens"); if(!cv) return;
+    var W=cv.clientWidth||400, H=W, dpr=window.devicePixelRatio||1;
+    cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr); cv.style.height=H+"px";
+    var ctx=cv.getContext("2d"); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,W,H);
+    var mL=W*0.12, mR=W*0.04, mT=W*0.04, mB=W*0.12, pw=W-mL-mR, ph=H-mT-mB;
+    function X(v){return mL+(v-1)/4*pw;} function Y(v){return mT+(1-(v-1)/4)*ph;}
+    var G=90, off=document.createElement("canvas"); off.width=G; off.height=G;
+    var octx=off.getContext("2d"), img=octx.createImageData(G,G), vals=[], mx=0;
+    for(var yi=0;yi<G;yi++){for(var xi=0;xi<G;xi++){ var x=1+(xi+0.5)/G*4, y=1+(1-(yi+0.5)/G)*4, v=densAt(x,y); vals.push(v); if(v>mx)mx=v; }}
+    for(var k=0;k<G*G;k++){ var c=ramp(Math.pow(vals[k]/mx,0.85)); img.data[k*4]=c[0];img.data[k*4+1]=c[1];img.data[k*4+2]=c[2];img.data[k*4+3]=255; }
+    octx.putImageData(img,0,0);
+    ctx.save();ctx.beginPath();ctx.rect(mL,mT,pw,ph);ctx.clip();ctx.imageSmoothingEnabled=true;ctx.drawImage(off,mL,mT,pw,ph);ctx.restore();
+    ctx.strokeStyle="#D2D2D2";ctx.lineWidth=1;ctx.strokeRect(mL+0.5,mT+0.5,pw,ph);
+    ctx.strokeStyle="rgba(120,120,120,0.45)";ctx.setLineDash([2,4]);
+    ctx.beginPath();ctx.moveTo(X(3),mT);ctx.lineTo(X(3),mT+ph);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(mL,Y(3));ctx.lineTo(mL+pw,Y(3));ctx.stroke();
+    ctx.strokeStyle="#141414";ctx.setLineDash([5,4]);ctx.lineWidth=1.2;
+    ctx.beginPath();ctx.moveTo(X(1),Y(1));ctx.lineTo(X(5),Y(5));ctx.stroke();ctx.setLineDash([]);
+    var fs=Math.max(10,Math.round(W/38));
+    ctx.fillStyle="#A5281B";ctx.font=fs+"px Inter, sans-serif";ctx.textBaseline="top";
+    ctx.textAlign="left";ctx.fillText("nepiekrīti gandrīz nekam",X(1)+8,Y(5)+8);
+    ctx.textAlign="right";ctx.textBaseline="bottom";ctx.fillText("piekrīti gandrīz visam",X(5)-8,Y(1)-8);
+    // characters
+    CHARS.forEach(function(c){
+      var cx=X(c[1]), cy=Y(c[1]), s=5;
+      ctx.beginPath();ctx.moveTo(cx,cy-s);ctx.lineTo(cx+s,cy);ctx.lineTo(cx,cy+s);ctx.lineTo(cx-s,cy);ctx.closePath();
+      ctx.fillStyle="#A5281B";ctx.fill();ctx.lineWidth=1;ctx.strokeStyle="#fff";ctx.stroke();
+      ctx.fillStyle="#A5281B";ctx.font=fs+"px Inter, sans-serif";ctx.textBaseline="middle";
+      if(c[2]==="r"){ctx.textAlign="left";ctx.fillText(c[0],cx+9,cy+7);} else {ctx.textAlign="right";ctx.fillText(c[0],cx-9,cy-6);}
+    });
+    // axes labels
+    ctx.fillStyle="#7A7A7A";ctx.font=(fs)+"px Inter, sans-serif";ctx.textAlign="center";ctx.textBaseline="top";
+    [1,2,3,4,5].forEach(function(t){ctx.fillText(String(t),X(t),mT+ph+5);});
+    ctx.textAlign="right";ctx.textBaseline="middle";
+    [1,2,3,4,5].forEach(function(t){ctx.fillText(String(t),mL-6,Y(t));});
+    ctx.fillStyle="#4A4A4A";ctx.font="600 "+fs+"px Inter, sans-serif";ctx.textAlign="center";ctx.textBaseline="alphabetic";
+    ctx.fillText("Tieši formulētie apgalvojumi",mL+pw/2,H-4);
+    ctx.save();ctx.translate(fs*0.6,mT+ph/2);ctx.rotate(-Math.PI/2);ctx.textBaseline="top";
+    ctx.fillText("Apgrieztie apgalvojumi",0,0);ctx.restore();
+    // you
+    var px=X(lastXY.x), py=Y(lastXY.y);
+    ctx.beginPath();ctx.arc(px,py,6.5,0,Math.PI*2);ctx.fillStyle="#141414";ctx.fill();ctx.lineWidth=3;ctx.strokeStyle="#fff";ctx.stroke();
+    var lab="Tu";ctx.font="600 12px Inter, sans-serif";var tw=ctx.measureText(lab).width,padx=6,bh=18,below=(py-12-bh<mT);
+    var by=below?py+12:py-12-bh,bx=px-tw/2-padx; if(bx<2)bx=2; if(bx+tw+padx*2>W-2)bx=W-2-(tw+padx*2);
+    ctx.fillStyle="#141414";roundRect(ctx,bx,by,tw+padx*2,bh,5);ctx.fill();
+    ctx.fillStyle="#fff";ctx.textAlign="left";ctx.textBaseline="middle";ctx.fillText(lab,bx+padx,by+bh/2+0.5);
+  }
+
   function finish(){
     var sum=0;
     for(var i=0;i<N;i++){ sum += scored(i); }
@@ -351,8 +433,14 @@
         ul.appendChild(li);
       });
     }
+    var dS=0,rS=0,dN=0,rN=0;
+    for(var q=0;q<N;q++){ if(ITEMS[q].rev){ rS+=scored(q); rN++; } else { dS+=scored(q); dN++; } }
+    lastXY = {x:dS/dN, y:rS/rN};
+    var pf = gender==="m" ? "piekritis" : gender==="f" ? "piekritusi" : "piekritis vai piekritusi";
+    $("biascap").textContent = "Ja Tavs punkts ir krietni zem diagonāles, Tu, iespējams, esi "+pf+" gandrīz visam. Ja krietni virs, Tu, iespējams, neesi "+pf+" gandrīz nekam.";
     gc("d16/pabeigts");
     show("results");
+    requestAnimationFrame(drawDensity);
   }
 
   document.addEventListener("keydown", function(e){
@@ -378,6 +466,7 @@
   $("back").addEventListener("click", prev);
   $("restart").addEventListener("click", function(){ answers = new Array(N).fill(null); idx=0; show("intro"); });
   $("printbtn").addEventListener("click", function(){ window.print(); });
+  window.addEventListener("resize", function(){ if(screens.results.classList.contains("active")) drawDensity(); });
 })();
 </script>
 <script data-goatcounter="https://slowscience.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
