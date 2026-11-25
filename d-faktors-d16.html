@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Personības tumšais faktors (D16)</title>
+<meta name="description" content="Personības tumšā faktora (D) īsās skalas D16 latviskota versija. Izglītojošs instruments personības psiholoģijas lekcijai.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#E6E6E6;
+    --surface:#FFFFFF;
+    --ink:#141414;
+    --muted:#4A4A4A;
+    --faint:#7A7A7A;
+    --line:#D2D2D2;
+    --accent:#262626;
+    --accent-soft:#EFEFEF;
+    --red:#A5281B;
+    --radius:14px;
+    --maxw:660px;
+    --sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg);color:var(--ink);font-family:var(--sans);
+    font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;
+  }
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:40px 22px 72px}
+  .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:34px 30px}
+  h1{font-weight:700;font-size:31px;line-height:1.15;letter-spacing:-.022em;margin:0 0 6px}
+  h2{font-weight:600;font-size:22px;line-height:1.2;letter-spacing:-.015em;margin:0 0 14px}
+  .lead{color:var(--muted);margin:0 0 22px;font-size:17px}
+  p{margin:0 0 14px}
+  .small{font-size:14.5px;color:var(--muted);line-height:1.5}
+  .screen{display:none;animation:fade .35s ease both}
+  .screen.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  @media (prefers-reduced-motion:reduce){.screen{animation:none}}
+
+  .kicker{font-size:14px;color:var(--red);font-weight:600;margin:0 0 14px;letter-spacing:.02em}
+  .note{background:var(--accent-soft);border-radius:12px;padding:16px 18px;margin:22px 0;font-size:15px;color:#333;line-height:1.5}
+  .note strong{color:var(--ink)}
+  .legend{margin:22px 0 26px;border-top:1px solid var(--line);padding-top:18px}
+  .legend-title{font-size:14px;color:var(--faint);margin:0 0 10px}
+  .legend ol{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+  .legend li{display:flex;align-items:baseline;gap:10px;font-size:15px;color:var(--muted)}
+  .legend .n{flex:none;width:24px;height:24px;border-radius:7px;background:var(--bg);color:var(--ink);font-weight:600;font-size:13px;display:grid;place-items:center;border:1px solid var(--line)}
+  .cite{font-size:13.5px;color:var(--faint);margin-top:24px;line-height:1.55}
+
+  button{font-family:inherit}
+  .btn{display:inline-block;border:none;cursor:pointer;background:var(--accent);color:#fff;font-size:16px;font-weight:600;padding:14px 26px;border-radius:11px;transition:filter .15s ease}
+  .btn:hover{filter:brightness(1.25)}
+  .btn:focus-visible{outline:3px solid #999;outline-offset:2px}
+  .btn.ghost{background:transparent;color:var(--accent);padding:12px 0;font-weight:600}
+
+  .progress-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+  .progress-head .count{font-size:14px;color:var(--faint);font-variant-numeric:tabular-nums}
+  .bar{height:5px;background:var(--line);border-radius:999px;overflow:hidden;margin-bottom:30px}
+  .bar span{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .3s ease;width:0}
+  .qcard{min-height:230px;display:flex;flex-direction:column;justify-content:center}
+  .qnum{font-size:14px;color:var(--faint);margin-bottom:8px}
+  .qtext{font-weight:600;font-size:24px;line-height:1.3;margin:0 0 26px;letter-spacing:-.015em}
+  .opts{display:grid;gap:9px}
+  .opt{display:flex;align-items:center;gap:13px;width:100%;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:11px;padding:13px 15px;cursor:pointer;font-size:16px;color:var(--ink);transition:border-color .12s,background .12s}
+  .opt:hover{border-color:#a8a8a8}
+  .opt:focus-visible{outline:3px solid #999;outline-offset:2px}
+  .opt .dot{flex:none;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--line);display:grid;place-items:center;font-size:13px;font-weight:600;color:var(--muted)}
+  .opt.sel{border-color:var(--accent);background:var(--accent-soft)}
+  .opt.sel .dot{background:var(--accent);border-color:var(--accent);color:#fff}
+  .khint{font-size:13px;color:var(--faint);margin-top:20px;text-align:center}
+
+  .gauge{margin:0 0 26px}
+  .gauge-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+  .gauge-name{font-weight:600;font-size:17px}
+  .gauge-num{font-weight:700;font-size:30px;line-height:1;letter-spacing:-.02em}
+  .gauge-num small{font-size:14px;font-weight:500;color:var(--faint)}
+  .track{position:relative;height:12px;border-radius:999px;background:var(--bg);border:1px solid var(--line);margin:12px 0 8px;overflow:visible}
+  .fill{position:absolute;top:0;left:0;height:100%;border-radius:999px;background:var(--accent);transition:width .5s ease}
+  .mid{position:absolute;top:-4px;bottom:-4px;left:50%;width:2px;background:#aaa;transform:translateX(-50%)}
+  .gauge-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--faint)}
+  .gauge-desc{font-size:14.5px;color:var(--muted);margin-top:9px;line-height:1.5}
+  .band{font-weight:600;color:var(--ink)}
+
+  .items-title{font-weight:600;font-size:17px;margin:30px 0 4px;border-top:1px solid var(--line);padding-top:24px}
+  .items-sub{font-size:14px;color:var(--faint);margin:0 0 14px}
+  .ilist{margin:0;padding:0;list-style:none;display:grid;gap:8px}
+  .ilist li{font-size:15px;color:var(--muted);line-height:1.45;padding:10px 14px;border:1px solid var(--line);border-radius:10px}
+  .ilist li .lab{display:block;font-size:12.5px;color:var(--faint);margin-bottom:2px}
+
+  details{border-top:1px solid var(--line);margin-top:8px;padding-top:6px}
+  summary{cursor:pointer;font-weight:600;font-size:15px;padding:12px 0;list-style:none;color:var(--accent)}
+  summary::-webkit-details-marker{display:none}
+  summary:focus-visible{outline:3px solid #999;outline-offset:2px;border-radius:4px}
+  details .body{font-size:14.5px;color:var(--muted);line-height:1.55;padding-bottom:8px}
+  details .body p{margin:0 0 12px}
+  details .body strong{color:var(--ink)}
+  .resfoot{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
+
+  @media (max-width:560px){
+    .wrap{padding:26px 14px 56px}
+    .card{padding:26px 20px}
+    h1{font-size:26px}
+    .qtext{font-size:21px}
+  }
+  @media print{
+    body{background:#fff}
+    .resfoot,.khint{display:none}
+    .card{border:none;padding:0}
+  }
+  .gsel{margin:0 0 24px}
+  .gopts{display:grid;gap:8px}
+  .btn:disabled{opacity:.35;cursor:default;filter:none}
+  .backlink{margin:0 0 14px;font-size:.9rem}
+  .backlink a{text-decoration:none;font-weight:600;color:var(--accent)}
+  .backlink a:hover{text-decoration:underline}
+  .r-back{margin:18px 0 0;font-size:.95rem}
+  .r-back a{color:var(--accent)}
+</style>
+<script>function gc(p){try{if(window.goatcounter&&window.goatcounter.count){window.goatcounter.count({path:p,title:p,event:true});}}catch(e){}}</script>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- INTRO -->
+  <section id="intro" class="screen active">
+    <div class="card">
+      <p class="backlink" style="margin-bottom:10px"><a href="index.html">← Visi testi un aptaujas</a></p>
+      <p class="kicker">Personības psiholoģija</p>
+      <h1>Personības tumšais faktors (D16)</h1>
+      <p class="lead">Īsa aptauja, kas mēra visu tumšo iezīmju kopīgo kodolu, D faktoru. Tā nemēra atsevišķi narcisismu, makiavellismu vai psihopātiju, bet to, kas visām šīm iezīmēm ir kopīgs. 16 apgalvojumi, aizpildīšanas laiks aptuveni trīs minūtes.</p>
+
+      <div class="note">
+        <strong>Tikai izglītojošiem nolūkiem.</strong> Šis nav diagnostisks instruments. Atbildes paliek tikai Tavā pārlūkā un netiek nekur nosūtītas. Anonīmi, bez sīkdatnēm un bez atbildēm tiek skaitīts tikai tas, cik reizes aptauja atvērta un pabeigta.
+      </div>
+
+      <p>Izlasi katru apgalvojumu un novērtē, cik lielā mērā Tu tam piekrīti vai nepiekrīti. Pareizu vai nepareizu atbilžu nav. Lūdzu, atbildi uz katru apgalvojumu, pat ja neesi pilnīgi pārliecināts vai pārliecināta. Ja nav norādīts citādi, apgalvojumi attiecas uz Tavu uzvedību (pret citiem) kopumā.</p>
+
+      <div class="legend">
+        <p class="legend-title">Atbilžu skala</p>
+        <ol>
+          <li><span class="n">1</span> Pilnīgi nepiekrītu</li>
+          <li><span class="n">2</span> Nepiekrītu</li>
+          <li><span class="n">3</span> Ne piekrītu, ne nepiekrītu</li>
+          <li><span class="n">4</span> Piekrītu</li>
+          <li><span class="n">5</span> Pilnīgi piekrītu</li>
+        </ol>
+      </div>
+
+      <div class="gsel">
+        <p class="legend-title">Lai apgalvojumu galotnes atbilstu Tev, izvēlies dzimti</p>
+        <div class="gopts" role="radiogroup" aria-label="Dzimtes izvēle">
+          <button type="button" class="opt gopt" data-g="m" role="radio" aria-checked="false"><span class="dot">V</span><span>Vīriešu dzimtē</span></button>
+          <button type="button" class="opt gopt" data-g="f" role="radio" aria-checked="false"><span class="dot">S</span><span>Sieviešu dzimtē</span></button>
+          <button type="button" class="opt gopt" data-g="x" role="radio" aria-checked="false"><span class="dot">A</span><span>Nevēlos izvēlēties (abas formas, piemēram, „gatavs/a”)</span></button>
+        </div>
+        <p class="small" style="margin-top:8px">Izvēle tiek izmantota tikai teksta galotnēm, netiek saglabāta un neietekmē rezultātu.</p>
+      </div>
+
+      <button class="btn" id="start" disabled>Sākt aptauju</button>
+
+      <p class="cite">Avots: Moshagen, M., Zettler, I., &amp; Hilbig, B. E. (2020). Measuring the dark core of personality. <em>Psychological Assessment, 32</em>(2), 182–196. Apgalvojumi izmantoti saskaņā ar autoru noteikumiem tikai nekomerciāliem izglītības mērķiem (darkfactor.org).</p>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section id="quiz" class="screen">
+    <div class="progress-head">
+      <span class="count"><span id="cur">1</span> no 16</span>
+      <button class="btn ghost" id="back" style="padding:0;font-size:14px">Atpakaļ</button>
+    </div>
+    <div class="bar"><span id="fill"></span></div>
+
+    <div class="card qcard">
+      <p class="qnum" id="qnum">1. apgalvojums</p>
+      <p class="qtext" id="qtext"></p>
+      <div class="opts" id="opts" role="radiogroup" aria-label="Atbilžu iespējas"></div>
+    </div>
+
+    <p class="khint">Vari atbildēt arī ar tastatūras taustiņiem 1 līdz 5</p>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="results" class="screen">
+    <div class="card">
+      <h2>Tavs rezultāts</h2>
+      <p class="small" style="margin-bottom:26px">Zemāk redzams Tavu atbilžu vidējais rādītājs piecu ballu skalā. Augstāks rādītājs nozīmē izteiktāku D faktoru.</p>
+
+      <div class="gauge" id="g-d"></div>
+
+      <p class="items-title">Kuras atbildes visvairāk paaugstināja Tavu rezultātu</p>
+      <p class="items-sub">Apgalvojumi, kuros Tava atbilde bija vistuvāk tumšajam polam</p>
+      <ul class="ilist" id="topitems"></ul>
+
+      <div class="note" style="margin-top:26px">
+        Apzīmējumi „zema”, „vidēja” un „augsta” attiecas tikai uz skalas viduspunktu, nevis uz normām vai klīnisku robežvērtību. Latviskajai versijai nav normu, un rezultāts nav diagnoze. Izmanto to tikai kā mācību piemēru.
+      </div>
+
+      <details>
+        <summary>Kas ir D faktors?</summary>
+        <div class="body">
+          <p><strong>Kopīgais kodols.</strong> Mošagens, Hilbigs un Cetlers (2018) parādīja, ka deviņām tumšajām iezīmēm (egoismam, makiavellismam, morālajai atslēgšanai, narcisismam, tiesīguma izjūtai, psihopātijai, sadismam, pašlabumam un ļaunprātībai) ir kopīgs kodols. To sauc par personības tumšo faktoru, D (no angļu „dark”, tumšs).</p>
+          <p><strong>Definīcija.</strong> D ir tieksme maksimāli palielināt savu labumu, neņemot vērā, pieņemot vai pat apzināti radot zaudējumus citiem, kopā ar pārliecībām, kas šo rīcību attaisno.</p>
+          <p><strong>Līdzība ar intelektu.</strong> Tāpat kā vispārējais intelekts (g faktors) ir dažādu spēju kopīgais pamats, D ir dažādu tumšo iezīmju kopīgais pamats.</p>
+          <p><strong>Saistība ar personības modeļiem.</strong> D visciešāk saistīts ar zemu godīgumu un pazemību HEXACO modelī un ar zemu labvēlību Lielajā pieciniekā, taču tas nav tikai šo dimensiju pretpols.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>Par aptauju un vērtēšanu</summary>
+        <div class="body">
+          <p><strong>D16.</strong> Šī ir 16 apgalvojumu īsā versija no pilnās 70 apgalvojumu skalas (D70). Autoru datos D16 un D70 rezultātu korelācija ir .95, un D16 iekšējā saskaņotība ir augsta (α = .91).</p>
+          <p><strong>Apgrieztā vērtēšana.</strong> Astoņi apgalvojumi ir formulēti pretējā virzienā (piemēram, „Es izvairos pazemot citus”), un to vērtējums pirms vidējā aprēķina tiek apgriezts. Tas palīdz mazināt automātisku piekrišanu.</p>
+          <p><strong>Tikai kopīgais kodols.</strong> Autori uzsver, ka šie apgalvojumi nav paredzēti atsevišķu tumšo iezīmju mērīšanai. Tāpēc rīks nerāda apakšskalas.</p>
+          <p><strong>Ierobežojumi.</strong> Šī ir mācību vajadzībām sagatavota latviskota versija, nevis validēta adaptācija ar atgriezenisko tulkojumu. Sociāli vēlamas atbildes šādās aptaujās var pazemināt rezultātu.</p>
+          <p style="color:var(--faint)">Avoti: Moshagen, M., Hilbig, B. E., &amp; Zettler, I. (2018). The dark core of personality. Psychological Review, 125(5), 656–688. Moshagen, M., Zettler, I., &amp; Hilbig, B. E. (2020). Measuring the dark core of personality. Psychological Assessment, 32(2), 182–196.</p>
+        </div>
+      </details>
+
+      <div class="resfoot">
+        <button class="btn" id="restart">Sākt no jauna</button>
+        <button class="btn ghost" id="printbtn">Saglabāt vai izdrukāt</button>
+      </div>
+      <p class="r-back"><a href="index.html">← Visi testi un aptaujas</a></p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  // D16 order (Moshagen, Zettler & Hilbig, 2020). rev: negatively keyed (scored 6 - x).
+  var ITEMS = [
+    {t:"Man ir grūti redzēt, kad kāds cieš.", rev:true},
+    {t:"Atriebībai jābūt ātrai un nežēlīgai."},
+    {t:"Kopumā labāk ir būt pieticīgam/ai un godīgam/ai nekā nozīmīgam/ai un negodīgam/ai.", m:"Kopumā labāk ir būt pieticīgam un godīgam nekā nozīmīgam un negodīgam.", f:"Kopumā labāk ir būt pieticīgai un godīgai nekā nozīmīgai un negodīgai.", rev:true},
+    {t:"Vienīgais, kas ir svarīgs, ir mana paša/pašas bauda.", m:"Vienīgais, kas ir svarīgs, ir mana paša bauda.", f:"Vienīgais, kas ir svarīgs, ir mana pašas bauda."},
+    {t:"Nespēju iedomāties, kā būt ļaunam pret citiem varētu būt aizraujoši.", rev:true},
+    {t:"Cilvēki, pret kuriem slikti izturas, parasti paši ir kaut ko izdarījuši un to nopelnījuši."},
+    {t:"Darīt pāri citiem man būtu ļoti nepatīkami.", rev:true},
+    {t:"Prātīgi ir uzkrāt informāciju, ko Tu vēlāk vari izmantot pret citiem."},
+    {t:"Man ir žēl, ja mana rīcība cilvēkus sarūgtina.", rev:true},
+    {t:"Cilvēki, kas ar mani ielaižas, vienmēr to nožēlo."},
+    {t:"Kāpēc lai man rūpētu citi cilvēki, ja par mani neviens nerūpējas?"},
+    {t:"Es gribētu likt dažiem cilvēkiem ciest, pat ja tāpēc es pats/pati nonāktu ellē kopā ar viņiem.", m:"Es gribētu likt dažiem cilvēkiem ciest, pat ja tāpēc es pats nonāktu ellē kopā ar viņiem.", f:"Es gribētu likt dažiem cilvēkiem ciest, pat ja tāpēc es pati nonāktu ellē kopā ar viņiem."},
+    {t:"Lielākā daļa cilvēku ir pelnījuši cieņu.", rev:true},
+    {t:"Tiecoties pēc saviem mērķiem, es apzināti cenšos nenodarīt pāri citiem.", rev:true},
+    {t:"Es būtu gatavs/a saņemt vienu sitienu, ja tas nozīmētu, ka kāds, kas man nepatīk, saņemtu divus.", m:"Es būtu gatavs saņemt vienu sitienu, ja tas nozīmētu, ka kāds, kas man nepatīk, saņemtu divus.", f:"Es būtu gatava saņemt vienu sitienu, ja tas nozīmētu, ka kāds, kas man nepatīk, saņemtu divus."},
+    {t:"Es izvairos pazemot citus.", rev:true}
+  ];
+
+  var LABELS = ["Pilnīgi nepiekrītu","Nepiekrītu","Ne piekrītu, ne nepiekrītu","Piekrītu","Pilnīgi piekrītu"];
+  var N = ITEMS.length;
+  var answers = new Array(N).fill(null);
+  var idx = 0;
+  var advanceTimer = null;
+  var gender = null; // "m", "f" or "x"
+  function txt(it){ return (gender && it[gender]) ? it[gender] : it.t; }
+
+  var $ = function(id){return document.getElementById(id);};
+  var screens = {intro:$("intro"), quiz:$("quiz"), results:$("results")};
+
+  function show(name){
+    Object.keys(screens).forEach(function(k){ screens[k].classList.toggle("active", k===name); });
+    window.scrollTo(0,0);
+  }
+
+  function renderQuestion(){
+    var it = ITEMS[idx];
+    $("cur").textContent = idx+1;
+    $("qnum").textContent = (idx+1) + ". apgalvojums";
+    $("qtext").textContent = txt(it);
+    $("fill").style.width = (idx/N*100) + "%";
+    $("back").style.visibility = idx===0 ? "hidden" : "visible";
+    var opts = $("opts");
+    opts.innerHTML = "";
+    for(var v=1; v<=5; v++){
+      (function(val){
+        var b = document.createElement("button");
+        b.className = "opt" + (answers[idx]===val ? " sel" : "");
+        b.type = "button";
+        b.setAttribute("role","radio");
+        b.setAttribute("aria-checked", answers[idx]===val ? "true":"false");
+        b.innerHTML = '<span class="dot">'+val+'</span><span>'+LABELS[val-1]+'</span>';
+        b.addEventListener("click", function(){ choose(val); });
+        opts.appendChild(b);
+      })(v);
+    }
+  }
+
+  function choose(val){
+    answers[idx] = val;
+    var kids = $("opts").children;
+    for(var i=0;i<kids.length;i++){
+      var on = (i+1)===val;
+      kids[i].classList.toggle("sel", on);
+      kids[i].setAttribute("aria-checked", on?"true":"false");
+    }
+    if(advanceTimer) clearTimeout(advanceTimer);
+    advanceTimer = setTimeout(next, 240);
+  }
+  function next(){ if(idx < N-1){ idx++; renderQuestion(); } else { finish(); } }
+  function prev(){ if(advanceTimer) clearTimeout(advanceTimer); if(idx>0){ idx--; renderQuestion(); } }
+
+  function scored(i){ var v = answers[i]; return ITEMS[i].rev ? (6 - v) : v; }
+
+  function band(mean){
+    if(mean < 2.34) return "salīdzinoši zema izteiktība";
+    if(mean <= 3.66) return "vidēja izteiktība";
+    return "salīdzinoši augsta izteiktība";
+  }
+  function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
+
+  function finish(){
+    var sum=0;
+    for(var i=0;i<N;i++){ sum += scored(i); }
+    var mean = sum/N;
+    var pct = (mean-1)/4*100;
+    $("g-d").innerHTML =
+      '<div class="gauge-head"><span class="gauge-name">D faktors</span>'+
+      '<span class="gauge-num">'+mean.toFixed(2).replace(".",",")+' <small>no 5</small></span></div>'+
+      '<div class="track"><div class="fill" style="width:0"></div><div class="mid"></div></div>'+
+      '<div class="gauge-meta"><span>1</span><span>skalas vidus</span><span>5</span></div>'+
+      '<p class="gauge-desc"><span class="band">'+cap(band(mean))+'.</span> Tieksme likt savas intereses augstāk par citu interesēm, pieļaujot vai pat radot citiem zaudējumus. Summa: '+sum+' no '+(N*5)+'.</p>';
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){
+      $("g-d").querySelector(".fill").style.width = pct + "%";
+    }); });
+
+    // top items: highest scored values (>=3), max 3
+    var order = [];
+    for(var j=0;j<N;j++){ order.push({i:j, s:scored(j)}); }
+    order.sort(function(a,b){ return b.s - a.s || ((ITEMS[a.i].rev?1:0) - (ITEMS[b.i].rev?1:0)) || a.i - b.i; });
+    var top = order.filter(function(o){ return o.s >= 3; }).slice(0,3);
+    var ul = $("topitems"); ul.innerHTML = "";
+    if(top.length === 0){
+      var li = document.createElement("li");
+      li.textContent = "Nevienā apgalvojumā Tava atbilde nebija tuvāk tumšajam polam nekā skalas vidus.";
+      ul.appendChild(li);
+    } else {
+      top.forEach(function(o){
+        var li = document.createElement("li");
+        var lab = document.createElement("span"); lab.className = "lab";
+        lab.textContent = "Tava atbilde: " + LABELS[answers[o.i]-1].toLowerCase() + (ITEMS[o.i].rev ? " (apgalvojums vērtēts apgriezti)" : "");
+        li.appendChild(lab);
+        li.appendChild(document.createTextNode(txt(ITEMS[o.i])));
+        ul.appendChild(li);
+      });
+    }
+    gc("d16/pabeigts");
+    show("results");
+  }
+
+  document.addEventListener("keydown", function(e){
+    if(!screens.quiz.classList.contains("active")) return;
+    if(e.key>="1" && e.key<="5"){ choose(parseInt(e.key,10)); }
+    else if(e.key==="ArrowLeft"){ prev(); }
+    else if(e.key==="ArrowRight"){ if(answers[idx]) next(); }
+  });
+
+  var gbtns = document.querySelectorAll(".gopt");
+  for(var g=0; g<gbtns.length; g++){
+    gbtns[g].addEventListener("click", function(){
+      gender = this.getAttribute("data-g");
+      for(var k=0;k<gbtns.length;k++){
+        var on = gbtns[k]===this;
+        gbtns[k].classList.toggle("sel", on);
+        gbtns[k].setAttribute("aria-checked", on?"true":"false");
+      }
+      $("start").disabled = false;
+    });
+  }
+  $("start").addEventListener("click", function(){ if(!gender) return; gc("d16/sakts"); idx=0; renderQuestion(); show("quiz"); });
+  $("back").addEventListener("click", prev);
+  $("restart").addEventListener("click", function(){ answers = new Array(N).fill(null); idx=0; show("intro"); });
+  $("printbtn").addEventListener("click", function(){ window.print(); });
+})();
+</script>
+<script data-goatcounter="https://slowscience.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</body>
+</html>
