@@ -81,7 +81,8 @@
   .track{position:relative;height:12px;border-radius:999px;background:var(--bg);border:1px solid var(--line);margin:12px 0 8px;overflow:visible}
   .fill{position:absolute;top:0;left:0;height:100%;border-radius:999px;background:var(--accent);transition:width .5s ease}
   .mid{position:absolute;top:-4px;bottom:-4px;left:50%;width:2px;background:#aaa;transform:translateX(-50%)}
-  .gauge-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--faint)}
+  .gauge-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--faint);height:18px}
+  .normlab{position:absolute;top:0;transform:translateX(-50%);white-space:nowrap}
   .gauge-desc{font-size:14.5px;color:var(--muted);margin-top:9px;line-height:1.5}
   .band{font-weight:600;color:var(--ink)}
 
@@ -195,7 +196,7 @@
   <section id="results" class="screen">
     <div class="card">
       <h2>Tavs rezultāts</h2>
-      <p class="small" style="margin-bottom:26px">Zemāk redzams Tavu atbilžu vidējais rādītājs piecu ballu skalā. Augstāks rādītājs nozīmē izteiktāku D faktoru.</p>
+      <p class="small" style="margin-bottom:26px">Zemāk redzams Tavu atbilžu vidējais rādītājs piecu ballu skalā. Augstāks rādītājs nozīmē izteiktāku D faktoru. Svītra uz skalas rāda vidējo rādītāju lielā respondentu izlasē.</p>
 
       <div class="gauge" id="g-d"></div>
 
@@ -213,7 +214,7 @@
       </div>
 
       <div class="note" style="margin-top:26px">
-        Apzīmējumi „zema”, „vidēja” un „augsta” attiecas tikai uz skalas viduspunktu, nevis uz normām vai klīnisku robežvērtību. Latviskajai versijai nav normu, un rezultāts nav diagnoze. Izmanto to tikai kā mācību piemēru.
+        Salīdzinājums balstīts uz publicēto D16 vidējo (2,14) un standartnovirzi (0,67) vācu tiešsaistes izlasē (Bader et al., 2022). „Līdzīgs lielākajai daļai” nozīmē, ka rezultāts ir ne vairāk kā vienu standartnovirzi no vidējā. Latviskajai versijai normu nav, tāpēc salīdzinājums ir aptuvens. Rezultāts nav diagnoze. Izmanto to tikai kā mācību piemēru.
       </div>
 
       <details>
@@ -327,10 +328,14 @@
 
   function scored(i){ var v = answers[i]; return ITEMS[i].rev ? (6 - v) : v; }
 
+  // Bands relative to published D16 norms: M = 2.14, SD = 0.67 (Bader et al., 2022)
+  var NORM_M = 2.14, NORM_SD = 0.67;
   function band(mean){
-    if(mean < 2.34) return "salīdzinoši zema izteiktība";
-    if(mean <= 3.66) return "vidēja izteiktība";
-    return "salīdzinoši augsta izteiktība";
+    var z = (mean - NORM_M) / NORM_SD;
+    if(z < -1) return "zemāks nekā lielākajai daļai cilvēku";
+    if(z <= 1) return "līdzīgs lielākajai daļai cilvēku";
+    if(z <= 2) return "augstāks nekā lielākajai daļai cilvēku";
+    return "ievērojami augstāks nekā lielākajai daļai cilvēku";
   }
   function cap(s){return s.charAt(0).toUpperCase()+s.slice(1);}
 
@@ -408,9 +413,9 @@
     $("g-d").innerHTML =
       '<div class="gauge-head"><span class="gauge-name">D faktors</span>'+
       '<span class="gauge-num">'+mean.toFixed(2).replace(".",",")+' <small>no 5</small></span></div>'+
-      '<div class="track"><div class="fill" style="width:0"></div><div class="mid"></div></div>'+
-      '<div class="gauge-meta"><span>1</span><span>skalas vidus</span><span>5</span></div>'+
-      '<p class="gauge-desc"><span class="band">'+cap(band(mean))+'.</span> Tieksme likt savas intereses augstāk par citu interesēm, pieļaujot vai pat radot citiem zaudējumus. Summa: '+sum+' no '+(N*5)+'.</p>';
+      '<div class="track"><div class="fill" style="width:0"></div><div class="mid" style="left:'+((NORM_M-1)/4*100)+'%"></div></div>'+
+      '<div class="gauge-meta" style="position:relative"><span>1</span><span class="normlab" style="left:'+((NORM_M-1)/4*100)+'%">vidējais 2,14</span><span>5</span></div>'+
+      '<p class="gauge-desc"><span class="band">Tavs rezultāts ir '+band(mean)+'.</span> D faktors ir tieksme likt savas intereses augstāk par citu interesēm, pieļaujot vai pat radot citiem zaudējumus.</p>';
     requestAnimationFrame(function(){ requestAnimationFrame(function(){
       $("g-d").querySelector(".fill").style.width = pct + "%";
     }); });
