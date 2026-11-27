@@ -200,8 +200,9 @@
       <div class="gauge" id="g-d"></div>
 
       <p class="items-title">Kuras atbildes visvairāk paaugstināja Tavu rezultātu</p>
-      <p class="items-sub">Apgalvojumi, kuros Tava atbilde bija vistuvāk tumšajam polam</p>
+      <p class="items-sub">Līdz trim apgalvojumiem, kuros Tava atbilde bija skaidri tumšajā pusē</p>
       <ul class="ilist" id="topitems"></ul>
+      <p class="small" style="margin-top:10px">Atsevišķs apgalvojums par Tevi pasaka maz. Rezultāts ir visu 16 atbilžu vidējais, un viena atbilde to var mainīt ne vairāk kā par 0,25 ballēm.</p>
 
       <div class="density-wrap">
         <p class="density-title">Vai abas apgalvojumu puses saka vienu un to pašu?</p>
@@ -417,11 +418,11 @@
     var order = [];
     for(var j=0;j<N;j++){ order.push({i:j, s:scored(j)}); }
     order.sort(function(a,b){ return b.s - a.s || ((ITEMS[a.i].rev?1:0) - (ITEMS[b.i].rev?1:0)) || a.i - b.i; });
-    var top = order.filter(function(o){ return o.s >= 3; }).slice(0,3);
+    var top = order.filter(function(o){ return o.s >= 4; }).slice(0,3);
     var ul = $("topitems"); ul.innerHTML = "";
     if(top.length === 0){
       var li = document.createElement("li");
-      li.textContent = "Nevienā apgalvojumā Tava atbilde nebija tuvāk tumšajam polam nekā skalas vidus.";
+      li.textContent = "Nevienā apgalvojumā Tava atbilde nebija skaidri tumšajā pusē.";
       ul.appendChild(li);
     } else {
       top.forEach(function(o){
